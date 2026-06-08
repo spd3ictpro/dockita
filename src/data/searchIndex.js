@@ -1,4 +1,4 @@
-import { screeningCategories, mammogramDue, iFOBTDue } from './screeningData'
+import { screeningCategories } from './screeningData'
 import { framingham, ipss, gad7, phq9, curb65, cha2ds2vasc, hasbled } from './scoresData'
 import { clinicalFrailtyScale, morseFallScale } from './geriatricData'
 import { patientInfoItems } from './patientInfoData'
@@ -7,8 +7,6 @@ export const searchIndex = [
   { path: '/', label: 'Home', keywords: 'home dashboard dockita' },
   { path: '/screening', label: 'Screening Home', keywords: 'screening guidelines cpg' },
   ...screeningCategories.map(s => ({ path: '/screening', label: s.title, keywords: s.keywords })),
-  { path: '/screening', label: mammogramDue.title, keywords: mammogramDue.keywords },
-  { path: '/screening', label: iFOBTDue.title, keywords: iFOBTDue.keywords },
 
   { path: '/calculators', label: 'Calculators Home', keywords: 'calculators calculation tools' },
   { path: '/calculators', label: 'BMI Calculator', keywords: 'bmi body mass index obesity weight height calculator' },

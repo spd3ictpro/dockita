@@ -4,12 +4,12 @@ export const screeningCategories = [
     title: 'Cervical Cancer Screening',
     condition: 'Cervical cancer',
     guidelines: [
-      { age: '25–29', test: 'Pap smear every 3 years', note: 'Start at age 25 regardless of sexual history' },
-      { age: '30–65', test: 'Pap smear every 3 years OR co-testing (Pap + HPV) every 5 years', note: 'Preferred: HPV DNA testing primary screening' },
-      { age: '>65', test: 'Discontinue if adequate prior screening and low risk', note: 'Adequate = 3 consecutive negative Pap or 2 negative co-tests in past 10 years' },
+      { age: '<30', test: 'Cytology (conventional or LBC)', note: 'Initial: yearly for 2 years, then 3-yearly if normal' },
+      { age: '30–65', test: 'HPV DNA test every 5 years', note: 'Primary screening method for this age group' },
+      { age: '>65 with no prior screening', test: 'HPV testing can be offered', note: 'Discontinue if adequate prior normal screening' },
     ],
     source: 'Malaysia CPG: Cervical Cancer Screening 2023',
-    keywords: 'cervix pap hpv smear colposcopy cervix cancer screening',
+    keywords: 'cervix pap hpv smear colposcopy cervix cancer screening vaccination',
   },
   {
     id: 'breast-cancer',
@@ -116,20 +116,4 @@ export const screeningCategories = [
   },
 ]
 
-export const mammogramDue = {
-  title: 'Mammogram Due Checker',
-  intervalYears: 2,
-  startAge: 40,
-  endAge: 74,
-  description: 'Enter age and last mammogram date to see when the next one is due.',
-  keywords: 'mammogram due checker breast screening next appointment',
-}
 
-export const iFOBTDue = {
-  title: 'iFOBT / FIT Due Checker',
-  intervalYears: 2,
-  startAge: 50,
-  endAge: 75,
-  description: 'Enter age and last iFOBT date to see when the next one is due.',
-  keywords: 'ifobt fit stool blood due checker colon screening next appointment',
-}
