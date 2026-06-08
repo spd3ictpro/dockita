@@ -1,0 +1,135 @@
+export const screeningCategories = [
+  {
+    id: 'cervical-cancer',
+    title: 'Cervical Cancer Screening',
+    condition: 'Cervical cancer',
+    guidelines: [
+      { age: '25–29', test: 'Pap smear every 3 years', note: 'Start at age 25 regardless of sexual history' },
+      { age: '30–65', test: 'Pap smear every 3 years OR co-testing (Pap + HPV) every 5 years', note: 'Preferred: HPV DNA testing primary screening' },
+      { age: '>65', test: 'Discontinue if adequate prior screening and low risk', note: 'Adequate = 3 consecutive negative Pap or 2 negative co-tests in past 10 years' },
+    ],
+    source: 'Malaysia CPG: Cervical Cancer Screening 2023',
+    keywords: 'cervix pap hpv smear colposcopy cervix cancer screening',
+  },
+  {
+    id: 'breast-cancer',
+    title: 'Breast Cancer Screening',
+    condition: 'Breast cancer',
+    guidelines: [
+      { age: '40–49', test: 'Mammogram every 2 years', note: 'Shared decision-making; discuss benefits vs harms' },
+      { age: '50–74', test: 'Mammogram every 2 years', note: 'Routine screening recommended' },
+      { age: '≥75', test: 'Individualise', note: 'Consider life expectancy and comorbidities' },
+      { age: 'High risk', test: 'Annual mammogram ± MRI', note: 'High risk = strong FH, BRCA1/2, prior chest RT' },
+    ],
+    source: 'Malaysia CPG: Breast Cancer Screening 2022',
+    keywords: 'breast mammogram mammo mamogram breast cancer screening',
+  },
+  {
+    id: 'colorectal-cancer',
+    title: 'Colorectal Cancer Screening',
+    condition: 'Colorectal cancer',
+    guidelines: [
+      { age: '50–75', test: 'iFOBT (FIT) every 1–2 years', note: 'FIT preferred over gFOBT' },
+      { age: '50–75', test: 'Colonoscopy every 10 years', note: 'If FIT positive → colonoscopy within 6 months' },
+      { age: '>75', test: 'Individualise', note: 'Discontinue if prior adequate screening' },
+      { age: 'High risk', test: 'Colonoscopy every 3–5 years', note: 'High risk = FH, IBD, polyps, hereditary syndromes' },
+    ],
+    source: 'Malaysia CPG: Colorectal Cancer Screening 2021',
+    keywords: 'colon colorectal bowel iFOBT FIT stool blood cancer screening',
+  },
+  {
+    id: 'diabetes',
+    title: 'Type 2 Diabetes Screening',
+    condition: 'Diabetes mellitus',
+    guidelines: [
+      { age: '≥18', test: 'Fasting glucose or HbA1c every 3 years', note: 'Start earlier if BMI ≥23 + ≥1 risk factor' },
+      { age: 'High risk', test: 'Annual screening', note: 'Risk factors: FH, overweight, HTN, PCOS, prior GDM, prediabetes' },
+    ],
+    source: 'Malaysia CPG: Management of T2DM 2021',
+    keywords: 'diabetes diabetic dm sugar hba1c glucose screening',
+  },
+  {
+    id: 'hypertension',
+    title: 'Hypertension Screening',
+    condition: 'Hypertension',
+    guidelines: [
+      { age: '≥18', test: 'BP measurement at every visit', note: 'Adults ≥40: at least annual' },
+      { age: 'Elevated BP', test: 'Confirm with HBPM or ABPM', note: 'HBPM = home BP monitoring × 7 days' },
+    ],
+    source: 'Malaysia CPG: Management of Hypertension 2023',
+    keywords: 'hypertension high blood pressure htn bp screening',
+  },
+  {
+    id: 'dyslipidaemia',
+    title: 'Dyslipidaemia / Lipid Screening',
+    condition: 'Dyslipidaemia',
+    guidelines: [
+      { age: '≥40', test: 'Fasting lipid profile every 1–3 years', note: 'Start earlier (≥18) if other risk factors present' },
+      { age: 'High risk', test: 'Annual lipid profile', note: 'High risk = DM, CVD, FH, CKD, ASCVD equivalent' },
+    ],
+    source: 'Malaysia CPG: Management of Dyslipidaemia 2022',
+    keywords: 'lipid cholesterol dyslipidaemia dyslipidemia hdl ldl tg screening',
+  },
+  {
+    id: 'osteoporosis',
+    title: 'Osteoporosis Screening',
+    condition: 'Osteoporosis',
+    guidelines: [
+      { age: '≥65', test: 'DXA scan', note: 'Routine screening for all women ≥65' },
+      { age: '50–64', test: 'DXA scan if FRAX ≥20% major or ≥3% hip', note: 'Use FRAX tool to assess' },
+      { age: 'Fragility fracture', test: 'DXA scan regardless of age', note: 'Any low-trauma fracture warrants assessment' },
+    ],
+    source: 'Malaysia CPG: Management of Osteoporosis 2022',
+    keywords: 'osteoporosis bone density dxa scan frax screening',
+  },
+  {
+    id: 'lung-cancer',
+    title: 'Lung Cancer Screening',
+    condition: 'Lung cancer',
+    guidelines: [
+      { age: '50–80', test: 'Low-dose CT chest annually', note: 'For high-risk: ≥30 pack-year smoking history, current smoker or quit <15 years' },
+    ],
+    source: 'Malaysia CPG: Lung Cancer Screening 2021',
+    keywords: 'lung cancer ldct ct chest smoking screening',
+  },
+  {
+    id: 'hep-b',
+    title: 'Hepatitis B Screening',
+    condition: 'Hepatitis B',
+    guidelines: [
+      { age: 'All adults', test: 'HBsAg screening at least once', note: 'Especially high-risk groups: MSM, IVDU, household contacts, HD patients' },
+      { age: 'Pregnancy', test: 'Routine HBsAg screening', note: 'Screen at first antenatal visit' },
+    ],
+    source: 'Malaysia CPG: Management of Hepatitis B 2021',
+    keywords: 'hepatitis b hbsag liver screening',
+  },
+  {
+    id: 'cvd-risk',
+    title: 'Cardiovascular Risk Assessment',
+    condition: 'CVD risk',
+    guidelines: [
+      { age: '≥40', test: 'ASCVD / Framingham Risk Score every 3–5 years', note: 'Start at 30–39 if ≥1 risk factor' },
+      { age: 'Diabetic', test: 'Annual risk assessment', note: 'Diabetics are automatically high risk' },
+    ],
+    source: 'Malaysia CPG: Primary Prevention of CVD 2022',
+    keywords: 'cardiovascular cvd risk ascvd framingham heart screening',
+  },
+]
+
+export const mammogramDue = {
+  title: 'Mammogram Due Checker',
+  intervalYears: 2,
+  startAge: 40,
+  endAge: 74,
+  description: 'Enter age and last mammogram date to see when the next one is due.',
+  keywords: 'mammogram due checker breast screening next appointment',
+}
+
+export const iFOBTDue = {
+  title: 'iFOBT / FIT Due Checker',
+  intervalYears: 2,
+  startAge: 50,
+  endAge: 75,
+  description: 'Enter age and last iFOBT date to see when the next one is due.',
+  keywords: 'ifobt fit stool blood due checker colon screening next appointment',
+}
