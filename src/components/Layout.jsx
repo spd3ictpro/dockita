@@ -15,7 +15,7 @@ export default function Layout() {
           <Outlet />
         </div>
         <footer className="disclaimer-bar">
-          <strong>⚠️ Disclaimer:</strong> This dashboard is for reference only. Always exercise clinical judgment. Use at your own risk.
+          <strong>Disclaimer:</strong> This dashboard is for reference only. Always exercise clinical judgment. Use at your own risk.
         </footer>
       </main>
     </div>

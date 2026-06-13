@@ -13,8 +13,8 @@ export const framingham = {
     { key: 'hdl', label: 'HDL Cholesterol (mmol/L)', type: 'number', step: 0.1, min: 0.1, max: 5 },
     { key: 'sbp', label: 'Systolic BP (mmHg)', type: 'number', min: 60, max: 280 },
     { key: 'treated', label: 'Antihypertensive Medication', type: 'select', options: [
-      { value: '0', label: 'No' },
-      { value: '1', label: 'Yes' },
+      { value: '0', label: 'Not on antihypertensive' },
+      { value: '1', label: 'On antihypertensive' },
     ]},
     { key: 'smoker', label: 'Smoking Status', type: 'select', options: [
       { value: '0', label: 'Non-Smoker' },
@@ -174,6 +174,23 @@ export const ipss = {
     if (score <= 19) return { label: 'Moderate', color: 'var(--risk-mod)' }
     return { label: 'Severe', color: 'var(--risk-high)' }
   },
+  qol: {
+    text: 'If you were to spend the rest of your life with your urinary condition just the way it is now, how would you feel about that?',
+    options: [
+      { value: 0, label: 'Delighted' },
+      { value: 1, label: 'Pleased' },
+      { value: 2, label: 'Mostly satisfied' },
+      { value: 3, label: 'Mixed' },
+      { value: 4, label: 'Mostly dissatisfied' },
+      { value: 5, label: 'Unhappy' },
+      { value: 6, label: 'Terrible' },
+    ],
+    getCategory: (score) => {
+      if (score <= 1) return { label: 'Satisfied', color: 'var(--risk-low)' }
+      if (score <= 3) return { label: 'Mixed', color: 'var(--risk-mod)' }
+      return { label: 'Dissatisfied', color: 'var(--risk-high)' }
+    },
+  },
   keywords: 'ipss prostate bph urinary symptom score',
 }
 
@@ -321,4 +338,122 @@ export const hasbled = {
     return { label: 'High bleeding risk', recommendation: 'Bleeding risk >9% per year; reassess anticoagulation strategy', color: 'var(--risk-high)' }
   },
   keywords: 'hasbled bleeding risk atrial fibrillation af anticoagulation',
+}
+
+export const cvRiskHtn = {
+  id: 'cv-risk-htn',
+  title: 'CV Risk for HTN Medication Initiation',
+  description: 'Malaysia CPG Hypertension (5th Ed) — Assess CV risk to determine threshold for starting antihypertensive medication',
+  keywords: 'hypertension cpg malaysia cardiovascular risk medication initiation blood pressure',
+}
+
+export const act = {
+  id: 'act',
+  title: 'ACT — Asthma Control Test',
+  description: 'Asthma control assessment (5 questions, 1–5 each)',
+  questions: [
+    { key: 'q1', text: 'How much of the time did your asthma keep you from getting as much done at work, school or home?', labels: ['None of the time', 'A little of the time', 'Some of the time', 'Most of the time', 'All of the time'] },
+    { key: 'q2', text: 'How often have you had shortness of breath?', labels: ['Not at all', 'Once or twice a week', '3–6 times a week', 'Once a day', 'More than once a day'] },
+    { key: 'q3', text: 'How often did asthma symptoms wake you up at night or earlier than usual?', labels: ['Not at all', '1–2 times a month', '1–2 times a week', '3–4 nights a week', '4 or more nights a week'] },
+    { key: 'q4', text: 'How often have you used your rescue inhaler or nebuliser?', labels: ['Not at all', 'Once a week or less', 'A few times a week', '1–2 times per day', '3 or more times per day'] },
+    { key: 'q5', text: 'How would you rate your asthma control?', labels: ['Completely controlled', 'Well controlled', 'Somewhat controlled', 'Poorly controlled', 'Not controlled at all'] },
+  ],
+  maxScore: 25,
+  getCategory: (score) => {
+    if (score >= 20) return { label: 'Well controlled', color: 'var(--risk-low)' }
+    if (score >= 16) return { label: 'Partly controlled', color: 'var(--risk-mod)' }
+    return { label: 'Uncontrolled', color: 'var(--risk-high)' }
+  },
+  keywords: 'act asthma control test respiratory',
+}
+
+export const cat = {
+  id: 'cat',
+  title: 'CAT — COPD Assessment Test',
+  description: 'COPD impact assessment (8 questions, 0–5 each)',
+  questions: [
+    { key: 'q1', text: 'I never cough' },
+    { key: 'q2', text: 'I have no phlegm (mucus) in my chest at all' },
+    { key: 'q3', text: 'My chest does not feel tight at all' },
+    { key: 'q4', text: 'When I walk up a hill or one flight of stairs I am not breathless' },
+    { key: 'q5', text: 'I am not limited doing any activities at home' },
+    { key: 'q6', text: 'I am confident leaving home despite my lung condition' },
+    { key: 'q7', text: 'I sleep soundly' },
+    { key: 'q8', text: 'I have lots of energy' },
+  ],
+  maxScore: 40,
+  getCategory: (score) => {
+    if (score <= 10) return { label: 'Low impact', color: 'var(--risk-low)' }
+    if (score <= 20) return { label: 'Medium impact', color: 'var(--risk-mod)' }
+    if (score <= 30) return { label: 'High impact', color: 'var(--risk-high-mid)' }
+    return { label: 'Very high impact', color: 'var(--risk-high)' }
+  },
+  keywords: 'cat copd assessment test respiratory lung',
+}
+
+export const aria = {
+  id: 'aria',
+  title: 'ARIA — Allergic Rhinitis Classification',
+  description: 'Allergic Rhinitis and its Impact on Asthma — classify severity by duration and symptom impact',
+  severityItems: [
+    { key: 'sleep', label: 'Sleep disturbance' },
+    { key: 'daily', label: 'Impairment of daily activities, sport, leisure' },
+    { key: 'work', label: 'Impairment of work or school' },
+    { key: 'symptoms', label: 'Troublesome symptoms' },
+  ],
+  getCategory: (duration, severityCount) => {
+    const sev = severityCount > 0 ? 'Moderate–Severe' : 'Mild'
+    const dur = duration === 'persistent' ? 'Persistent' : 'Intermittent'
+    const color = severityCount > 0 ? 'var(--risk-mod)' : 'var(--risk-low)'
+    return { label: `${sev} ${dur}`, color }
+  },
+  keywords: 'aria allergic rhinitis classification hayfever',
+}
+
+export const stopbang = {
+  id: 'stopbang',
+  title: 'STOP-BANG — OSA Screening',
+  description: 'Obstructive sleep apnoea risk assessment (8 items)',
+  items: [
+    { key: 'snore', question: 'Do you snore loudly (louder than talking or through closed doors)?' },
+    { key: 'tired', question: 'Do you often feel tired, fatigued, or sleepy during daytime?' },
+    { key: 'observed', question: 'Has anyone observed you stop breathing while sleeping?' },
+    { key: 'pressure', question: 'Do you have or are you treated for high blood pressure?' },
+    { key: 'bmi', question: 'BMI > 35 kg/m²?' },
+    { key: 'age', question: 'Age > 50 years?' },
+    { key: 'neck', question: 'Neck circumference > 40 cm (16 inches)?' },
+    { key: 'gender', question: 'Male gender?' },
+  ],
+  calculate: (vals) => Object.values(vals).filter(v => v === '1').length,
+  getCategory: (score) => {
+    if (score <= 2) return { label: 'Low risk', color: 'var(--risk-low)' }
+    if (score <= 4) return { label: 'Intermediate risk', recommendation: 'Consider sleep study referral', color: 'var(--risk-mod)' }
+    return { label: 'High risk', recommendation: 'Strongly consider sleep study referral', color: 'var(--risk-high)' }
+  },
+  keywords: 'stopbang osa sleep apnoea obstructive screening',
+}
+
+export const epworth = {
+  id: 'epworth',
+  title: 'Epworth Sleepiness Scale',
+  description: 'Daytime sleepiness assessment (8 situations, 0–3 each)',
+  questions: [
+    'Sitting and reading',
+    'Watching TV',
+    'Sitting inactive in a public place (theatre, meeting)',
+    'As a passenger in a car for an hour without a break',
+    'Lying down to rest in the afternoon when circumstances permit',
+    'Sitting and talking to someone',
+    'Sitting quietly after a lunch without alcohol',
+    'In a car, while stopped for a few minutes in traffic',
+  ].map((text, i) => ({ key: `q${i+1}`, text })),
+  maxScore: 24,
+  getCategory: (score) => {
+    if (score <= 10) return { label: 'Normal', color: 'var(--risk-low)' }
+    if (score <= 12) return { label: 'Mild sleepiness', color: 'var(--risk-low-mid)' }
+    if (score <= 15) return { label: 'Moderate sleepiness', color: 'var(--risk-mod)' }
+    return { label: 'Severe sleepiness', color: 'var(--risk-high)' }
+  },
+  des: ['Would never doze', 'Slight chance of dozing', 'Moderate chance of dozing', 'High chance of dozing'],
+  keywords: 'epworth sleepiness scale ess daytime sleep',
 }

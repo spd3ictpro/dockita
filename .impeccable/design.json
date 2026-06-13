@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-12T19:04:00.000Z",
+  "title": "Design System: dockita",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Trust Blue", "canonical": "oklch(56% 0.18 275)", "tonalRamp": ["oklch(20% 0.18 275)", "oklch(30% 0.18 275)", "oklch(40% 0.18 275)", "oklch(50% 0.18 275)", "oklch(56% 0.18 275)", "oklch(65% 0.15 275)", "oklch(75% 0.10 275)", "oklch(90% 0.05 275)"] },
+      "bg": { "role": "neutral", "displayName": "Page Background", "canonical": "oklch(97% 0.005 260)", "tonalRamp": [] },
+      "surface": { "role": "neutral", "displayName": "Surface", "canonical": "oklch(100% 0 0)", "tonalRamp": [] },
+      "text": { "role": "neutral", "displayName": "Body Text", "canonical": "oklch(25% 0.02 260)", "tonalRamp": [] },
+      "border": { "role": "neutral", "displayName": "Border", "canonical": "oklch(92% 0.01 260)", "tonalRamp": [] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Page-level headings — 'dockita' on the home page only" },
+      "headline": { "displayName": "Headline", "purpose": "Section headings — 'Screening Guidelines', 'Calculators'" },
+      "title": { "displayName": "Title", "purpose": "Card titles — each tool or widget's heading" },
+      "body": { "displayName": "Body", "purpose": "Paragraphs, descriptions, instructions. The primary reading size." },
+      "label": { "displayName": "Label", "purpose": "Input labels, table headers, score category labels, metadata" },
+      "mono": { "displayName": "Mono", "purpose": "Calculator displays, numeric readouts" }
+    },
+    "shadows": [
+      { "name": "rest", "value": "0 1px 3px rgba(0,0,0,0.08)", "purpose": "Minimal separation on cards at rest" },
+      { "name": "hover", "value": "0 4px 12px rgba(0,0,0,0.1)", "purpose": "Hover state for clickable cards" },
+      { "name": "search-dropdown", "value": "0 4px 12px rgba(0,0,0,0.1)", "purpose": "Search results dropdown" }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "0.2s ease", "purpose": "Default easing for all state transitions" }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px" },
+      { "name": "sm", "value": "480px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary action button — Calculate, Calculate Risk, etc.",
+      "html": "<button class=\"ds-btn-primary\">Calculate</button>",
+      "css": ".ds-btn-primary { background: #4f6ef7; color: #fff; padding: 8px 18px; border: none; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s ease; } .ds-btn-primary:hover { background: #3b5bdb; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Secondary action — Clear, Cancel",
+      "html": "<button class=\"ds-btn-secondary\">Clear</button>",
+      "css": ".ds-btn-secondary { background: #e2e8f0; color: #1e293b; padding: 8px 18px; border: none; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s ease; } .ds-btn-secondary:hover { background: #cbd5e1; }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Text/number input field for calculators and forms",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Weight (kg)\" />",
+      "css": ".ds-input { background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; color: #1e293b; outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease; width: 100%; } .ds-input:focus { border-color: #4f6ef7; box-shadow: 0 0 0 3px rgba(79,110,247,0.15); }"
+    },
+    {
+      "name": "Select Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Dropdown select for clinical options (gender, risk factors)",
+      "html": "<select class=\"ds-select\"><option>Male</option><option>Female</option></select>",
+      "css": ".ds-select { background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; color: #1e293b; outline: none; transition: border-color 0.2s ease; width: 100%; } .ds-select:focus { border-color: #4f6ef7; box-shadow: 0 0 0 3px rgba(79,110,247,0.15); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Generic container card used across all pages",
+      "html": "<div class=\"ds-card\"><h3 style=\"font-size:1rem;margin-bottom:2px\">Card Title</h3><p style=\"font-size:0.85rem;color:#64748b\">Card description or content here.</p></div>",
+      "css": ".ds-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: box-shadow 0.2s ease; } .ds-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }"
+    },
+    {
+      "name": "Sidebar Link",
+      "kind": "nav",
+      "refersTo": "sidebar-link",
+      "description": "Navigation link in the sidebar",
+      "html": "<a class=\"ds-sidebar-link\" href=\"#\"><span style=\"font-size:1.15rem;width:24px;text-align:center\">📋</span><span>Screening</span></a>",
+      "css": ".ds-sidebar-link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; color: #475569; font-size: 0.9rem; font-weight: 500; text-decoration: none; transition: all 0.2s ease; white-space: nowrap; } .ds-sidebar-link:hover { background: #f1f5f9; color: #1e293b; }"
+    },
+    {
+      "name": "Result Card (Low Risk)",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Score/calculation result — low risk or normal category",
+      "html": "<div class=\"ds-result-low\">BMI: 21.5 — <strong>Normal</strong></div>",
+      "css": ".ds-result-low { padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; background: #d3f9d8; color: #1e293b; line-height: 1.5; margin-top: 8px; }"
+    },
+    {
+      "name": "Result Card (High Risk)",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Score/calculation result — high risk or severe category",
+      "html": "<div class=\"ds-result-high\">Score: 25 — <strong>Severe</strong></div>",
+      "css": ".ds-result-high { padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; background: #ffa8a8; color: #1e293b; line-height: 1.5; margin-top: 8px; }"
+    },
+    {
+      "name": "Question Option Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Numeric option button in questionnaires (IPSS, GAD-7, PHQ-9)",
+      "html": "<button class=\"ds-q-opt\">2</button>",
+      "css": ".ds-q-opt { width: 36px; height: 36px; border: 1px solid #d1d5db; border-radius: 6px; background: #ffffff; color: #1e293b; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: all 0.2s ease; } .ds-q-opt:hover { border-color: #4f6ef7; } .ds-q-opt.selected { background: #4f6ef7; color: #fff; border-color: #4f6ef7; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Morning Round Companion",
+    "overview": "dockita is the tool a medical officer reaches for in the quiet moments between patients — quick, clear, and clinically precise. Like a trusted senior colleague's summary card, it presents what matters and nothing else. The interface is calm by design: restrained color, clean typography, flat surfaces with gentle borders. No decorative flourish survives unless it serves the clinical task. The system explicitly rejects two anti-patterns: the cluttered, beige-and-blue aesthetic of legacy hospital EMRs, and the overly casual, gamified feel of consumer health apps.",
+    "keyCharacteristics": [
+      "Flat surfaces with border-defined hierarchy; shadows appear only on hover and focus",
+      "Single accent color (Trust Blue) used sparingly, never on more than ~10% of any screen",
+      "System-native sans-serif typeface for maximum rendering reliability across clinical environments",
+      "Risk and measurement colors follow traffic-light semantics (green → yellow → orange → red)",
+      "Responsive: reflows from sidebar-and-main on desktop to stacked layout on mobile"
+    ],
+    "rules": [
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. Shadows appear only as a response to interaction (hover, focus).", "section": "elevation" },
+      { "name": "The One Accent Rule", "body": "Trust Blue is the sole accent color, used on ≤10% of any given screen. Its rarity is the point.", "section": "colors" },
+      { "name": "The No-Line Rule (for risk colors)", "body": "Risk result cards use their background color as the full fill — no border, no outline. The color IS the signal.", "section": "components" }
+    ],
+    "dos": [
+      "Do use Trust Blue sparingly — accent on ≤10% of any screen. Its rarity is what makes it effective.",
+      "Do use the traffic-light risk colors (green → yellow → orange → red) consistently for all clinical scores and measurements.",
+      "Do prefer flat surfaces with border-defined hierarchy over shadows and layers.",
+      "Do keep card titles short and descriptive — clinicians scan, not read.",
+      "Do use system fonts for maximum rendering reliability across devices."
+    ],
+    "donts": [
+      "Don't use decorative illustrations, gradients, or glassmorphism — they undermine clinical credibility.",
+      "Don't wrap content in nested cards; cards are single-layer containers.",
+      "Don't animate layout properties (width, height, margin, padding) — use transform and opacity instead.",
+      "Don't use bounce or elastic easing — all transitions use 0.2s ease.",
+      "Don't use gray text on colored backgrounds — use a darker shade of the background's own hue.",
+      "Don't add custom typefaces that delay rendering or mismatch across operating systems.",
+      "Don't replicate the beige-and-blue, cluttered aesthetic of legacy hospital EMRs.",
+      "Don't use consumer health app patterns — no gamification, no casual illustrations, no bright multi-color palettes."
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ScaleIcon, KidneyIcon, CalendarIcon, CalendarDaysIcon, CalculatorIcon } from '../components/icons'
 
 function BMICalculator() {
   const [weight, setWeight] = useState('')
@@ -23,7 +24,7 @@ function BMICalculator() {
 
   return (
     <div className="calc-card">
-      <h3>🧮 BMI Calculator</h3>
+      <div className="calc-heading"><ScaleIcon size={20} className="calc-heading-icon" /><h3>BMI Calculator</h3></div>
       <p className="calc-desc">Body Mass Index — Malaysian CPG Obesity 2023</p>
       <div className="calc-inputs">
         <input type="number" step="0.1" placeholder="Weight (kg)" value={weight} onChange={e => setWeight(e.target.value)} />
@@ -74,7 +75,7 @@ function EGFRCalculator() {
 
   return (
     <div className="calc-card">
-      <h3>🩺 eGFR Calculator</h3>
+      <div className="calc-heading"><KidneyIcon size={20} className="calc-heading-icon" /><h3>eGFR Calculator</h3></div>
       <p className="calc-desc">CKD-EPI (non-black) — µmol/L</p>
       <div className="calc-inputs">
         <input type="number" step="0.1" placeholder="Creatinine (µmol/L)" value={creatinine} onChange={e => setCreatinine(e.target.value)} />
@@ -109,7 +110,7 @@ function AgeCalculator() {
 
   return (
     <div className="calc-card">
-      <h3>🎂 Age Calculator</h3>
+      <div className="calc-heading"><CalendarIcon size={20} className="calc-heading-icon" /><h3>Age Calculator</h3></div>
       <div className="calc-inputs">
         <input type="number" placeholder="Year of Birth" value={year} onChange={e => setYear(e.target.value)} />
       </div>
@@ -141,7 +142,7 @@ function EDDCalculator() {
 
   return (
     <div className="calc-card">
-      <h3>🤰 EDD Calculator</h3>
+      <div className="calc-heading"><CalendarDaysIcon size={20} className="calc-heading-icon" /><h3>EDD Calculator</h3></div>
       <p className="calc-desc">Naegele's Rule — from LMP</p>
       <div className="calc-inputs">
         <input type="date" value={lmp} onChange={e => setLmp(e.target.value)} />
@@ -219,7 +220,7 @@ function BasicCalc() {
 
   return (
     <div className="calc-card basic-calc-card">
-      <h3>🔢 Basic Calculator</h3>
+      <div className="calc-heading"><CalculatorIcon size={20} className="calc-heading-icon" /><h3>Basic Calculator</h3></div>
       <div className="basic-calc-display">{display}</div>
       <div className="basic-calc-buttons">
         {buttons.flat().map((b, i) => (
@@ -243,7 +244,7 @@ function BasicCalc() {
 export default function Calculators() {
   return (
     <div className="page">
-      <h1>🧮 Calculators</h1>
+      <h1><CalculatorIcon size={28} className="page-heading-icon" /> Calculators</h1>
       <p className="page-subtitle">Clinical calculators and tools</p>
       <div className="calculators-grid">
         <BMICalculator />

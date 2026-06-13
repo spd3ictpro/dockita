@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { searchIndex } from '../data/searchIndex'
+import { SearchIcon, ClearIcon } from './icons'
 
 export default function SearchBar() {
   const [query, setQuery] = useState('')
@@ -50,7 +51,7 @@ export default function SearchBar() {
   return (
     <div className="search-bar-container">
       <div className="search-bar">
-        <span className="search-icon">🔍</span>
+        <SearchIcon size={20} className="search-icon" />
         <input
           ref={inputRef}
           type="text"
@@ -77,7 +78,7 @@ export default function SearchBar() {
         />
         {query && (
           <button className="search-clear" onClick={() => { setQuery(''); setResults([]); inputRef.current?.focus() }}>
-            ✕
+            <ClearIcon size={16} />
           </button>
         )}
       </div>
