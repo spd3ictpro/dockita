@@ -7,6 +7,9 @@ import Calculators from './pages/Calculators'
 import Scores from './pages/Scores'
 import Geriatric from './pages/Geriatric'
 import PatientInfo from './pages/PatientInfo'
+import Diabetes from './pages/Diabetes'
+import Hypertension from './pages/Hypertension'
+import Dyslipidemia from './pages/Dyslipidemia'
 
 function App() {
   useEffect(() => {
@@ -23,6 +26,9 @@ function App() {
         <Route path="/scores" element={<Scores />} />
         <Route path="/geriatric" element={<Geriatric />} />
         <Route path="/patient-info" element={<PatientInfo />} />
+        <Route path="/diabetes" element={<Diabetes />} />
+        <Route path="/hypertension" element={<Hypertension />} />
+        <Route path="/dyslipidemia" element={<Dyslipidemia />} />
       </Route>
     </Routes>
   )

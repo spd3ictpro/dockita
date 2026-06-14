@@ -344,6 +344,105 @@ export const cvRiskHtn = {
   id: 'cv-risk-htn',
   title: 'CV Risk for HTN Medication Initiation',
   description: 'Malaysia CPG Hypertension (5th Ed) — Assess CV risk to determine threshold for starting antihypertensive medication',
+  inputs: [
+    { key: 'gender', label: 'Gender', type: 'select', options: [
+      { value: 'male', label: 'Male' },
+      { value: 'female', label: 'Female' },
+    ]},
+    { key: 'age', label: 'Age (years)', type: 'number', min: 18, max: 120 },
+    { key: 'sbp', label: 'Systolic BP (mmHg)', type: 'number', min: 80, max: 280 },
+    { key: 'dbp', label: 'Diastolic BP (mmHg)', type: 'number', min: 40, max: 180 },
+    { key: 'smoking', label: 'Smoking Status', type: 'select', options: [
+      { value: '0', label: 'Non-Smoker' },
+      { value: '1', label: 'Current Smoker' },
+    ]},
+    { key: 'diabetes', label: 'Diabetes', type: 'select', options: [
+      { value: '0', label: 'No' },
+      { value: '1', label: 'Yes' },
+    ]},
+    { key: 'family_hx', label: 'Family History of Premature CVD', type: 'select', options: [
+      { value: '0', label: 'No' },
+      { value: '1', label: 'Yes (male &lt;55 / female &lt;65)' },
+    ]},
+    { key: 'obesity', label: 'Obesity (BMI ≥30 or abdominal obesity)', type: 'select', options: [
+      { value: '0', label: 'No' },
+      { value: '1', label: 'Yes' },
+    ]},
+    { key: 'dyslipidemia', label: 'Dyslipidemia (TC >6.2 / LDL >4.1 / HDL <1.0)', type: 'select', options: [
+      { value: '0', label: 'No' },
+      { value: '1', label: 'Yes' },
+    ]},
+  ],
+  calculate: (values) => {
+    const gender = values.gender
+    const age = Number(values.age)
+    const sbp = Number(values.sbp)
+    const dbp = Number(values.dbp)
+    const smoking = values.smoking === '1'
+    const diabetes = values.diabetes === '1'
+    const familyHx = values.family_hx === '1'
+    const obesity = values.obesity === '1'
+    const dyslipidemia = values.dyslipidemia === '1'
+
+    if (isNaN(age) || isNaN(sbp) || isNaN(dbp)) return null
+
+    let riskCount = 0
+    if ((gender === 'male' && age >= 55) || (gender === 'female' && age >= 65)) riskCount++
+    if (smoking) riskCount++
+    if (diabetes) riskCount++
+    if (familyHx) riskCount++
+    if (obesity) riskCount++
+    if (dyslipidemia) riskCount++
+
+    let riskCategory
+    if (riskCount >= 3 || diabetes) {
+      riskCategory = 'High'
+    } else if (riskCount >= 1) {
+      riskCategory = 'Moderate'
+    } else {
+      riskCategory = 'Low'
+    }
+
+    let bpGrade
+    if (sbp < 120 && dbp < 80) bpGrade = 'Optimal'
+    else if (sbp < 130 && dbp < 85) bpGrade = 'Normal'
+    else if (sbp < 140 && dbp < 90) bpGrade = 'High Normal'
+    else if (sbp < 160 && dbp < 100) bpGrade = 'Grade 1'
+    else bpGrade = 'Grade 2'
+
+    let recommendation
+    if (bpGrade === 'Optimal' || bpGrade === 'Normal') {
+      recommendation = 'Reassess in 1–3 years. Maintain lifestyle measures.'
+    } else if (bpGrade === 'High Normal') {
+      if (riskCategory === 'High') {
+        recommendation = 'Lifestyle modification + consider pharmacological therapy.'
+      } else {
+        recommendation = 'Lifestyle modification. Reassess in 6–12 months.'
+      }
+    } else if (bpGrade === 'Grade 1') {
+      if (riskCategory === 'Low') {
+        recommendation = 'Lifestyle modification for 3–6 months. Consider medication if BP remains ≥140/90.'
+      } else {
+        recommendation = 'Lifestyle modification + pharmacological therapy. Target BP &lt;140/90.'
+      }
+    } else {
+      recommendation = 'Lifestyle modification + pharmacological therapy. Consider combination therapy. Target BP &lt;140/90.'
+    }
+
+    return {
+      riskCategory,
+      riskCount,
+      bpGrade,
+      sbp,
+      dbp,
+      recommendation,
+    }
+  },
+  getCategory: (result) => {
+    if (result.riskCategory === 'High') return { label: 'High CV Risk', color: 'var(--risk-high)' }
+    if (result.riskCategory === 'Moderate') return { label: 'Moderate CV Risk', color: 'var(--risk-mod)' }
+    return { label: 'Low CV Risk', color: 'var(--risk-low)' }
+  },
   keywords: 'hypertension cpg malaysia cardiovascular risk medication initiation blood pressure',
 }
 

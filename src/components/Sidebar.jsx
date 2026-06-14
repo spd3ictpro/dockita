@@ -1,10 +1,13 @@
 import { NavLink } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
-import { HomeIcon, ScreeningIcon, CalculatorIcon, ScoresIcon, GeriatricIcon, PatientInfoIcon, Logo, ChevronLeft, ChevronRight } from './icons'
+import { HomeIcon, ScreeningIcon, CalculatorIcon, ScoresIcon, GeriatricIcon, PatientInfoIcon, DropletIcon, HeartIcon, ChartBarIcon, Logo, ChevronLeft, ChevronRight } from './icons'
 
 const links = [
   { to: '/', icon: HomeIcon, label: 'Home' },
   { to: '/screening', icon: ScreeningIcon, label: 'Screening' },
+  { to: '/diabetes', icon: DropletIcon, label: 'Diabetes' },
+  { to: '/hypertension', icon: HeartIcon, label: 'Hypertension' },
+  { to: '/dyslipidemia', icon: ChartBarIcon, label: 'Dyslipidemia' },
   { to: '/calculators', icon: CalculatorIcon, label: 'Calculators' },
   { to: '/scores', icon: ScoresIcon, label: 'Scores' },
   { to: '/geriatric', icon: GeriatricIcon, label: 'Geriatric' },

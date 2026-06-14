@@ -8,6 +8,10 @@ export const searchIndex = [
   { path: '/screening', label: 'Screening Home', keywords: 'screening guidelines cpg' },
   ...screeningCategories.map(s => ({ path: '/screening', label: s.title, keywords: s.keywords })),
 
+  { path: '/diabetes', label: 'Diabetes Mellitus', keywords: 'diabetes diabetic dm sugar hba1c glucose screening diagnostic criteria glycemic targets' },
+  { path: '/hypertension', label: 'Hypertension', keywords: 'hypertension high blood pressure htn bp cardiovascular risk classification medication initiation' },
+  { path: '/dyslipidemia', label: 'Dyslipidaemia', keywords: 'lipid cholesterol dyslipidaemia dyslipidemia hdl ldl tg screening classification treatment targets' },
+
   { path: '/calculators', label: 'Calculators Home', keywords: 'calculators calculation tools' },
   { path: '/calculators', label: 'BMI Calculator', keywords: 'bmi body mass index obesity weight height calculator' },
   { path: '/calculators', label: 'eGFR Calculator', keywords: 'egfr ckd epi kidney creatinine renal function calculator' },

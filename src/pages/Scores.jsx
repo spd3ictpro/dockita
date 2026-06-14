@@ -1,51 +1,6 @@
 import { useState } from 'react'
-import { framingham, ipss, gad7, phq9, curb65, cvRiskHtn, act, cat, aria, stopbang, epworth } from '../data/scoresData'
+import { ipss, gad7, phq9, curb65, act, cat, aria, stopbang, epworth } from '../data/scoresData'
 import { HeartIcon, ClipboardIcon, SmileIcon, FrownIcon, ChartBarIcon, DropletIcon, ScoresIcon, LungsIcon, AsthmaIcon, MoonIcon } from '../components/icons'
-
-function FraminghamWidget() {
-  const [vals, setVals] = useState({ gender: 'male', age: '', cholesterol: '', hdl: '', sbp: '', treated: '0', smoker: '0', diabetes: '0' })
-  const [result, setResult] = useState(null)
-
-  const set = (k) => (e) => setVals(v => ({ ...v, [k]: e.target.value }))
-  const calc = () => {
-    const r = framingham.calculate(vals)
-    if (!r) { setResult({ error: 'Please fill in all fields with valid values.' }); return }
-    const interpretation = framingham.interpret(r.risk)
-    setResult({ points: r.points, risk: r.risk, ...interpretation })
-  }
-  const clear = () => { setVals({ gender: 'male', age: '', cholesterol: '', hdl: '', sbp: '', treated: '0', smoker: '0', diabetes: '0' }); setResult(null) }
-
-  return (
-    <div className="score-widget">
-      <h3><HeartIcon size={20} className="widget-heading-icon" /> {framingham.title}</h3>
-      <p className="widget-desc">{framingham.description}</p>
-      <div className="score-inputs">
-        {framingham.inputs.map(inp => (
-          inp.type === 'select' ? (
-            <select key={inp.key} value={vals[inp.key]} onChange={set(inp.key)}>
-              {inp.options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-            </select>
-          ) : (
-            <input key={inp.key} type="number" placeholder={inp.label} value={vals[inp.key]} onChange={set(inp.key)} min={inp.min} max={inp.max} step={inp.step || 1} />
-          )
-        ))}
-      </div>
-      <div className="calc-actions">
-        <button className="btn btn-primary" onClick={calc}>Calculate Risk</button>
-        <button className="btn btn-secondary" onClick={clear}>Clear</button>
-      </div>
-      {result && (
-        result.error ? <div className="calc-result">{result.error}</div> : (
-          <div className="calc-result" style={{ backgroundColor: result.color }}>
-            10-Year Risk: <strong>{result.risk}%</strong> ({result.category})
-            {result.points !== undefined && <div className="widget-sub">Points: {result.points}</div>}
-          </div>
-        )
-      )}
-      <p className="widget-note">{framingham.note}</p>
-    </div>
-  )
-}
 
 function QuestionnaireWidget({ score }) {
   const [answers, setAnswers] = useState({})
@@ -137,6 +92,7 @@ function IpssWidget() {
   const [qol, setQol] = useState(null)
   const [result, setResult] = useState(null)
 
+  const ipssLabels = ['Not at all', 'Less than one time in five', 'Less than half the time', 'About half the time', 'More than half the time', 'Almost always']
   const setAns = (key) => (e) => setAnswers(a => ({ ...a, [key]: Number(e.target.value) }))
   const calc = () => {
     const total = ipss.questions.reduce((sum, q) => sum + (answers[q.key] || 0), 0)
@@ -150,6 +106,9 @@ function IpssWidget() {
     <div className="score-widget">
       <h3><ClipboardIcon size={20} className="widget-heading-icon" /> {ipss.title}</h3>
       <p className="widget-desc">{ipss.description}</p>
+      <p className="widget-note" style={{ marginBottom: '12px' }}>
+        <strong>Scale:</strong> {ipssLabels.map((l, i) => `${i} = ${l}`).join(' · ')}
+      </p>
       <div className="questionnaire">
         {ipss.questions.map(q => (
           <div key={q.key} className="question-row">
@@ -160,7 +119,7 @@ function IpssWidget() {
                   key={v}
                   className={`q-opt ${answers[q.key] === v ? 'selected' : ''}`}
                   onClick={() => setAns(q.key)({ target: { value: v } })}
-                  title={`${v} — ${v === 0 ? 'Not at all' : v === 5 ? 'Almost always' : ''}`}
+                  title={`${v} — ${ipssLabels[v]}`}
                 >
                   {v}
                 </button>
@@ -168,6 +127,10 @@ function IpssWidget() {
             </div>
           </div>
         ))}
+        <div className="questionnaire-divider" />
+        <p className="widget-note" style={{ marginBottom: '12px' }}>
+          <strong>QoL Scale:</strong> {ipss.qol.options.map(o => `${o.value} = ${o.label}`).join(' · ')}
+        </p>
         <div className="question-row">
           <label>{ipss.qol.text}</label>
           <div className="question-options">
@@ -198,16 +161,6 @@ function IpssWidget() {
           )}
         </div>
       )}
-    </div>
-  )
-}
-
-function CvRiskHtnWidget() {
-  return (
-    <div className="score-widget">
-      <h3>{cvRiskHtn.title}</h3>
-      <p className="widget-desc">{cvRiskHtn.description}</p>
-      <div className="widget-placeholder">Coming soon</div>
     </div>
   )
 }
@@ -439,8 +392,6 @@ function EpworthWidget() {
 }
 
 const scoreTools = [
-  { component: FraminghamWidget, key: 'framingham' },
-  { component: CvRiskHtnWidget, key: 'cv-risk-htn' },
   { component: () => <ScoreWidget score={curb65} />, key: 'curb65' },
   { component: IpssWidget, key: 'ipss' },
   { component: () => <div className="section-label">Respiratory</div>, key: 'resp-label', fullRow: true },
