@@ -42,7 +42,7 @@ function QuestionnaireWidget({ score }) {
         <button className="btn btn-secondary" onClick={clear}>Clear</button>
       </div>
       {result && (
-        <div className="calc-result" style={{ backgroundColor: result.color }}>
+        <div className="calc-result" style={{ '--result-color': result.color }}>
           Score: <strong>{result.total}/{score.maxScore || score.questions.length * 3}</strong> — {result.label}
         </div>
       )}
@@ -78,7 +78,7 @@ function ScoreWidget({ score }) {
         <button className="btn btn-secondary" onClick={clear}>Clear</button>
       </div>
       {result && (
-        <div className="calc-result" style={{ backgroundColor: result.color }}>
+        <div className="calc-result" style={{ '--result-color': result.color }}>
           Score: <strong>{result.total}</strong> — {result.label}
           {result.recommendation && <div className="widget-sub">{result.recommendation}</div>}
         </div>
@@ -106,9 +106,14 @@ function IpssWidget() {
     <div className="score-widget">
       <h3><ClipboardIcon size={20} className="widget-heading-icon" /> {ipss.title}</h3>
       <p className="widget-desc">{ipss.description}</p>
-      <p className="widget-note" style={{ marginBottom: '12px' }}>
-        <strong>Scale:</strong> {ipssLabels.map((l, i) => `${i} = ${l}`).join(' · ')}
-      </p>
+      <div className="ipss-scale-grid">
+        <strong>Scale</strong>
+        {ipssLabels.map((l, i) => (
+          <span key={i} className="ipss-scale-item">
+            <span className="ipss-scale-value">{i}</span> {l}
+          </span>
+        ))}
+      </div>
       <div className="questionnaire">
         {ipss.questions.map(q => (
           <div key={q.key} className="question-row">
@@ -128,9 +133,14 @@ function IpssWidget() {
           </div>
         ))}
         <div className="questionnaire-divider" />
-        <p className="widget-note" style={{ marginBottom: '12px' }}>
-          <strong>QoL Scale:</strong> {ipss.qol.options.map(o => `${o.value} = ${o.label}`).join(' · ')}
-        </p>
+        <div className="ipss-scale-grid">
+          <strong>QoL Scale</strong>
+          {ipss.qol.options.map(o => (
+            <span key={o.value} className="ipss-scale-item">
+              <span className="ipss-scale-value">{o.value}</span> {o.label}
+            </span>
+          ))}
+        </div>
         <div className="question-row">
           <label>{ipss.qol.text}</label>
           <div className="question-options">
@@ -152,10 +162,10 @@ function IpssWidget() {
         <button className="btn btn-secondary" onClick={clear}>Clear</button>
       </div>
       {result && (
-        <div className="calc-result" style={{ backgroundColor: result.color }}>
+        <div className="calc-result" style={{ '--result-color': result.color }}>
           Score: <strong>{result.total}/{ipss.maxScore}</strong> — {result.label}
           {result.qol !== null && (
-            <div className="widget-sub" style={{ backgroundColor: result.qolCat.color }}>
+            <div className="widget-sub" style={{ '--result-color': result.qolCat.color }}>
               QoL: <strong>{result.qol}/6</strong> — {result.qolCat.label}
             </div>
           )}
@@ -205,7 +215,7 @@ function ActWidget() {
         <button className="btn btn-secondary" onClick={clear}>Clear</button>
       </div>
       {result && (
-        <div className="calc-result" style={{ backgroundColor: result.color }}>
+        <div className="calc-result" style={{ '--result-color': result.color }}>
           Score: <strong>{result.total}/{act.maxScore}</strong> — {result.label}
         </div>
       )}
@@ -253,7 +263,7 @@ function CatWidget() {
         <button className="btn btn-secondary" onClick={clear}>Clear</button>
       </div>
       {result && (
-        <div className="calc-result" style={{ backgroundColor: result.color }}>
+        <div className="calc-result" style={{ '--result-color': result.color }}>
           Score: <strong>{result.total}/{cat.maxScore}</strong> — {result.label}
         </div>
       )}
@@ -295,7 +305,7 @@ function AriaWidget() {
           ))}
         </div>
       </div>
-      <div className="calc-result" style={{ backgroundColor: result.color }}>
+      <div className="calc-result" style={{ '--result-color': result.color }}>
         Classification: <strong>{result.label}</strong>
       </div>
     </div>
@@ -334,7 +344,7 @@ function StopbangWidget() {
         <button className="btn btn-secondary" onClick={clear}>Clear</button>
       </div>
       {result && (
-        <div className="calc-result" style={{ backgroundColor: result.color }}>
+        <div className="calc-result" style={{ '--result-color': result.color }}>
           Score: <strong>{result.total}/8</strong> — {result.label}
           {result.recommendation && <div className="widget-sub">{result.recommendation}</div>}
         </div>
@@ -383,7 +393,7 @@ function EpworthWidget() {
         <button className="btn btn-secondary" onClick={clear}>Clear</button>
       </div>
       {result && (
-        <div className="calc-result" style={{ backgroundColor: result.color }}>
+        <div className="calc-result" style={{ '--result-color': result.color }}>
           Score: <strong>{result.total}/{epworth.maxScore}</strong> — {result.label}
         </div>
       )}

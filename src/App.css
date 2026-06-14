@@ -239,6 +239,9 @@ input, select, button { font-family: inherit; font-size: inherit; }
 .sidebar-footer {
   padding: 12px;
   border-top: 1px solid var(--sidebar-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .sidebar-disclaimer {
@@ -257,7 +260,10 @@ input, select, button { font-family: inherit; font-size: inherit; }
   padding: 16px 8px 8px;
 }
 
-.collapsed .sidebar-footer { display: none; }
+.collapsed .sidebar-footer {
+  padding: 8px;
+  align-items: center;
+}
 
 .collapsed .sidebar-nav { padding: 8px 4px; }
 
@@ -274,6 +280,7 @@ input, select, button { font-family: inherit; font-size: inherit; }
   border-radius: var(--radius);
   transition: background var(--transition);
   position: relative;
+  color: var(--text);
 }
 
 .theme-toggle:hover { background: var(--sidebar-hover); }
@@ -801,6 +808,15 @@ input, select, button { font-family: inherit; font-size: inherit; }
   line-height: 1.5;
 }
 
+.calc-source {
+  margin-top: 16px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-style: italic;
+  border-top: 1px solid var(--card-border);
+  padding-top: 10px;
+}
+
 .calc-inputs {
   display: flex;
   gap: 8px;
@@ -864,6 +880,16 @@ input, select, button { font-family: inherit; font-size: inherit; }
   font-size: 0.9rem;
   line-height: 1.5;
   margin-top: 8px;
+  border-left: 4px solid var(--result-color);
+}
+[data-theme='light'] .calc-result {
+  background: var(--result-color);
+  border-left-color: transparent;
+}
+[data-theme='dark'] .calc-result {
+  background: color-mix(in srgb, var(--result-color) 45%, var(--card-bg));
+  border: 1px solid var(--result-color);
+  border-left-width: 4px;
 }
 
 /* ===== Basic Calculator ===== */
@@ -978,7 +1004,16 @@ input, select, button { font-family: inherit; font-size: inherit; }
 .widget-sub {
   font-size: 0.8rem;
   opacity: 0.8;
-  margin-top: 4px;
+  margin-top: 6px;
+}
+[data-theme='light'] .widget-sub {
+  background: var(--result-color);
+}
+[data-theme='dark'] .widget-sub {
+  background: color-mix(in srgb, var(--result-color) 40%, var(--card-bg));
+  border-left: 3px solid var(--result-color);
+  padding-left: 8px;
+  opacity: 1;
 }
 
 .score-inputs {
@@ -1073,6 +1108,32 @@ input, select, button { font-family: inherit; font-size: inherit; }
   background: var(--card-border);
   margin: 16px 0;
 }
+
+.ipss-scale-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 20px;
+  margin-bottom: 12px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.ipss-scale-grid strong {
+  grid-column: 1 / -1;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.ipss-scale-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ipss-scale-value {
+  font-weight: 700;
+  font-family: SFMono-Regular, Consolas, monospace;
+  min-width: 14px;
+  color: var(--text);
+}
+
 
 .widget-placeholder {
   text-align: center;

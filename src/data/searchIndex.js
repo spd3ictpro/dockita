@@ -15,6 +15,7 @@ export const searchIndex = [
   { path: '/calculators', label: 'Calculators Home', keywords: 'calculators calculation tools' },
   { path: '/calculators', label: 'BMI Calculator', keywords: 'bmi body mass index obesity weight height calculator' },
   { path: '/calculators', label: 'eGFR Calculator', keywords: 'egfr ckd epi kidney creatinine renal function calculator' },
+  { path: '/calculators', label: 'FIB-4 Index', keywords: 'fib4 fibrosis liver ast alt platelets calculator nafl nafld diabetes' },
   { path: '/calculators', label: 'Age Calculator', keywords: 'age calculator year birth' },
   { path: '/calculators', label: 'EDD Calculator', keywords: 'edd expected delivery date naegele pregnancy calculator' },
   { path: '/calculators', label: 'Basic Calculator', keywords: 'basic calculator arithmetic add subtract multiply divide' },

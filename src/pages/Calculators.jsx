@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ScaleIcon, KidneyIcon, CalendarIcon, CalendarDaysIcon, CalculatorIcon } from '../components/icons'
+import { ScaleIcon, KidneyIcon, LiverIcon, CalendarIcon, CalendarDaysIcon, CalculatorIcon } from '../components/icons'
 
 function BMICalculator() {
   const [weight, setWeight] = useState('')
@@ -35,7 +35,7 @@ function BMICalculator() {
         <button className="btn btn-secondary" onClick={clear}>Clear</button>
       </div>
       {result && (
-        <div className="calc-result" style={{ backgroundColor: result.color }}>
+        <div className="calc-result" style={{ '--result-color': result.color }}>
           BMI: {result.bmi} — <strong>{result.cls}</strong>
         </div>
       )}
@@ -90,10 +90,62 @@ function EGFRCalculator() {
         <button className="btn btn-secondary" onClick={clear}>Clear</button>
       </div>
       {result && (
-        <div className="calc-result" style={{ backgroundColor: result.color, color: result.textColor }}>
+        <div className="calc-result" style={{ '--result-color': result.color, color: result.textColor }}>
           eGFR: {result.egfr} mL/min/1.73m² — <strong>{result.stage}</strong>
         </div>
       )}
+    </div>
+  )
+}
+
+function Fib4Calculator() {
+  const [age, setAge] = useState('')
+  const [ast, setAst] = useState('')
+  const [alt, setAlt] = useState('')
+  const [platelets, setPlatelets] = useState('')
+  const [result, setResult] = useState(null)
+
+  const calc = () => {
+    const a = parseInt(age), astVal = parseFloat(ast), altVal = parseFloat(alt), plt = parseFloat(platelets)
+    if (!a || !astVal || !altVal || !plt || altVal <= 0 || plt <= 0) { setResult(null); return }
+    const score = (a * astVal) / (plt * Math.sqrt(altVal))
+    const rounded = score.toFixed(2)
+    let label, color, action
+    if (score < 1.3) {
+      label = 'Low risk for advanced fibrosis'
+      color = 'var(--risk-low)'
+      action = 'Repeat FIB-4 every 2\u20133 years'
+    } else {
+      label = 'Intermediate to high risk for advanced fibrosis'
+      color = 'var(--risk-mod)'
+      action = 'Refer for liver stiffness measurement. Consider referral to Gastroenterologist/Hepatologist.'
+    }
+    setResult({ score: rounded, label, color, action })
+  }
+
+  const clear = () => { setAge(''); setAst(''); setAlt(''); setPlatelets(''); setResult(null) }
+
+  return (
+    <div className="calc-card">
+      <div className="calc-heading"><LiverIcon size={20} className="calc-heading-icon" /><h3>FIB-4 Index</h3></div>
+      <p className="calc-desc">Fibrosis-4 score for liver fibrosis</p>
+      <div className="calc-inputs">
+        <input type="number" placeholder="Age (years)" value={age} onChange={e => setAge(e.target.value)} />
+        <input type="number" step="0.1" placeholder="AST (U/L)" value={ast} onChange={e => setAst(e.target.value)} />
+        <input type="number" step="0.1" placeholder="ALT (U/L)" value={alt} onChange={e => setAlt(e.target.value)} />
+        <input type="number" step="1" placeholder="Platelet count (\u00d710\u2079/L)" value={platelets} onChange={e => setPlatelets(e.target.value)} />
+      </div>
+      <div className="calc-actions">
+        <button className="btn btn-primary" onClick={calc}>Calculate FIB-4</button>
+        <button className="btn btn-secondary" onClick={clear}>Clear</button>
+      </div>
+      {result && (
+        <div className="calc-result" style={{ '--result-color': result.color }}>
+          FIB-4: <strong>{result.score}</strong> — {result.label}
+          <div className="widget-sub">{result.action}</div>
+        </div>
+      )}
+      <p className="calc-source">Adopted from CPG Management of Diabetes Mellitus (6th Edition) 2021</p>
     </div>
   )
 }
@@ -249,6 +301,7 @@ export default function Calculators() {
       <div className="calculators-grid">
         <BMICalculator />
         <EGFRCalculator />
+        <Fib4Calculator />
         <AgeCalculator />
         <EDDCalculator />
         <BasicCalc />

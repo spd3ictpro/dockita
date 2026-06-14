@@ -24,7 +24,6 @@ export default function Sidebar({ collapsed, onToggle }) {
           {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
         </button>
       </div>
-      <ThemeToggle />
       <nav className="sidebar-nav">
         {links.map(link => {
           const Icon = link.icon
@@ -37,6 +36,7 @@ export default function Sidebar({ collapsed, onToggle }) {
         })}
       </nav>
       <div className="sidebar-footer">
+        <ThemeToggle />
         {!collapsed && <span className="sidebar-disclaimer">For reference only. Use at your own risk.</span>}
       </div>
     </aside>

@@ -62,7 +62,7 @@ function FraminghamWidget() {
         </div>
         {result && (
           result.error ? <div className="calc-result">{result.error}</div> : (
-            <div className="calc-result" style={{ backgroundColor: result.color }}>
+            <div className="calc-result" style={{ '--result-color': result.color }}>
               10-Year Risk: <strong>{result.risk}%</strong> ({result.category})
               {result.points !== undefined && <div className="widget-sub">Points: {result.points}</div>}
             </div>
