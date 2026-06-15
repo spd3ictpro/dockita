@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { ipss, gad7, phq9, curb65, act, cat, aria, stopbang, epworth } from '../data/scoresData'
+import { useSearchParams } from 'react-router-dom'
+import { framingham, ipss, gad7, phq9, curb65, act, cat, aria, stopbang, epworth, cha2ds2vasc, hasbled } from '../data/scoresData'
 import { HeartIcon, ClipboardIcon, SmileIcon, FrownIcon, ChartBarIcon, DropletIcon, ScoresIcon, LungsIcon, AsthmaIcon, MoonIcon } from '../components/icons'
 
 function QuestionnaireWidget({ score }) {
@@ -430,13 +431,60 @@ const scoreTools = [
   },
 ]
 
+const focusMap = {
+  framingham: () => <ScoreWidget score={framingham} />,
+  ipss: () => <IpssWidget />,
+  curb65: () => <ScoreWidget score={curb65} />,
+  gad7: () => <QuestionnaireWidget score={gad7} />,
+  phq9: () => <QuestionnaireWidget score={phq9} />,
+  cha2ds2vasc: () => <ScoreWidget score={cha2ds2vasc} />,
+  hasbled: () => <ScoreWidget score={hasbled} />,
+  aria: () => <AriaWidget />,
+  act: () => <ActWidget />,
+  cat: () => <CatWidget />,
+  stopbang: () => <StopbangWidget />,
+  epworth: () => <EpworthWidget />,
+}
+
+const focusTitle = {
+  framingham: 'Framingham Risk Score',
+  ipss: 'IPSS',
+  curb65: 'CURB-65',
+  gad7: 'GAD-7',
+  phq9: 'PHQ-9',
+  cha2ds2vasc: 'CHA\u2082DS\u2082-VASc',
+  hasbled: 'HAS-BLED',
+  aria: 'ARIA',
+  act: 'ACT',
+  cat: 'CAT',
+  stopbang: 'STOP-BANG',
+  epworth: 'Epworth Sleepiness Scale',
+}
+
 export default function Scores() {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const focus = searchParams.get('focus')
+
+  if (focus && focusMap[focus]) {
+    return (
+      <div className="page">
+        <button className="focus-back" onClick={() => setSearchParams({})}>
+          ← All Scores & Scales
+        </button>
+        <h1><ScoresIcon size={28} className="page-heading-icon" /> {focusTitle[focus] || 'Score'}</h1>
+        <div className="scores-grid">
+          {focusMap[focus]()}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="page">
       <h1><ScoresIcon size={28} className="page-heading-icon" /> Scores & Scales</h1>
       <p className="page-subtitle">Cardiovascular, clinical, and mental health risk scores</p>
       <div className="scores-grid">
-        {scoreTools.map(t => <div key={t.key} className={t.fullRow ? 'full-row' : ''}>{t.component()}</div>)}
+        {scoreTools.map(t => <div key={t.key} className={t.fullRow ? 'full-row' : ''}><t.component /></div>)}
       </div>
     </div>
   )

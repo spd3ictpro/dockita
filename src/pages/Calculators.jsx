@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { ScaleIcon, KidneyIcon, LiverIcon, CalendarIcon, CalendarDaysIcon, CalculatorIcon } from '../components/icons'
 
 function BMICalculator() {
@@ -293,7 +294,42 @@ function BasicCalc() {
   )
 }
 
+const calcFocusMap = {
+  bmi: () => <BMICalculator />,
+  egfr: () => <EGFRCalculator />,
+  fib4: () => <Fib4Calculator />,
+  age: () => <AgeCalculator />,
+  edd: () => <EDDCalculator />,
+  basic: () => <BasicCalc />,
+}
+
+const calcFocusTitle = {
+  bmi: 'BMI Calculator',
+  egfr: 'eGFR Calculator',
+  fib4: 'FIB-4 Index',
+  age: 'Age Calculator',
+  edd: 'EDD Calculator',
+  basic: 'Basic Calculator',
+}
+
 export default function Calculators() {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const focus = searchParams.get('focus')
+
+  if (focus && calcFocusMap[focus]) {
+    return (
+      <div className="page">
+        <button className="focus-back" onClick={() => setSearchParams({})}>
+          ← All Calculators
+        </button>
+        <h1><CalculatorIcon size={28} className="page-heading-icon" /> {calcFocusTitle[focus]}</h1>
+        <div className="calculators-grid">
+          {calcFocusMap[focus]()}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="page">
       <h1><CalculatorIcon size={28} className="page-heading-icon" /> Calculators</h1>

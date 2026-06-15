@@ -29,7 +29,8 @@ export default function SearchBar() {
   const handleSelect = (item) => {
     setQuery('')
     setResults([])
-    navigate(item.path)
+    const path = item.id ? `${item.path}?focus=${item.id}` : item.path
+    navigate(path)
     inputRef.current?.blur()
   }
 
