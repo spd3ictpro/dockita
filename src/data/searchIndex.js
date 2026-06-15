@@ -31,5 +31,7 @@ export const searchIndex = [
   { path: '/geriatric', label: clinicalFrailtyScale.title, keywords: clinicalFrailtyScale.keywords },
   { path: '/geriatric', label: morseFallScale.title, keywords: morseFallScale.keywords },
 
+  { path: '/drugs', label: 'Drug Database', keywords: 'drug medication medicine pharmaceutical database search prescription formulary' },
+
   ...patientInfoItems.map(p => ({ path: '/patient-info', label: p.title, keywords: p.keywords })),
 ]

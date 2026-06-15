@@ -200,6 +200,12 @@ export function ChevronRight({ size = 24, className }) {
   return <svg {...s} width={size} height={size} className={className}><path d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
 }
 
+export function DrugIcon({ size = 24, className }) {
+  return <svg fill="none" viewBox="0 0 24 24" width={size} height={size} className={className}>
+    <path d="M8 8h8M8 8c-2 0-3.5 1.5-3.5 3.5S6 15 8 15h1v3.5c0 1.2 1 2.5 2.5 2.5s3-1.3 3-2.5V15h1c2 0 3.5-1.5 3.5-3.5S18 8 16 8M8 8V5c0-1 1-2 2.5-2S13 4 13 5v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+}
+
 export function ChevronDown({ size = 24, className }) {
   return <svg {...s} width={size} height={size} className={className}><path d="m4.5 8.25 7.5 7.5 7.5-7.5" /></svg>
 }
