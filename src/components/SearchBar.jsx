@@ -41,8 +41,8 @@ export default function SearchBar() {
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
       setSelectedIdx(i => Math.max(i - 1, 0))
-    } else if (e.key === 'Enter' && selectedIdx >= 0 && results[selectedIdx]) {
-      handleSelect(results[selectedIdx])
+    } else if (e.key === 'Enter' && results.length > 0) {
+      handleSelect(selectedIdx >= 0 ? results[selectedIdx] : results[0])
     } else if (e.key === 'Escape') {
       setResults([])
       inputRef.current?.blur()

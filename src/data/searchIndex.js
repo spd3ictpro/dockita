@@ -1,7 +1,9 @@
 import { screeningCategories } from './screeningData'
-import { framingham, ipss, gad7, phq9, curb65, cha2ds2vasc, hasbled } from './scoresData'
+import { framingham, ipss, gad7, phq9, curb65, cha2ds2vasc, hasbled, cvRiskHtn, act, cat, aria, stopbang, epworth } from './scoresData'
 import { clinicalFrailtyScale, morseFallScale } from './geriatricData'
 import { patientInfoItems } from './patientInfoData'
+
+const allScoreData = [framingham, ipss, gad7, phq9, curb65, cha2ds2vasc, hasbled, cvRiskHtn, act, cat, aria, stopbang, epworth]
 
 export const searchIndex = [
   { path: '/', label: 'Home', keywords: 'home dashboard dockita' },
@@ -20,13 +22,7 @@ export const searchIndex = [
   { path: '/calculators', label: 'EDD Calculator', keywords: 'edd expected delivery date naegele pregnancy calculator', id: 'edd' },
   { path: '/calculators', label: 'Basic Calculator', keywords: 'basic calculator arithmetic add subtract multiply divide', id: 'basic' },
 
-  { path: '/scores', label: framingham.title, keywords: framingham.keywords, id: framingham.id },
-  { path: '/scores', label: ipss.title, keywords: ipss.keywords, id: ipss.id },
-  { path: '/scores', label: gad7.title, keywords: gad7.keywords, id: gad7.id },
-  { path: '/scores', label: phq9.title, keywords: phq9.keywords, id: phq9.id },
-  { path: '/scores', label: curb65.title, keywords: curb65.keywords, id: curb65.id },
-  { path: '/scores', label: cha2ds2vasc.title, keywords: cha2ds2vasc.keywords, id: cha2ds2vasc.id },
-  { path: '/scores', label: hasbled.title, keywords: hasbled.keywords, id: hasbled.id },
+  ...allScoreData.map(s => ({ path: '/scores', label: s.title, keywords: s.keywords, id: s.id })),
 
   { path: '/geriatric', label: clinicalFrailtyScale.title, keywords: clinicalFrailtyScale.keywords, id: clinicalFrailtyScale.id },
   { path: '/geriatric', label: morseFallScale.title, keywords: morseFallScale.keywords, id: morseFallScale.id },

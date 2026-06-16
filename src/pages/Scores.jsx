@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { framingham, ipss, gad7, phq9, curb65, act, cat, aria, stopbang, epworth, cha2ds2vasc, hasbled } from '../data/scoresData'
+import { framingham, ipss, gad7, phq9, curb65, act, cat, aria, stopbang, epworth, cha2ds2vasc, hasbled, cvRiskHtn } from '../data/scoresData'
 import { HeartIcon, ClipboardIcon, SmileIcon, FrownIcon, ChartBarIcon, DropletIcon, ScoresIcon, LungsIcon, AsthmaIcon, MoonIcon } from '../components/icons'
 
 function QuestionnaireWidget({ score }) {
@@ -69,9 +69,11 @@ function ScoreWidget({ score }) {
       <p className="widget-desc">{score.description}</p>
       <div className="score-inputs">
         {score.inputs.map(inp => (
-          <select key={inp.key} value={vals[inp.key] || '0'} onChange={set(inp.key)}>
-            {inp.options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-          </select>
+          inp.type === 'number'
+            ? <input key={inp.key} type="number" value={vals[inp.key] || ''} onChange={set(inp.key)} {...(inp.min != null ? { min: inp.min } : {})} {...(inp.max != null ? { max: inp.max } : {})} {...(inp.step != null ? { step: inp.step } : {})} />
+            : <select key={inp.key} value={vals[inp.key] || '0'} onChange={set(inp.key)}>
+                {inp.options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+              </select>
         ))}
       </div>
       <div className="calc-actions">
@@ -439,6 +441,7 @@ const focusMap = {
   phq9: () => <QuestionnaireWidget score={phq9} />,
   cha2ds2vasc: () => <ScoreWidget score={cha2ds2vasc} />,
   hasbled: () => <ScoreWidget score={hasbled} />,
+  'cv-risk-htn': () => <ScoreWidget score={cvRiskHtn} />,
   aria: () => <AriaWidget />,
   act: () => <ActWidget />,
   cat: () => <CatWidget />,
@@ -454,6 +457,7 @@ const focusTitle = {
   phq9: 'PHQ-9',
   cha2ds2vasc: 'CHA\u2082DS\u2082-VASc',
   hasbled: 'HAS-BLED',
+  'cv-risk-htn': 'CV Risk for HTN Medication Initiation',
   aria: 'ARIA',
   act: 'ACT',
   cat: 'CAT',

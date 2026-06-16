@@ -11,14 +11,14 @@ function BMICalculator() {
     const w = parseFloat(weight), h = parseFloat(height)
     if (!w || !h || h > 2.5) { setResult(null); return }
     const bmi = (w / (h * h))
-    let cls = '', color = ''
-    if (bmi < 18.5) { cls = 'Underweight'; color = 'var(--bmi-under)' }
-    else if (bmi <= 22.9) { cls = 'Normal'; color = 'var(--bmi-normal)' }
-    else if (bmi <= 27.4) { cls = 'Overweight (Pre-obese)'; color = 'var(--bmi-over)' }
-    else if (bmi <= 32.4) { cls = 'Obese Class I'; color = 'var(--bmi-obese1)' }
-    else if (bmi <= 37.4) { cls = 'Obese Class II'; color = 'var(--bmi-obese2)' }
-    else { cls = 'Obese Class III'; color = 'var(--bmi-obese3)' }
-    setResult({ bmi: bmi.toFixed(1), cls, color })
+    let cls = '', color = '', risk = ''
+    if (bmi < 18.5) { cls = 'Underweight'; color = 'var(--bmi-under)'; risk = 'Low, but with increased risk of other clinical problems' }
+    else if (bmi <= 22.9) { cls = 'Normal'; color = 'var(--bmi-normal)'; risk = 'Optimal' }
+    else if (bmi <= 27.4) { cls = 'Pre-obese (Overweight)'; color = 'var(--bmi-over)'; risk = 'Increased' }
+    else if (bmi <= 32.4) { cls = 'Obese I'; color = 'var(--bmi-obese1)'; risk = 'High' }
+    else if (bmi <= 37.4) { cls = 'Obese II'; color = 'var(--bmi-obese2)'; risk = 'Very high' }
+    else { cls = 'Obese III'; color = 'var(--bmi-obese3)'; risk = 'Extremely high' }
+    setResult({ bmi: bmi.toFixed(1), cls, color, risk })
   }
 
   const clear = () => { setWeight(''); setHeight(''); setResult(null) }
@@ -26,7 +26,7 @@ function BMICalculator() {
   return (
     <div className="calc-card">
       <div className="calc-heading"><ScaleIcon size={20} className="calc-heading-icon" /><h3>BMI Calculator</h3></div>
-      <p className="calc-desc">Body Mass Index — Malaysian CPG Obesity 2023</p>
+      <p className="calc-desc">Adapted from CPG Management of Obesity 2nd Edition 2023</p>
       <div className="calc-inputs">
         <input type="number" step="0.1" placeholder="Weight (kg)" value={weight} onChange={e => setWeight(e.target.value)} />
         <input type="number" step="0.01" placeholder="Height (m)" value={height} onChange={e => setHeight(e.target.value)} />
@@ -38,6 +38,7 @@ function BMICalculator() {
       {result && (
         <div className="calc-result" style={{ '--result-color': result.color }}>
           BMI: {result.bmi} — <strong>{result.cls}</strong>
+          <div className="calc-risk">Risk: {result.risk}</div>
         </div>
       )}
     </div>

@@ -150,6 +150,10 @@ export const framingham = {
     if (risk <= 20) return { category: 'Moderate Risk', color: 'var(--risk-mod)' }
     return { category: 'High Risk', color: 'var(--risk-high)' }
   },
+  getCategory: (riskVal) => {
+    const r = framingham.interpret(riskVal)
+    return { label: r.category, color: r.color }
+  },
   keywords: 'framingham cardiovascular cv risk score heart cholesterol 10 year',
 }
 
