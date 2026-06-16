@@ -1,23 +1,78 @@
 import { useState } from 'react'
-import { screeningCategories } from '../data/screeningData'
 import { framingham } from '../data/scoresData'
 import { ChartBarIcon, HeartIcon } from '../components/icons'
 
-const dyslipidemiaScreening = screeningCategories.find(c => c.id === 'dyslipidaemia')
-
-const lipidClassification = [
-  { lipid: 'Total Cholesterol (TC)', optimal: '<5.2 mmol/L', borderline: '5.2–6.2 mmol/L', high: '>6.2 mmol/L' },
-  { lipid: 'LDL Cholesterol', optimal: '<2.6 mmol/L', borderline: '2.6–4.1 mmol/L', high: '>4.1 mmol/L' },
-  { lipid: 'HDL Cholesterol (Male)', optimal: '≥1.0 mmol/L', borderline: '—', high: '<1.0 mmol/L (low)' },
-  { lipid: 'HDL Cholesterol (Female)', optimal: '≥1.3 mmol/L', borderline: '—', high: '<1.3 mmol/L (low)' },
-  { lipid: 'Triglycerides (TG)', optimal: '<1.7 mmol/L', borderline: '1.7–2.2 mmol/L', high: '>2.2 mmol/L' },
+const ldlTargets = [
+  {
+    risk: 'Low CV Risk*',
+    criteria: '<10% 10-year CVD risk',
+    drugThreshold: 'Clinical judgement**',
+    ldlTarget: '<3.0',
+    nonHdlTarget: '<3.8',
+  },
+  {
+    risk: 'Intermediate (Moderate) CV Risk*',
+    criteria: (
+      <>
+        10–20% 10-year CVD risk<br />
+        Diabetics &lt;50 years old, &lt;10-year duration, no CV risk factors
+      </>
+    ),
+    drugThreshold: '>2.6**',
+    ldlTarget: '<2.6',
+    nonHdlTarget: '<3.4',
+  },
+  {
+    risk: 'High CV Risk',
+    criteria: (
+      <>
+        &gt;20% 10-year CVD risk<br />
+        Diabetes &gt;10-year duration without TOD + ≥1 CV risk factor<br />
+        CKD with eGFR 30–&lt;60 ml/min/1.73m²
+      </>
+    ),
+    drugThreshold: '>1.8',
+    ldlTarget: '≤1.8 and a reduction of >50% from baseline',
+    nonHdlTarget: '≤2.6 and a reduction of >50% from baseline',
+  },
+  {
+    risk: 'Very High CV Risk*',
+    criteria: (
+      <>
+        Established CVD<br />
+        Diabetes with CVD/TOD or &gt;3 CV risk factors<br />
+        CKD with eGFR &lt;30 ml/min/1.73m² ****
+      </>
+    ),
+    drugThreshold: '>1.4',
+    ldlTarget: '≤1.4 and a reduction of >50% from baseline',
+    nonHdlTarget: '≤2.2 and a reduction of >50% from baseline',
+  },
+  {
+    risk: '*** Recurrent CV events within 2 years',
+    criteria: 'despite achieving LDL-C <1.4 mmol/L',
+    drugThreshold: '—',
+    ldlTarget: '<1.0',
+    nonHdlTarget: '—',
+  },
 ]
 
-const treatmentTargets = [
-  { risk: 'Low risk (0–1 risk factor, no CVD/DM/CKD)', ldl: '<3.4 mmol/L', tc: '<5.2 mmol/L', nonHdl: '<3.4 mmol/L' },
-  { risk: 'Moderate risk (≥2 risk factors, no CVD/DM/CKD)', ldl: '<2.6 mmol/L', tc: '<4.1 mmol/L', nonHdl: '<3.4 mmol/L' },
-  { risk: 'High risk (DM, CKD, FH, or ASCVD equivalent)', ldl: '<1.8 mmol/L', tc: '<3.1 mmol/L', nonHdl: '<2.6 mmol/L' },
-  { risk: 'Very high risk (ASCVD, recent ACS, PAD, prior stroke)', ldl: '<1.4 mmol/L', tc: '<2.6 mmol/L', nonHdl: '<2.1 mmol/L' },
+const statinDoses = [
+  {
+    intensity: 'High-Intensity*',
+    description: 'Daily dose lowers LDL-C on average, by approximately ≥ 50%',
+    drugs: ['Atorvastatin 40–80 mg', 'Rosuvastatin 20–40 mg'],
+  },
+  {
+    intensity: 'Moderate-Intensity',
+    description: 'Daily dose lowers LDL-C on average, by approximately 30% – < 50%',
+    drugs: ['Atorvastatin 10–20 mg', 'Rosuvastatin 5–10 mg', 'Simvastatin 20–40 mg', 'Pravastatin 40–80 mg', 'Lovastatin 40 mg', 'Fluvastatin 40 mg bid', 'Pitavastatin 2–4 mg'],
+  },
+  {
+    intensity: 'Low-Intensity**',
+    description: 'Daily dose lowers LDL-C on average, by < 30%',
+    drugs: ['Simvastatin 10 mg', 'Pravastatin 10–20 mg', 'Lovastatin 20 mg', 'Fluvastatin 20–40 mg', 'Pitavastatin 1 mg'],
+  },
 ]
 
 function FraminghamWidget() {
@@ -68,7 +123,9 @@ function FraminghamWidget() {
             </div>
           )
         )}
-        <p className="widget-note" style={{ marginTop: '12px' }}>{framingham.note}</p>
+        {framingham.note && (
+          <p className="widget-note" style={{ marginTop: '12px' }}>{framingham.note}</p>
+        )}
       </div>
     </div>
   )
@@ -87,68 +144,40 @@ export default function Dyslipidemia() {
             <div className="screening-card-header-left">
               <ChartBarIcon size={24} className="screening-card-icon" style={{ color: '#ff922b' }} />
               <div>
-                <h3>Lipid Classification</h3>
-                <span className="screening-source">Malaysia CPG: Management of Dyslipidaemia 2022</span>
+                <h3>Target LDL-C Levels</h3>
+                <span className="screening-source">Malaysia CPG: Management of Dyslipidaemia 2023 (6th edition)</span>
               </div>
             </div>
           </div>
           <div className="screening-card-body visible">
-            <table className="screening-table">
+            <table className="screening-table" style={{ tableLayout: 'fixed' }}>
               <thead>
                 <tr>
-                  <th>Lipid</th>
-                  <th>Optimal</th>
-                  <th>Borderline</th>
-                  <th>High</th>
+                  <th style={{ width: '30%' }}>Global Risk</th>
+                  <th style={{ width: '22%', textAlign: 'center' }}>Initiate Drug Therapy (LDL-C, mmol/L)</th>
+                  <th style={{ width: '24%', textAlign: 'center' }}>Target LDL-C (mmol/L)</th>
+                  <th style={{ width: '24%', textAlign: 'center' }}>Target Non-HDL-C (mmol/L)</th>
                 </tr>
               </thead>
               <tbody>
-                {lipidClassification.map((l, i) => (
+                {ldlTargets.map((t, i) => (
                   <tr key={i}>
-                    <td className="cell-population">{l.lipid}</td>
-                    <td>{l.optimal}</td>
-                    <td>{l.borderline}</td>
-                    <td>{l.high}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div className="screening-card expanded">
-          <div className="screening-card-header">
-            <div className="screening-card-header-left">
-              <ChartBarIcon size={24} className="screening-card-icon" style={{ color: '#ff922b' }} />
-              <div>
-                <h3>Lipid Treatment Targets by CV Risk</h3>
-                <span className="screening-source">Malaysia CPG: Management of Dyslipidaemia 2022</span>
-              </div>
-            </div>
-          </div>
-          <div className="screening-card-body visible">
-            <table className="screening-table">
-              <thead>
-                <tr>
-                  <th>Risk Category</th>
-                  <th>LDL-C Target</th>
-                  <th>TC Target</th>
-                  <th>Non-HDL-C Target</th>
-                </tr>
-              </thead>
-              <tbody>
-                {treatmentTargets.map((t, i) => (
-                  <tr key={i}>
-                    <td className="cell-population">{t.risk}</td>
-                    <td>{t.ldl}</td>
-                    <td>{t.tc}</td>
-                    <td>{t.nonHdl}</td>
+                    <td>
+                      <div className="cell-population">{t.risk}</div>
+                      <div className="ldl-criteria">{t.criteria}</div>
+                    </td>
+                    <td style={{ textAlign: 'center', fontWeight: 600 }}>{t.drugThreshold}</td>
+                    <td style={{ textAlign: 'center', fontWeight: 600 }}>{t.ldlTarget}</td>
+                    <td style={{ textAlign: 'center', fontWeight: 600 }}>{t.nonHdlTarget}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
             <p className="widget-note" style={{ marginTop: '12px' }}>
-              Non-HDL-C = TC − HDL-C. Consider statin as first-line therapy. Targets should be individualised.
+              * Low and Moderate CV risk is assessed using the FRS- General CVD Risk Score<br />
+              ** After a therapeutic trial of 8–12 weeks of TLC and following discussion of the risk: benefit ratio of drug therapy with the patient.<br />
+              *** All other CV risk factors should be treated to target.<br />
+              **** Lipid lowering therapy lowers the risk of atherosclerotic CVD in CKD patients. Those who are on dialysis are at very high CV risk, but it is for non-atherosclerotic CVD e.g. due to medial calcific arteriosclerosis, LVH, coronary artery calcification, arrhythmias etc. Thus, lipid lowering therapy is not initiated in patients on dialysis but if they have CVD or are already on statins before becoming dialysis dependent, then it should be continued.
             </p>
           </div>
         </div>
@@ -158,32 +187,42 @@ export default function Dyslipidemia() {
             <div className="screening-card-header-left">
               <ChartBarIcon size={24} className="screening-card-icon" style={{ color: '#ff922b' }} />
               <div>
-                <h3>{dyslipidemiaScreening.title}</h3>
-                <span className="screening-source">{dyslipidemiaScreening.source}</span>
+                <h3>Recommended Doses of Statin Therapy</h3>
+                <span className="screening-source">Malaysia CPG: Management of Dyslipidaemia 2023 (6th edition)</span>
               </div>
             </div>
           </div>
           <div className="screening-card-body visible">
-            <table className="screening-table">
+            <table className="screening-table statin-table">
               <thead>
                 <tr>
-                  <th>Population</th>
-                  <th>Recommendation</th>
-                  <th>Notes</th>
+                  {statinDoses.map((s, i) => (
+                    <th key={i} style={{ textAlign: 'center' }}>{s.intensity}</th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                {dyslipidemiaScreening.guidelines.map((g, i) => (
-                  <tr key={i}>
-                    <td className="cell-population">{g.age}</td>
-                    <td className="cell-test">{g.test}</td>
-                    <td className="note-cell">{g.note}</td>
-                  </tr>
-                ))}
+                <tr>
+                  {statinDoses.map((s, i) => (
+                    <td key={i} style={{ verticalAlign: 'top', textAlign: 'center' }}>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>{s.description}</div>
+                      <ul className="statin-drug-list">
+                        {s.drugs.map((d, j) => (
+                          <li key={j}>{d}</li>
+                        ))}
+                      </ul>
+                    </td>
+                  ))}
+                </tr>
               </tbody>
             </table>
+            <p className="widget-note" style={{ marginTop: '12px' }}>
+              * High-intensity statin therapy is recommended for all patients with established CVD, very high CV risk, and high CV risk.<br />
+              ** Low-intensity statin therapy may be considered in patients who cannot tolerate higher doses.
+            </p>
           </div>
         </div>
+
       </div>
     </div>
   )

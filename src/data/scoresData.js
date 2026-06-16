@@ -2,7 +2,6 @@ export const framingham = {
   id: 'framingham',
   title: 'Framingham Risk Score',
   description: '10-year cardiovascular risk estimate',
-  note: 'Diabetic patients are considered high risk and should be considered for statin.',
   inputs: [
     { key: 'gender', label: 'Gender', type: 'select', options: [
       { value: 'male', label: 'Male' },

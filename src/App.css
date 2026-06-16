@@ -782,6 +782,40 @@ input, select, button { font-family: inherit; font-size: inherit; }
   width: 35%;
 }
 
+.ldl-criteria {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.statin-drug-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.statin-drug-list li {
+  padding: 3px 0;
+  font-size: 0.85rem;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.statin-drug-list li:last-child {
+  border-bottom: none;
+}
+
+.statin-table {
+  table-layout: fixed;
+}
+
+.statin-table th,
+.statin-table td {
+  width: 33.33%;
+}
+
 /* ===== Calculators Page ===== */
 .calculators-grid {
   display: grid;
@@ -1017,6 +1051,8 @@ input, select, button { font-family: inherit; font-size: inherit; }
   font-size: 0.8rem;
   color: var(--text-muted);
   font-style: italic;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .widget-sub {
