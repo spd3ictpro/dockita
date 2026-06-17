@@ -66,7 +66,7 @@ function CvRiskWidget() {
 
 export default function Hypertension() {
   return (
-    <div className="page">
+    <div className="page page--narrow">
       <h1><HeartIcon size={28} className="page-heading-icon" /> Hypertension</h1>
       <p className="page-subtitle">Hypertension screening, BP classification, and CV risk-guided management</p>
 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Screening from './pages/Screening'
@@ -12,11 +12,35 @@ import Diabetes from './pages/Diabetes'
 import Hypertension from './pages/Hypertension'
 import Dyslipidemia from './pages/Dyslipidemia'
 
+const routeLabels = {
+  '/screening': 'Screening',
+  '/calculators': 'Calculators',
+  '/scores': 'Scores & Scales',
+  '/geriatric': 'Geriatric',
+  '/patient-info': 'Infographics',
+  '/drugs': 'Drug Database',
+  '/diabetes': 'Diabetes Mellitus',
+  '/hypertension': 'Hypertension',
+  '/dyslipidemia': 'Dyslipidaemia',
+}
+
 function App() {
+  const location = useLocation()
+
   useEffect(() => {
     const saved = localStorage.getItem('dockita-theme') || 'light'
     document.documentElement.setAttribute('data-theme', saved)
   }, [])
+
+  useEffect(() => {
+    const base = location.pathname
+    if (base === '/' || !routeLabels[base]) return
+    const recent = JSON.parse(localStorage.getItem('dockita-recent') || '[]')
+    const entry = { path: base + (location.search || ''), label: routeLabels[base], timestamp: Date.now() }
+    const filtered = recent.filter(r => r.path !== entry.path)
+    filtered.unshift(entry)
+    localStorage.setItem('dockita-recent', JSON.stringify(filtered.slice(0, 8)))
+  }, [location])
 
   return (
     <Routes>

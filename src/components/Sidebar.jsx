@@ -12,7 +12,7 @@ const links = [
   { to: '/scores', icon: ScoresIcon, label: 'Scores' },
   { to: '/drugs', icon: DrugIcon, label: 'Drug Database' },
   { to: '/geriatric', icon: GeriatricIcon, label: 'Geriatric' },
-  { to: '/patient-info', icon: PatientInfoIcon, label: 'Patient Info' },
+  { to: '/patient-info', icon: PatientInfoIcon, label: 'Infographics' },
 ]
 
 export default function Sidebar({ collapsed, onToggle }) {

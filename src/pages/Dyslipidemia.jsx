@@ -133,7 +133,7 @@ function FraminghamWidget() {
 
 export default function Dyslipidemia() {
   return (
-    <div className="page">
+    <div className="page page--narrow">
       <h1><ChartBarIcon size={28} className="page-heading-icon" /> Dyslipidaemia</h1>
       <p className="page-subtitle">Lipid classification, treatment targets, and CV risk assessment</p>
 

@@ -3,11 +3,22 @@ import { DropletIcon } from '../components/icons'
 
 const diabetesScreening = screeningCategories.find(c => c.id === 'diabetes')
 
-const diagnosticCriteria = [
-  { test: 'Fasting Plasma Glucose', value: '≥7.0 mmol/L (126 mg/dL)', note: 'No caloric intake for ≥8 hours' },
-  { test: 'HbA1c', value: '≥6.5% (48 mmol/mol)', note: 'NGSP-certified, standardized assay' },
-  { test: 'OGTT 2h Plasma Glucose', value: '≥11.1 mmol/L (200 mg/dL)', note: '75 g oral glucose load' },
-  { test: 'Random Plasma Glucose', value: '≥11.1 mmol/L', note: 'With classic hyperglycaemic symptoms' },
+const venousPlasmaGlucose = [
+  { type: 'Fasting', value: '≥7.0 mmol/L' },
+  { type: 'Random', value: '≥11.1 mmol/L' },
+]
+
+const ogtt = [
+  { category: 'Normal', hr0: '<6.1', hr2: '<7.8' },
+  { category: 'IFG', hr0: '6.1–6.9', hr2: '—' },
+  { category: 'IGT', hr0: '—', hr2: '7.8–11.0' },
+  { category: 'T2DM', hr0: '≥7.0', hr2: '≥11.1' },
+]
+
+const hba1cDiagnostic = [
+  { category: 'Normal', value: '<5.7% (<39 mmol/mol)' },
+  { category: 'Prediabetes', value: '5.7% – <6.3% (39–44 mmol/mol)' },
+  { category: 'T2DM', value: '≥6.3% (≥45 mmol/mol)' },
 ]
 
 const glycemicTargets = [
@@ -18,7 +29,7 @@ const glycemicTargets = [
 
 export default function Diabetes() {
   return (
-    <div className="page">
+    <div className="page page--narrow">
       <h1><DropletIcon size={28} className="page-heading-icon" /> Diabetes Mellitus</h1>
       <p className="page-subtitle">Type 2 diabetes screening, diagnostic criteria, and glycemic targets</p>
 
@@ -61,28 +72,80 @@ export default function Diabetes() {
               <DropletIcon size={24} className="screening-card-icon" style={{ color: '#20c997' }} />
               <div>
                 <h3>Diagnostic Criteria for Diabetes Mellitus</h3>
+                <span className="screening-source">Malaysia CPG: Management of T2DM 2021</span>
               </div>
             </div>
           </div>
           <div className="screening-card-body visible">
-            <table className="screening-table">
-              <thead>
-                <tr>
-                  <th>Test</th>
-                  <th>Diagnostic Value</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                {diagnosticCriteria.map((d, i) => (
-                  <tr key={i}>
-                    <td style={{ fontWeight: 600 }}>{d.test}</td>
-                    <td className="cell-test">{d.value}</td>
-                    <td className="note-cell">{d.note}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="diag-grid">
+              <div>
+                <h4 className="section-label">Table 2-3: Venous Plasma Glucose</h4>
+                <table className="screening-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Diagnostic Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {venousPlasmaGlucose.map((d, i) => (
+                      <tr key={i}>
+                        <td className="cell-population">{d.type}</td>
+                        <td className="cell-test">{d.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="widget-note">
+                  In symptomatic individuals, one abnormal glucose value is diagnostic. In asymptomatic individuals, 2 abnormal test results (plasma glucose and HbA1c) from the same sample or from 2 separate test samples are required for diagnosis.
+                </p>
+
+                <h4 className="section-label" style={{ marginTop: '20px' }}>Table 2-5: HbA1c</h4>
+                <table className="screening-table">
+                  <thead>
+                    <tr>
+                      <th>Category</th>
+                      <th>HbA1c</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {hba1cDiagnostic.map((h, i) => (
+                      <tr key={i}>
+                        <td className="cell-population">{h.category}</td>
+                        <td className="cell-test">{h.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="widget-note">
+                  A repeat HbA1c should be done 4 weeks after the first positive test for asymptomatic patients (if an accompanying FPG or RPG is indeterminate). For symptomatic patients, a single positive test is sufficient.
+                </p>
+              </div>
+              <div>
+                <h4 className="section-label">Table 2-3: OGTT (75 g glucose load)</h4>
+                <table className="screening-table">
+                  <thead>
+                    <tr>
+                      <th>Category</th>
+                      <th>0-hour (mmol/L)</th>
+                      <th>2-hour (mmol/L)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {ogtt.map((o, i) => (
+                      <tr key={i}>
+                        <td className="cell-population">{o.category}</td>
+                        <td className="cell-test">{o.hr0}</td>
+                        <td className="cell-test">{o.hr2}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="widget-note">
+                  In adolescents, the glucose load in OGTT is based on body weight (1.75 g/kg body weight, maximum of 75 g).
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 

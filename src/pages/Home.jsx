@@ -1,38 +1,46 @@
 import { useNavigate } from 'react-router-dom'
-import { ScreeningIcon, CalculatorIcon, ScoresIcon, GeriatricIcon, PatientInfoIcon, Logo } from '../components/icons'
-
-const categories = [
-  { path: '/screening', icon: ScreeningIcon, title: 'Screening', desc: 'Malaysia CPG screening guidelines for 10 conditions — cervical, breast, colorectal cancer, diabetes, hypertension, and more', color: '#4f6ef7' },
-  { path: '/calculators', icon: CalculatorIcon, title: 'Calculators', desc: 'BMI, eGFR, Age, EDD, and a basic calculator for quick clinical computations', color: '#845ef7' },
-  { path: '/scores', icon: ScoresIcon, title: 'Scores & Scales', desc: 'Framingham, IPSS, GAD-7, PHQ-9, CURB-65, CHA\u2082DS\u2082-VASc, and HAS-BLED', color: '#0ca678' },
-  { path: '/geriatric', icon: GeriatricIcon, title: 'Geriatric', desc: 'Clinical Frailty Scale and Morse Fall Scale for elderly patient assessment', color: '#f59f00' },
-  { path: '/patient-info', icon: PatientInfoIcon, title: 'Patient Info', desc: 'Infographics and visual aids for patient education and counselling', color: '#e64980' },
-]
+import { Logo } from '../components/icons'
+import quotes from '../data/quotes'
 
 export default function Home() {
   const navigate = useNavigate()
+  let recent = []
+  try { recent = JSON.parse(localStorage.getItem('dockita-recent') || '[]') } catch {}
+
+  let text = 'First do no harm.'
+  let author = 'Hippocrates'
+  try {
+    const today = new Date()
+    const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate()
+    const q = quotes[seed % quotes.length]
+    if (q) { text = q.text; author = q.author }
+  } catch {}
 
   return (
-    <div className="page home-page">
+    <div className="page page--narrow home-page">
       <div className="home-header">
         <Logo size={40} className="home-logo-icon" />
         <h1>dockita</h1>
         <p className="home-subtitle">Medical Officer Daily Dashboard</p>
       </div>
-      <div className="home-grid">
-        {categories.map(cat => {
-          const Icon = cat.icon
-          return (
-            <button key={cat.path} className="home-card" style={{ '--card-accent': cat.color }} onClick={() => navigate(cat.path)}>
-              <Icon size={32} className="home-card-icon" />
-              <div className="home-card-body">
-                <h3>{cat.title}</h3>
-                <p>{cat.desc}</p>
-              </div>
-            </button>
-          )
-        })}
+
+      <div className="home-quote-card">
+        <p className="home-quote-text">{text}</p>
+        <p className="home-quote-author">— {author}</p>
       </div>
+
+      {recent.length > 0 && (
+        <div className="home-recent">
+          <h3 className="home-section-title">Recently Used</h3>
+          <div className="home-recent-chips">
+            {recent.slice(0, 6).map(r => (
+              <button key={r.path} className="home-recent-chip" onClick={() => navigate(r.path)}>
+                {r.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

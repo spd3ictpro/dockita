@@ -10,7 +10,7 @@ export const searchIndex = [
   { path: '/screening', label: 'Screening Home', keywords: 'screening guidelines cpg' },
   ...screeningCategories.map(s => ({ path: '/screening', label: s.title, keywords: s.keywords, id: s.id })),
 
-  { path: '/diabetes', label: 'Diabetes Mellitus', keywords: 'diabetes diabetic dm sugar hba1c glucose screening diagnostic criteria glycemic targets' },
+  { path: '/diabetes', label: 'Diabetes Mellitus', keywords: 'diabetes diabetic dm sugar hba1c glucose screening diagnostic criteria glycemic targets prediabetes ifg ogtt' },
   { path: '/hypertension', label: 'Hypertension', keywords: 'hypertension high blood pressure htn bp cardiovascular risk classification medication initiation' },
   { path: '/dyslipidemia', label: 'Dyslipidaemia', keywords: 'lipid cholesterol dyslipidaemia dyslipidemia hdl ldl tg screening classification treatment targets' },
 
