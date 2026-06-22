@@ -4,7 +4,7 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import Screening from './pages/Screening'
 import Calculators from './pages/Calculators'
-import Scores from './pages/Scores'
+import Scores, { ScoreDetail } from './pages/Scores'
 import Geriatric from './pages/Geriatric'
 import PatientInfo from './pages/PatientInfo'
 import DrugDatabase from './pages/DrugDatabase'
@@ -49,6 +49,7 @@ function App() {
         <Route path="/screening" element={<Screening />} />
         <Route path="/calculators" element={<Calculators />} />
         <Route path="/scores" element={<Scores />} />
+        <Route path="/scores/:scoreId" element={<ScoreDetail />} />
         <Route path="/geriatric" element={<Geriatric />} />
         <Route path="/patient-info" element={<PatientInfo />} />
         <Route path="/drugs" element={<DrugDatabase />} />
