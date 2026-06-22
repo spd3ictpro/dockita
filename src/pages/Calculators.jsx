@@ -183,9 +183,14 @@ function EDDCalculator() {
 
   const calc = () => {
     if (!lmp) { setResult(null); return }
+    const lmpDate = new Date(lmp)
+    const today = new Date()
+    if (lmpDate > today) {
+      setResult({ error: 'LMP cannot be in the future' })
+      return
+    }
     const date = new Date(lmp)
     date.setDate(date.getDate() + 280)
-    const today = new Date()
     const gaWeeks = Math.floor((today - new Date(lmp)) / (7 * 86400000))
     const gaDays = Math.round(((today - new Date(lmp)) % (7 * 86400000)) / 86400000)
     setResult({
@@ -207,8 +212,14 @@ function EDDCalculator() {
       </div>
       {result && (
         <div className="calc-result">
-          EDD: <strong>{result.edd}</strong><br />
-          Current GA: <strong>{result.ga}</strong> weeks
+          {result.error ? (
+            <strong style={{ color: 'var(--risk-high)' }}>{result.error}</strong>
+          ) : (
+            <>
+              EDD: <strong>{result.edd}</strong><br />
+              Current GA: <strong>{result.ga}</strong> weeks
+            </>
+          )}
         </div>
       )}
     </div>
@@ -242,7 +253,16 @@ function BasicCalc() {
       case '+': result = a + b; break
       case '-': result = a - b; break
       case '×': result = a * b; break
-      case '÷': result = a / b; break
+      case '÷':
+        if (b === 0) {
+          setDisplay('Cannot divide by zero')
+          setOp(null)
+          setPrev('')
+          setReset(true)
+          return
+        }
+        result = a / b
+        break
       default: return
     }
     setDisplay(String(Number.isInteger(result) ? result : result.toFixed(4)))

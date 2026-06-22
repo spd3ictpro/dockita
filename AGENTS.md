@@ -27,10 +27,8 @@ Vite config sets `base: '/dockita/'` for gh-pages. The favicon link in `index.ht
 - `searchIndex.js` → aggregates all above into flat searchable array
 
 ## Known issues (things agents commonly miss)
-- **`useTheme.js` hook is orphaned** — defined in `src/hooks/` but never imported. Theme logic duplicated in `App.jsx` and `ThemeToggle.jsx`.
 - **Scores.jsx:149** calls components as `t.component()` instead of JSX `<t.component />` — works but non-standard.
 - **SearchBar.jsx** search logic duplicated between `useEffect` and `onFocus` handler. `listRef` assigned but never read.
-- **BasicCalc** division by zero displays "Infinity".
 - **EDD Calculator** future LMP dates give negative gestational age.
 - **`public/icons.svg`** orphaned (not referenced anywhere).
 

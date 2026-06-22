@@ -1,43 +1,160 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
-import { DrugIcon, ClearIcon, SearchIcon } from '../components/icons'
-import { fetchDrugs, searchDrugs } from '../data/drugData'
+import { fetchDrugs, searchDrugs, parseDosages } from '../data/drugData'
 
-function renderHtml(html) {
-  return <span dangerouslySetInnerHTML={{ __html: html }} />
+function R({ html, value }) {
+  if (!value) return null
+  return html ? <span dangerouslySetInnerHTML={{ __html: value }} /> : <>{value}</>
+}
+
+function badgeChar(cat) {
+  if (!cat || cat === 'NOT APPLICABLE' || cat.startsWith('DELISTED') || cat.startsWith('NOT APPLICABLE')) return null
+  const m = cat.match(/^([A-Za-z*])/)
+  return m ? m[1] : null
+}
+
+const popIcon = { adult: 'person', child: 'child_care', neonate: 'child_care' }
+const popLabel = { adult: 'Adult', child: 'Child', neonate: 'Neonate' }
+
+function DosageCards({ parsed }) {
+  if (!parsed) return null
+  const { sections } = parsed
+
+  const isGeneral = sections.every(s => s.general)
+  if (isGeneral) {
+    return <div className="drug-detail-html drug-detail-mono"><R html value={sections[0].general} /></div>
+  }
+
+  return (
+    <div className="drug-dosage-sections">
+      {sections.map((sec, idx) => {
+        const pops = []
+        if (sec.adult) pops.push({ key: 'adult', icon: popIcon.adult, label: popLabel.adult, content: sec.adult })
+        if (sec.child) pops.push({ key: 'child', icon: popIcon.child, label: popLabel.child, content: sec.child })
+        if (sec.neonate) pops.push({ key: 'neonate', icon: popIcon.neonate, label: popLabel.neonate, content: sec.neonate })
+
+        return (
+          <div key={idx} className={idx > 0 ? 'drug-dosage-section drug-dosage-section-bordered' : 'drug-dosage-section'}>
+            {sec.label && <div className="drug-dosage-label">{sec.label}</div>}
+            <div className="drug-dosage-cards">
+              {pops.map(p => (
+                <div key={p.key} className="drug-dosage-card">
+                  <div className="drug-dosage-card-header">
+                    <span className="material-symbols-outlined drug-dosage-card-icon">{p.icon}</span>
+                    <span className="drug-dosage-card-label">{p.label}</span>
+                  </div>
+                  <div className="drug-detail-html drug-detail-mono"><R html value={p.content} /></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 function DrugDetail({ drug }) {
   if (!drug) return null
-
-  const fields = [
-    { label: 'Brand Name', value: drug.brandName, skip: !drug.brandName },
-    { label: 'Prescriber Category', value: drug.prescriberCategory, skip: !drug.prescriberCategory || drug.prescriberCategory === 'NOT APPLICABLE' },
-    { label: 'Indications', value: drug.indications, skip: !drug.indications, html: true },
-    { label: 'Prescribing Restrictions', value: drug.prescribingRestrictions, skip: !drug.prescribingRestrictions, html: true },
-    { label: 'Dosages', value: drug.dosages, skip: !drug.dosages, html: true },
-    { label: 'Adverse Reactions', value: drug.adverseReactions, skip: !drug.adverseReactions, html: true },
-    { label: 'Contraindications', value: drug.contraindications, skip: !drug.contraindications, html: true },
-    { label: 'Interactions', value: drug.interactions, skip: !drug.interactions, html: true },
-    { label: 'Precautions', value: drug.precautions, skip: !drug.precautions, html: true },
-    { label: 'Method of Purchase', value: drug.methodOfPurchase, skip: !drug.methodOfPurchase },
-    { label: 'Notes', value: drug.notes, skip: !drug.notes, html: true },
-  ]
-
-  const visible = fields.filter(f => !f.skip)
-
-  if (visible.length === 0) return null
+  const cat = drug.prescriberCategory
+  const showCat = cat && cat !== 'NOT APPLICABLE' && !cat.startsWith('DELISTED') && !cat.startsWith('NOT APPLICABLE')
+  const parsedDosages = useMemo(() => parseDosages(drug.dosages), [drug.dosages])
 
   return (
-    <div className="drug-detail">
-      <h2 className="drug-detail-title">{drug.genericName}</h2>
-      {visible.map((f, i) => (
-        <div key={f.label} className="drug-detail-section" style={{ '--i': i }}>
-          <strong className="drug-detail-label">{f.label}</strong>
-          <div className={f.html ? 'drug-detail-html' : 'drug-detail-text'}>
-            {f.html ? renderHtml(f.value) : f.value}
+    <div className="drug-detail-inner">
+      <div className="drug-detail-header">
+        <h2 className="drug-detail-title">{drug.genericName}</h2>
+        {showCat && (
+          <div className="drug-category-badge">
+            <span className="drug-category-badge-label">Category</span>
+            <div className="drug-category-badge-box">
+              <span className="drug-category-badge-char">{cat}</span>
+            </div>
           </div>
-        </div>
-      ))}
+        )}
+      </div>
+
+      <div className="drug-detail-body">
+        {(drug.brandName || (drug.methodOfPurchase && drug.methodOfPurchase !== 'NOT APPLICABLE')) && (
+          <div className="drug-detail-grid-2">
+            {drug.brandName && (
+              <div className="drug-detail-field">
+                <span className="drug-detail-label">Brand Name</span>
+                <p className="drug-detail-text">{drug.brandName}</p>
+              </div>
+            )}
+            {drug.methodOfPurchase && drug.methodOfPurchase !== 'NOT APPLICABLE' && (
+              <div className="drug-detail-field">
+                <span className="drug-detail-label">Method of Purchase</span>
+                <p className="drug-detail-text">{drug.methodOfPurchase}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {drug.indications && (
+          <div className="drug-detail-field">
+            <span className="drug-detail-label">Indications</span>
+            <div className="drug-detail-html"><R html value={drug.indications} /></div>
+          </div>
+        )}
+
+        {drug.prescribingRestrictions && (
+          <div className="drug-detail-field">
+            <span className="drug-detail-label">Prescribing Restrictions</span>
+            <div className="drug-detail-box drug-detail-box-info">
+              <span className="material-symbols-outlined drug-detail-box-icon">info</span>
+              <div className="drug-detail-html"><R html value={drug.prescribingRestrictions} /></div>
+            </div>
+          </div>
+        )}
+
+        {drug.dosages && (
+          <div className="drug-detail-field">
+            <span className="drug-detail-label">Dosages</span>
+            <DosageCards parsed={parsedDosages} />
+          </div>
+        )}
+
+        {drug.contraindications && (
+          <div className="drug-detail-field">
+            <span className="drug-detail-label">Contraindications</span>
+            <div className="drug-detail-box drug-detail-box-warning">
+              <span className="material-symbols-outlined drug-detail-box-icon">warning</span>
+              <div className="drug-detail-html"><R html value={drug.contraindications} /></div>
+            </div>
+          </div>
+        )}
+
+        {(drug.adverseReactions || drug.interactions || drug.precautions) && (
+          <div className="drug-detail-grid-3">
+            {drug.adverseReactions && (
+              <div className="drug-detail-field">
+                <span className="drug-detail-label">Adverse Reactions</span>
+                <div className="drug-detail-html"><R html value={drug.adverseReactions} /></div>
+              </div>
+            )}
+            {drug.interactions && (
+              <div className="drug-detail-field">
+                <span className="drug-detail-label">Interactions</span>
+                <div className="drug-detail-html"><R html value={drug.interactions} /></div>
+              </div>
+            )}
+            {drug.precautions && (
+              <div className="drug-detail-field">
+                <span className="drug-detail-label">Precautions</span>
+                <div className="drug-detail-html"><R html value={drug.precautions} /></div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {drug.notes && (
+          <div className="drug-detail-field drug-detail-notes">
+            <span className="drug-detail-label">Notes</span>
+            <div className="drug-detail-html drug-detail-html-notes"><R html value={drug.notes} /></div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -107,15 +224,22 @@ export default function DrugDatabase() {
   if (loading) {
     return (
       <div className="page">
-        <h1><DrugIcon size={28} className="page-heading-icon" /> Drug Database</h1>
-        <p className="page-subtitle">{drugs.length > 0 ? `${drugs.length.toLocaleString()} drugs` : 'Loading drug database'}&hellip;</p>
-        <div className="drug-search-bar drug-search-bar-skeleton" aria-hidden="true">
-          <div className="drug-skeleton-line drug-skeleton-search" />
+        <div className="drug-page-header">
+          <span className="material-symbols-outlined drug-page-header-icon">pill</span>
+          <div>
+            <h1>Drug Database</h1>
+            <p>{drugs.length > 0 ? `${drugs.length.toLocaleString()} drugs` : 'Loading drug database'}&hellip;</p>
+          </div>
+        </div>
+        <div className="drug-search-area">
+          <div className="drug-search-wrapper" style={{ padding: '12px 14px', background: 'var(--surface-container)', border: '1px solid var(--outline-variant)', borderRadius: '12px' }}>
+            <div className="drug-skeleton-line drug-skeleton-search" />
+          </div>
         </div>
         <div className="drug-layout">
           <div className="drug-list-panel">
             <div className="drug-list">
-              {Array.from({ length: 10 }, (_, i) => <SkeletonRow key={i} />)}
+              {Array.from({ length: 10 }, (_, idx) => <SkeletonRow key={idx} />)}
             </div>
           </div>
           <div className="drug-detail-panel">
@@ -137,8 +261,13 @@ export default function DrugDatabase() {
   if (error) {
     return (
       <div className="page">
-        <h1><DrugIcon size={28} className="page-heading-icon" /> Drug Database</h1>
-        <p className="page-subtitle">Failed to load drug database</p>
+        <div className="drug-page-header">
+          <span className="material-symbols-outlined drug-page-header-icon">pill</span>
+          <div>
+            <h1>Drug Database</h1>
+            <p>Failed to load drug database</p>
+          </div>
+        </div>
         <div className="calc-result" style={{ backgroundColor: 'var(--risk-high-mid)' }}>
           Error: {error}. Please ensure <code>drugs.json</code> is available in the public directory.
         </div>
@@ -148,18 +277,22 @@ export default function DrugDatabase() {
 
   return (
     <div className="page">
-      <h1><DrugIcon size={28} className="page-heading-icon" /> Drug Database</h1>
-      <p className="page-subtitle">{drugs.length.toLocaleString()} drugs — search by generic name, brand, or synonym</p>
+      <div className="drug-page-header">
+        <span className="material-symbols-outlined drug-page-header-icon">pill</span>
+        <div>
+          <h1>Drug Database</h1>
+          <p>{drugs.length.toLocaleString()} medications available in formulary</p>
+        </div>
+      </div>
 
-      <div className="drug-search-container">
-        <div className="drug-search-bar">
-          <SearchIcon size={20} className="drug-search-icon" />
+      <div className="drug-search-area">
+        <div className="drug-search-wrapper">
+          <span className="material-symbols-outlined search-icon">search</span>
           <input
             ref={inputRef}
             type="text"
-            className="drug-search-input"
-            placeholder="Search drugs&hellip;"
-            aria-label="Search drugs by generic name, brand, or synonym"
+            placeholder="Search by generic name, brand name, or indication..."
+            aria-label="Search drugs"
             value={query}
             onChange={e => { setQuery(e.target.value); setSelected(null); setFocusedIdx(-1) }}
             onKeyDown={handleKeyDown}
@@ -170,24 +303,18 @@ export default function DrugDatabase() {
               onClick={() => { setQuery(''); setSelected(null); setFocusedIdx(-1); inputRef.current?.focus() }}
               aria-label="Clear search"
             >
-              <ClearIcon size={16} />
+              <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>close</span>
             </button>
           )}
         </div>
-        {query && (
-          <span className="drug-search-count">{results.length} result{results.length !== 1 ? 's' : ''}{mohOnly ? ' in MOH' : ''}</span>
-        )}
-        <div className="drug-filter-group">
-          <button
-            className={`drug-filter-pill ${mohOnly ? 'active' : ''}`}
-            onClick={() => setMohOnly(true)}
-            aria-pressed={mohOnly}
-          >MOH</button>
-          <button
-            className={`drug-filter-pill ${!mohOnly ? 'active' : ''}`}
-            onClick={() => setMohOnly(false)}
-            aria-pressed={!mohOnly}
-          >All</button>
+        <div className="drug-search-tools">
+          <div className="drug-filter-group">
+            <button className={`drug-filter-btn ${mohOnly ? 'active' : ''}`} onClick={() => setMohOnly(true)}>MOH</button>
+            <button className={`drug-filter-btn ${!mohOnly ? 'active' : ''}`} onClick={() => setMohOnly(false)}>All</button>
+          </div>
+          {query && (
+            <span className="drug-result-count">{results.length} result{results.length !== 1 ? 's' : ''}{mohOnly ? ' in MOH' : ''}</span>
+          )}
         </div>
       </div>
 
@@ -195,6 +322,7 @@ export default function DrugDatabase() {
         <div className="drug-list-panel" ref={listRef}>
           {query && results.length === 0 && (
             <div className="drug-no-results">
+              <span className="material-symbols-outlined drug-no-results-icon">search_off</span>
               <strong>{mohOnly ? 'No MOH-available drugs found' : 'No drugs found'}</strong> matching &ldquo;{query}&rdquo;
               <span className="drug-no-results-hint">Try a different spelling or search by generic name, brand name, or synonym</span>
             </div>
@@ -212,18 +340,20 @@ export default function DrugDatabase() {
                   onClick={() => handleSelect(d)}
                   tabIndex={-1}
                 >
-                  <span className="drug-list-name">{d.genericName}</span>
+                  <div className="drug-list-item-top">
+                    <span className="drug-list-name">{d.genericName}</span>
+                    {d.prescriberCategory && d.prescriberCategory !== 'NOT APPLICABLE' && !d.prescriberCategory.startsWith('DELISTED') && (
+                      <span className="drug-list-cat">{d.prescriberCategory}</span>
+                    )}
+                  </div>
                   {d.brandName && <span className="drug-list-brand">{d.brandName}</span>}
-                  {d.prescriberCategory && d.prescriberCategory !== 'NOT APPLICABLE' && (
-                    <span className="drug-list-cat">{d.prescriberCategory}</span>
-                  )}
                 </li>
               ))}
             </ul>
           )}
           {!query && (
             <div className="drug-no-results">
-              <SearchIcon size={24} className="drug-no-results-icon" />
+              <span className="material-symbols-outlined drug-no-results-icon">search</span>
               <strong>Type to search</strong>
               <span className="drug-no-results-hint">Find drugs by generic name, brand name, or synonym. e.g. metformin, Ziagen, ABC</span>
             </div>
@@ -231,7 +361,7 @@ export default function DrugDatabase() {
         </div>
 
         <div className="drug-detail-panel">
-          <div key={selected?.id || 'empty'} className="drug-detail-inner">
+          <div key={selected?.id || 'empty'}>
             {selected ? (
               <DrugDetail drug={selected} />
             ) : query ? (
@@ -240,7 +370,7 @@ export default function DrugDatabase() {
               </div>
             ) : (
               <div className="drug-detail-empty">
-                <DrugIcon size={32} className="drug-detail-empty-icon" />
+                <span className="material-symbols-outlined drug-detail-empty-icon">pill</span>
                 <span>Search for a drug above</span>
                 <span className="drug-detail-empty-hint">Results appear in the left panel — select one to see prescribing information</span>
               </div>
