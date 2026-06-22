@@ -160,6 +160,14 @@ export const ipss = {
   id: 'ipss',
   title: 'IPSS — International Prostate Symptom Score',
   description: 'Benign prostatic hyperplasia symptom assessment (7 questions, 0–5 each)',
+  symptomOptions: [
+    { value: 0, label: 'Not at all' },
+    { value: 1, label: 'Less than 1 in 5 times' },
+    { value: 2, label: 'Less than half the time' },
+    { value: 3, label: 'About half the time' },
+    { value: 4, label: 'More than half the time' },
+    { value: 5, label: 'Almost always' },
+  ],
   questions: [
     { key: 'q1', text: 'Incomplete emptying — How often have you had the sensation of not emptying your bladder?', low: 'Not at all', high: 'Almost always' },
     { key: 'q2', text: 'Frequency — How often have you had to urinate again less than 2 hours after you finished urinating?', low: 'Not at all', high: 'Almost always' },

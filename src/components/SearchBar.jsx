@@ -1,20 +1,18 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { searchIndex } from '../data/searchIndex'
-import { SearchIcon, ClearIcon } from './icons'
 
 export default function SearchBar() {
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState([])
   const [selectedIdx, setSelectedIdx] = useState(-1)
+  const [focused, setFocused] = useState(false)
   const navigate = useNavigate()
   const inputRef = useRef(null)
-  const listRef = useRef(null)
 
-  useEffect(() => {
-    if (!query.trim()) { setResults([]); return }
+  const results = useMemo(() => {
+    if (!query.trim()) return []
     const q = query.toLowerCase()
-    const matches = searchIndex
+    return searchIndex
       .map(item => ({
         ...item,
         score: item.label.toLowerCase().includes(q) ? 2 : (item.keywords.toLowerCase().includes(q) ? 1 : 0),
@@ -22,13 +20,11 @@ export default function SearchBar() {
       .filter(item => item.score > 0)
       .sort((a, b) => b.score - a.score)
       .slice(0, 10)
-    setResults(matches)
-    setSelectedIdx(-1)
   }, [query])
 
   const handleSelect = (item) => {
     setQuery('')
-    setResults([])
+    setFocused(false)
     const path = item.id ? `${item.path}?focus=${item.id}` : item.path
     navigate(path)
     inputRef.current?.blur()
@@ -44,47 +40,28 @@ export default function SearchBar() {
     } else if (e.key === 'Enter' && results.length > 0) {
       handleSelect(selectedIdx >= 0 ? results[selectedIdx] : results[0])
     } else if (e.key === 'Escape') {
-      setResults([])
+      setFocused(false)
       inputRef.current?.blur()
     }
   }
 
+  const show = focused && results.length > 0
+
   return (
-    <div className="search-bar-container">
-      <div className="search-bar">
-        <SearchIcon size={20} className="search-icon" />
-        <input
-          ref={inputRef}
-          type="text"
-          className="search-input"
-          placeholder="Search anything... (Framingham, BMI, cervical cancer, etc.)"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onFocus={() => {
-            if (query.trim() && results.length === 0) {
-              const q = query.toLowerCase()
-              const matches = searchIndex
-                .map(item => ({
-                  ...item,
-                  score: item.label.toLowerCase().includes(q) ? 2 : (item.keywords.toLowerCase().includes(q) ? 1 : 0),
-                }))
-                .filter(item => item.score > 0)
-                .sort((a, b) => b.score - a.score)
-                .slice(0, 10)
-              setResults(matches)
-            }
-          }}
-          onBlur={() => setTimeout(() => setResults([]), 200)}
-        />
-        {query && (
-          <button className="search-clear" onClick={() => { setQuery(''); setResults([]); inputRef.current?.focus() }}>
-            <ClearIcon size={16} />
-          </button>
-        )}
-      </div>
-      {results.length > 0 && (
-        <ul className="search-results" ref={listRef}>
+    <div className="topbar-search">
+      <span className="material-symbols-outlined topbar-search-icon">search</span>
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder="Search CPG, Drugs, or Calculators..."
+        value={query}
+        onChange={e => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setTimeout(() => setFocused(false), 200)}
+      />
+      {show && (
+        <ul className="search-results-dropdown">
           {results.map((item, idx) => (
             <li
               key={`${item.path}-${item.label}`}

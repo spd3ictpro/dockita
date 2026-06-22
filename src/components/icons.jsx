@@ -55,26 +55,6 @@ export function CalendarDaysIcon({ size = 24, className }) {
   return <svg {...s} width={size} height={size} className={className}><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" /></svg>
 }
 
-export function SmileIcon({ size = 24, className }) {
-  return <svg {...s} width={size} height={size} className={className}><path d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" /></svg>
-}
-
-export function FrownIcon({ size = 24, className }) {
-  return <svg {...s} width={size} height={size} className={className}><path d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" /></svg>
-}
-
-export function ExclamationIcon({ size = 24, className }) {
-  return <svg {...s} width={size} height={size} className={className}><path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
-}
-
-export function ScaleIcon({ size = 24, className }) {
-  return <svg {...s} width={size} height={size} className={className}><path d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" /></svg>
-}
-
-export function ClipboardIcon({ size = 24, className }) {
-  return <svg {...s} width={size} height={size} className={className}><path d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15a2.25 2.25 0 0 1 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" /></svg>
-}
-
 export function ChartBarIcon({ size = 24, className }) {
   return <img src={cholesterolImg} alt="" width={size} height={size} className={className} />
 }
@@ -85,18 +65,6 @@ export function DropletIcon({ size = 24, className }) {
 
 export function LungsIcon({ size = 24, className }) {
   return <img src={lungsImg} alt="" width={size} height={size} className={className} />
-}
-
-export function AsthmaIcon({ size = 24, className }) {
-  return <svg fill="none" viewBox="0 0 48 48" width={size} height={size} className={className}>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M7 6C6.63577 6 6.27483 6.015 5.91778 6.04446C5.39914 6.08725 5 6.52067 5 7.04107V43C5 43.5523 5.44772 44 6 44H9C9.55228 44 10 43.5523 10 43V38.5165L14.0968 40.2723C14.6205 40.4968 15.2573 40.7333 15.9222 40.8209C16.5994 40.9101 17.3679 40.8521 18.0826 40.4156C19.2303 39.7147 20 38.4477 20 37V34C20 33.4477 19.5523 33 19 33H16C16 31.8954 16.8954 31 18 31H19C19.5523 31 20 30.5523 20 30V28H21.1315C22.7289 28 23.6817 26.2197 22.7956 24.8906L20 20.6972V19C20 11.8203 14.1797 6 7 6ZM17 21.5C17 22.3284 16.3284 23 15.5 23C14.6716 23 14 22.3284 14 21.5C14 20.6716 14.6716 20 15.5 20C16.3284 20 17 20.6716 17 21.5Z" fill="currentColor"/>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M35.4966 15.7404C35.6399 15.2079 36.1873 14.8919 36.7201 15.034L41.1883 16.2262C41.4449 16.2946 41.6638 16.4624 41.7966 16.6924C41.9293 16.9224 41.9652 17.1958 41.8962 17.4522L41.1192 20.3396L41.4126 20.4725C41.8608 20.6755 42.0947 21.1744 41.9641 21.6488L39.0247 32.3272C38.4275 34.4969 36.4544 36.0002 34.204 36.0002H28C27.4477 36.0002 27 35.5525 27 35.0002V28.0002C27 27.448 27.4477 27.0002 28 27.0002H31.2468L33.6319 18.2208C33.7087 17.9379 33.9058 17.7031 34.1709 17.5782C34.4343 17.4542 34.7386 17.4511 35.0044 17.5697L35.4966 15.7404ZM39.7045 17.9002L39.2417 19.6199L36.8202 18.5183L37.1686 17.2237L39.7045 17.9002Z" fill="currentColor"/>
-    <path d="M26 28V35H24V28H26Z" fill="currentColor"/>
-  </svg>
-}
-
-export function ImageIcon({ size = 24, className }) {
-  return <svg {...s} width={size} height={size} className={className}><path d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Zm16.5-13.5h.008v.008h-.008V7.5Zm-6.75 2.25a1.125 1.125 0 1 1-2.25 0 1.125 1.125 0 0 1 2.25 0Z" /></svg>
 }
 
 export function ClearIcon({ size = 24, className }) {
@@ -188,24 +156,48 @@ export function Logo({ size = 24, className }) {
   </svg>
 }
 
-export function MoonIcon({ size = 24, className }) {
-  return <svg {...s} width={size} height={size} className={className}><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg>
-}
-
-export function ChevronLeft({ size = 24, className }) {
-  return <svg {...s} width={size} height={size} className={className}><path d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
-}
-
-export function ChevronRight({ size = 24, className }) {
-  return <svg {...s} width={size} height={size} className={className}><path d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
-}
-
 export function DrugIcon({ size = 24, className }) {
   return <svg fill="none" viewBox="0 0 24 24" width={size} height={size} className={className}>
     <path d="M8 8h8M8 8c-2 0-3.5 1.5-3.5 3.5S6 15 8 15h1v3.5c0 1.2 1 2.5 2.5 2.5s3-1.3 3-2.5V15h1c2 0 3.5-1.5 3.5-3.5S18 8 16 8M8 8V5c0-1 1-2 2.5-2S13 4 13 5v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 }
 
+export function ChevronRight({ size = 24, className }) {
+  return <svg {...s} width={size} height={size} className={className}><path d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+}
+
+export function ChevronLeft({ size = 24, className }) {
+  return <svg {...s} width={size} height={size} className={className}><path d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+}
+
 export function ChevronDown({ size = 24, className }) {
   return <svg {...s} width={size} height={size} className={className}><path d="m4.5 8.25 7.5 7.5 7.5-7.5" /></svg>
+}
+
+export function SmileIcon({ size = 24, className }) {
+  return <svg {...s} width={size} height={size} className={className}><path d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" /></svg>
+}
+
+export function FrownIcon({ size = 24, className }) {
+  return <svg {...s} width={size} height={size} className={className}><path d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" /></svg>
+}
+
+export function MoonIcon({ size = 24, className }) {
+  return <svg {...s} width={size} height={size} className={className}><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg>
+}
+
+export function ScaleIcon({ size = 24, className }) {
+  return <svg {...s} width={size} height={size} className={className}><path d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" /></svg>
+}
+
+export function ImageIcon({ size = 24, className }) {
+  return <svg {...s} width={size} height={size} className={className}><path d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Zm16.5-13.5h.008v.008h-.008V7.5Zm-6.75 2.25a1.125 1.125 0 1 1-2.25 0 1.125 1.125 0 0 1 2.25 0Z" /></svg>
+}
+
+export function AsthmaIcon({ size = 24, className }) {
+  return <svg fill="none" viewBox="0 0 48 48" width={size} height={size} className={className}>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M7 6C6.63577 6 6.27483 6.015 5.91778 6.04446C5.39914 6.08725 5 6.52067 5 7.04107V43C5 43.5523 5.44772 44 6 44H9C9.55228 44 10 43.5523 10 43V38.5165L14.0968 40.2723C14.6205 40.4968 15.2573 40.7333 15.9222 40.8209C16.5994 40.9101 17.3679 40.8521 18.0826 40.4156C19.2303 39.7147 20 38.4477 20 37V34C20 33.4477 19.5523 33 19 33H16C16 31.8954 16.8954 31 18 31H19C19.5523 31 20 30.5523 20 30V28H21.1315C22.7289 28 23.6817 26.2197 22.7956 24.8906L20 20.6972V19C20 11.8203 14.1797 6 7 6ZM17 21.5C17 22.3284 16.3284 23 15.5 23C14.6716 23 14 22.3284 14 21.5C14 20.6716 14.6716 20 15.5 20C16.3284 20 17 20.6716 17 21.5Z" fill="currentColor"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M35.4966 15.7404C35.6399 15.2079 36.1873 14.8919 36.7201 15.034L41.1883 16.2262C41.4449 16.2946 41.6638 16.4624 41.7966 16.6924C41.9293 16.9224 41.9652 17.1958 41.8962 17.4522L41.1192 20.3396L41.4126 20.4725C41.8608 20.6755 42.0947 21.1744 41.9641 21.6488L39.0247 32.3272C38.4275 34.4969 36.4544 36.0002 34.204 36.0002H28C27.4477 36.0002 27 35.5525 27 35.0002V28.0002C27 27.448 27.4477 27.0002 28 27.0002H31.2468L33.6319 18.2208C33.7087 17.9379 33.9058 17.7031 34.1709 17.5782C34.4343 17.4542 34.7386 17.4511 35.0044 17.5697L35.4966 15.7404ZM39.7045 17.9002L39.2417 19.6199L36.8202 18.5183L37.1686 17.2237L39.7045 17.9002Z" fill="currentColor"/>
+    <path d="M26 28V35H24V28H26Z" fill="currentColor"/>
+  </svg>
 }
