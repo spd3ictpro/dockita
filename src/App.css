@@ -1874,6 +1874,11 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   font-size: 1.5rem;
 }
 
+.score-card-icon svg,
+.score-card-icon img {
+  display: block;
+}
+
 .score-card-desc {
   font-size: 0.82rem;
   color: var(--on-surface-variant);

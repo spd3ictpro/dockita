@@ -1,7 +1,6 @@
-import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { screeningCategories } from '../data/screeningData'
-import { ScreeningIcon, FemaleIcon, BreastIcon, GutIcon, DropletIcon, HeartIcon, ChartBarIcon, BoneIcon, LungsIcon, LiverIcon, PulseIcon, ChevronRight } from '../components/icons'
+import { ScreeningIcon, FemaleIcon, BreastIcon, GutIcon, DropletIcon, HeartIcon, ChartBarIcon, BoneIcon, LungsIcon, LiverIcon, PulseIcon } from '../components/icons'
 
 const categoryMeta = {
   'cervical-cancer': { icon: FemaleIcon, color: '#f06595' },
@@ -30,8 +29,8 @@ const focusTitles = {
 }
 
 export default function Screening() {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const [expanded, setExpanded] = useState(null)
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const focus = searchParams.get('focus')
   const showAll = !focus || !focusTitles[focus]
 
@@ -40,8 +39,9 @@ export default function Screening() {
     if (!cat) {
       return (
         <div className="page">
-          <button className="focus-back" onClick={() => setSearchParams({})}>
-            ← All Screening Guidelines
+          <button className="focus-back" onClick={() => navigate('/screening')}>
+            <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>arrow_back</span>
+            All Screening Guidelines
           </button>
           <h1><ScreeningIcon size={28} className="page-heading-icon" /> Screening Guidelines</h1>
           <p className="page-subtitle">Category not found</p>
@@ -52,94 +52,69 @@ export default function Screening() {
     const Icon = meta.icon
     return (
       <div className="page">
-        <button className="focus-back" onClick={() => setSearchParams({})}>
-          ← All Screening Guidelines
+        <button className="focus-back" onClick={() => navigate('/screening')}>
+          <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>arrow_back</span>
+          All Screening Guidelines
         </button>
-        <h1><ScreeningIcon size={28} className="page-heading-icon" /> {focusTitles[focus]}</h1>
-        <div className="screening-list">
-          <div className="screening-card expanded" style={{ '--card-accent': meta.color }}>
-            <div className="screening-card-header" style={{ cursor: 'default' }}>
-              <div className="screening-card-header-left">
-                {Icon && <Icon size={24} className="screening-card-icon" style={{ color: meta.color }} />}
-                <div>
-                  <h3>{cat.title}</h3>
-                  <span className="screening-source">{cat.source}</span>
-                </div>
-              </div>
-            </div>
-            <div className="screening-card-body visible">
-              <table className="screening-table">
-                <thead>
-                  <tr>
-                    <th>Population</th>
-                    <th>Recommendation</th>
-                    <th>Notes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cat.guidelines.map((g, i) => (
-                    <tr key={i}>
-                      <td className="cell-population">{g.age}</td>
-                      <td className="cell-test">{g.test}</td>
-                      <td className="note-cell">{g.note}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+
+        <div className="score-detail-header">
+          <div>
+            <div className="score-card-category">{cat.condition}</div>
+            <h1>{focusTitles[focus]}</h1>
           </div>
+          {Icon && <Icon size={28} className="score-card-icon" style={{ color: meta.color }} />}
+        </div>
+        <p className="score-detail-desc">{cat.source}</p>
+
+        <div className="score-detail-form">
+          <table className="screening-table">
+            <thead>
+              <tr>
+                <th>Population</th>
+                <th>Recommendation</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cat.guidelines.map((g, i) => (
+                <tr key={i}>
+                  <td className="cell-population">{g.age}</td>
+                  <td className="cell-test">{g.test}</td>
+                  <td className="note-cell">{g.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="page">
-      <h1><ScreeningIcon size={28} className="page-heading-icon" /> Screening Guidelines</h1>
-      <p className="page-subtitle">Malaysia CPG-based screening recommendations</p>
+    <div className="page" style={{ paddingTop: 0 }}>
+      <div style={{ marginBottom: '24px' }}>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--on-surface)' }}>Screening Guidelines</h2>
+        <p style={{ color: 'var(--on-surface-variant)', fontSize: '0.9rem', marginTop: 4 }}>Malaysia CPG-based screening recommendations</p>
+      </div>
 
-      <div className="screening-list">
+      <div className="scores-bento">
         {screeningCategories.map(cat => {
           const meta = categoryMeta[cat.id] || {}
           const Icon = meta.icon
-          const isExpanded = expanded === cat.id
-
           return (
             <div
               key={cat.id}
-              className={`screening-card ${isExpanded ? 'expanded' : ''}`}
-              style={{ '--card-accent': meta.color }}
+              className="score-card"
+              onClick={() => navigate('/screening?focus=' + cat.id)}
             >
-              <button className="screening-card-header" onClick={() => setExpanded(e => e === cat.id ? null : cat.id)}>
-                <div className="screening-card-header-left">
-                  {Icon && <Icon size={24} className="screening-card-icon" style={{ color: meta.color }} />}
-                  <div>
-                    <h3>{cat.title}</h3>
-                    <span className="screening-source">{cat.source}</span>
-                  </div>
+              <div className="score-card-header">
+                <div>
+                  <div className="score-card-category">{cat.condition}</div>
+                  <div className="score-card-title">{cat.title}</div>
                 </div>
-                <ChevronRight size={20} className={`screening-chevron ${isExpanded ? 'expanded' : ''}`} />
-              </button>
-              <div className={`screening-card-body ${isExpanded ? 'visible' : ''}`}>
-                <table className="screening-table">
-                  <thead>
-                    <tr>
-                      <th>Population</th>
-                      <th>Recommendation</th>
-                      <th>Notes</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {cat.guidelines.map((g, i) => (
-                      <tr key={i}>
-                        <td className="cell-population">{g.age}</td>
-                        <td className="cell-test">{g.test}</td>
-                        <td className="note-cell">{g.note}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                {Icon && <Icon size={24} className="score-card-icon" style={{ color: meta.color }} />}
               </div>
+              <p className="score-card-desc">{cat.source}</p>
             </div>
           )
         })}

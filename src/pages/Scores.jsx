@@ -11,7 +11,7 @@ const scoreMeta = [
   { id: 'framingham', icon: 'favorite', category: 'Preventive', title: 'Framingham', desc: '10-year cardiovascular risk assessment based on lipid profiles.' },
   { id: 'stopbang', icon: 'sleep', category: 'Sleep', title: 'STOP-BANG', desc: 'Obstructive Sleep Apnea screening tool.' },
   { id: 'epworth', icon: 'sleep_score', category: 'Sleep', title: 'Epworth', desc: 'Epworth Sleepiness Scale for daytime sleepiness.' },
-  { id: 'aria', icon: 'lungs', category: 'Respiratory', title: 'ARIA', desc: 'Allergic Rhinitis and its Impact on Asthma classification.' },
+  { id: 'aria', icon: 'allergy', category: 'Respiratory', title: 'ARIA', desc: 'Allergic Rhinitis and its Impact on Asthma classification.' },
   { id: 'act', icon: 'stethoscope', category: 'Respiratory', title: 'ACT', desc: 'Asthma Control Test for symptom assessment.' },
   { id: 'cat', icon: 'monitoring', category: 'Respiratory', title: 'CAT', desc: 'COPD Assessment Test for health status evaluation.' },
 ]
