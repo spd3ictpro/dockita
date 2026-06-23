@@ -183,18 +183,20 @@ function EDDCalculator() {
 
   const calc = () => {
     if (!lmp) { setResult(null); return }
-    const lmpDate = new Date(lmp)
+    const lmpDate = new Date(lmp + 'T00:00:00')
     const today = new Date()
+    today.setHours(0, 0, 0, 0)
     if (lmpDate > today) {
       setResult({ error: 'LMP cannot be in the future' })
       return
     }
-    const date = new Date(lmp)
-    date.setDate(date.getDate() + 280)
-    const gaWeeks = Math.floor((today - new Date(lmp)) / (7 * 86400000))
-    const gaDays = Math.round(((today - new Date(lmp)) % (7 * 86400000)) / 86400000)
+    const eddDate = new Date(lmpDate)
+    eddDate.setDate(eddDate.getDate() + 280)
+    const totalDays = Math.max(0, Math.floor((today - lmpDate) / 86400000))
+    const gaWeeks = Math.floor(totalDays / 7)
+    const gaDays = totalDays % 7
     setResult({
-      edd: date.toLocaleDateString('en-MY', { year: 'numeric', month: 'long', day: 'numeric' }),
+      edd: eddDate.toLocaleDateString('en-MY', { year: 'numeric', month: 'long', day: 'numeric' }),
       ga: `${gaWeeks}+${gaDays}`,
     })
   }

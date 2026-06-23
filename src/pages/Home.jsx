@@ -10,9 +10,21 @@ const categories = [
   { path: '/drugs', icon: 'pill', title: 'Drug Database', desc: '148 medications available in formulary' },
 ]
 
+const quotes = [
+  { text: 'The art of medicine consists of amusing the patient while nature cures the disease.', author: 'Voltaire' },
+  { text: 'Wherever the art of medicine is loved, there is also a love of humanity.', author: 'Hippocrates' },
+  { text: 'Medicine is a science of uncertainty and an art of probability.', author: 'William Osler' },
+  { text: 'The good physician treats the disease; the great physician treats the patient who has the disease.', author: 'William Osler' },
+  { text: 'Prevention is better than cure.', author: 'Desiderius Erasmus' },
+  { text: 'Let food be thy medicine and medicine be thy food.', author: 'Hippocrates' },
+  { text: 'He who has health has hope, and he who has hope has everything.', author: 'Arabian Proverb' },
+  { text: 'The greatest medicine of all is teaching people how not to need it.', author: 'Hippocrates' },
+]
+
 export default function Home() {
   const navigate = useNavigate()
   const [now, setNow] = useState(new Date())
+  const [quote] = useState(() => quotes[Math.floor(Math.random() * quotes.length)])
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 30000)
@@ -58,10 +70,9 @@ export default function Home() {
       </section>
 
       <section className="home-quote-section">
-        <span className="material-symbols-outlined quote-icon">format_quote</span>
         <blockquote>
-          <p>&ldquo;The art of medicine consists of amusing the patient while nature cures the disease.&rdquo;</p>
-          <footer>&mdash; Voltaire</footer>
+          <p>&ldquo;{quote.text}&rdquo;</p>
+          <footer>&mdash; {quote.author}</footer>
         </blockquote>
       </section>
     </div>

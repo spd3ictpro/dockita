@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IPSS Calculator - dockita</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        /* Custom scrollbar for clinical look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+        
+        .ipss-radio:checked + label {
+            background-color: #2a4dd7;
+            color: white;
+            border-color: #2a4dd7;
+        }
+        .severity-mild { color: #059669; }
+        .severity-moderate { color: #d97706; }
+        .severity-severe { color: #dc2626; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#b9c3ff",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary-fixed": "#001257",
+                        "primary": "#2a4dd7",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#fffbff",
+                        "inverse-primary": "#b9c3ff",
+                        "surface-variant": "#e1e3e4",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#954500",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#321300",
+                        "background": "#f8f9fa",
+                        "on-secondary-container": "#424d84",
+                        "outline": "#747686",
+                        "on-secondary-fixed": "#08154c",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#38437a",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary-container": "#b5c0ff",
+                        "primary-fixed": "#dde1ff",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#ffb68a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#191c1d",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#d9dadb",
+                        "on-primary-container": "#fffbff",
+                        "surface": "#f8f9fa",
+                        "secondary": "#4f5b93",
+                        "on-tertiary-fixed-variant": "#743500",
+                        "on-primary-fixed-variant": "#0034c0",
+                        "primary-container": "#4868f1",
+                        "tertiary-fixed": "#ffdbc8",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-fixed": "#dde1ff",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "on-surface-variant": "#444654",
+                        "surface-tint": "#2d50d9",
+                        "secondary-fixed-dim": "#b9c3ff",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-surface": "#191c1d",
+                        "inverse-on-surface": "#f0f1f2",
+                        "tertiary-container": "#bb5800",
+                        "surface-container": "#edeeef",
+                        "outline-variant": "#c4c5d7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "base": "4px",
+                        "margin-mobile": "16px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "margin-desktop": "32px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "mono-data": ["monospace"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "mono-data": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-sm": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- SideNavBar Component -->
+<aside class="w-[260px] h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface flex flex-col py-lg px-md z-30">
+<div class="mb-xl px-sm">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">dockita</h1>
+<div class="flex items-center mt-md space-x-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A clinical headshot of a professional doctor in a white lab coat, clean studio lighting, minimalist medical office background, high-resolution photography, professional and trustworthy demeanor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWjIWfDQE1Ws8C5v3ZdMBCUDVptVh1WfBjrCMosyGOh_vFeeh4ekkh3rkkQrK8w8VVLorrqqCm8bnnUrHjsNKVZadlwTsyOOH1BbFA_I6okGesIWYNGEQcrpaW9tWiPyXapn3udIY9e_wqLz500ax5wYxa6r2RBHQ35N8W9Gp6uFPigyHj16vOGomTWZPSDU8KSEn-SjWB3Rh44HcQxd1wvzmAfmmbHqed0DZuvWo-ac5UHUjGV_cUZ1nG5mZVv6ftBixvk8D0AbWa"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Doctor</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Medical Officer</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto">
+<a class="flex items-center px-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span> Home
+            </a>
+<a class="flex items-center px-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined mr-3">clinical_notes</span> Screening
+            </a>
+<a class="flex items-center px-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined mr-3">medical_services</span> Diabetes
+            </a>
+<a class="flex items-center px-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined mr-3">blood_pressure</span> Hypertension
+            </a>
+<a class="flex items-center px-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined mr-3">science</span> Dyslipidemia
+            </a>
+<a class="flex items-center px-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined mr-3">calculate</span> Calculators
+            </a>
+<a class="flex items-center px-sm py-2 rounded-lg text-primary font-bold bg-surface-container-high transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span> Scores & Scales
+            </a>
+<a class="flex items-center px-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined mr-3">pill</span> Drug Database
+            </a>
+<a class="flex items-center px-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined mr-3">elderly</span> Geriatric
+            </a>
+<a class="flex items-center px-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined mr-3">monitoring</span> Infographics
+            </a>
+</nav>
+</aside>
+<!-- TopNavBar Component -->
+<header class="sticky top-0 right-0 h-16 ml-[260px] flex justify-between items-center px-lg bg-surface-container-lowest border-b border-outline-variant z-20">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:ring-1 focus:ring-primary outline-none text-body-md" placeholder="Search guidelines, drugs, or scores..." type="text"/>
+</div>
+</div>
+<div class="flex items-center space-x-md ml-lg">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">settings</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">help</span></button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[260px] p-lg pb-32">
+<!-- Breadcrumbs -->
+<nav class="flex items-center space-x-2 text-on-surface-variant font-label-md mb-md">
+<a class="hover:text-primary" href="#">Scores & Scales</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-on-surface">IPSS Calculator</span>
+</nav>
+<div class="max-w-5xl">
+<!-- Header Section -->
+<div class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">IPSS Calculator</h2>
+<p class="text-on-surface-variant mt-xs">International Prostate Symptom Score for evaluating LUTS (Lower Urinary Tract Symptoms).</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Calculator Inputs (Left 2 Columns) -->
+<div class="lg:col-span-2 space-y-lg">
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md overflow-hidden">
+<div class="flex items-center justify-between mb-md px-sm">
+<h3 class="font-headline-sm text-headline-sm flex items-center">
+<span class="material-symbols-outlined mr-2 text-primary">clinical_notes</span>
+                                Symptom Assessment
+                            </h3>
+<span class="text-on-surface-variant text-label-md bg-surface-container-low px-2 py-1 rounded">Past 1 month</span>
+</div>
+<!-- IPSS Table Header -->
+<div class="hidden md:grid grid-cols-12 gap-2 px-sm py-2 bg-surface-container-low border-b border-outline-variant font-label-md text-on-surface-variant uppercase">
+<div class="col-span-6">Symptom Question</div>
+<div class="col-span-1 text-center">0</div>
+<div class="col-span-1 text-center">1</div>
+<div class="col-span-1 text-center">2</div>
+<div class="col-span-1 text-center">3</div>
+<div class="col-span-1 text-center">4</div>
+<div class="col-span-1 text-center">5</div>
+</div>
+<!-- Symptom Rows -->
+<div class="divide-y divide-outline-variant" id="ipss-form">
+<!-- Questions generated via script or listed statically for stability -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-2 py-md px-sm group hover:bg-surface-container-low transition-colors items-center" data-question="q1">
+<div class="col-span-12 md:col-span-6">
+<p class="font-body-md font-semibold text-on-surface">1. Incomplete Emptying</p>
+<p class="text-body-sm text-on-surface-variant">Sensation of not emptying bladder completely?</p>
+</div>
+<div class="col-span-12 md:col-span-6 grid grid-cols-6 gap-1 mt-2 md:mt-0">
+<!-- Option 0-5 -->
+<label class="flex flex-col items-center cursor-pointer">
+<input class="sr-only ipss-radio" name="q1" type="radio" value="0"/>
+<span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">0</span>
+</label>
+<label class="flex flex-col items-center cursor-pointer">
+<input class="sr-only ipss-radio" name="q1" type="radio" value="1"/>
+<span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">1</span>
+</label>
+<label class="flex flex-col items-center cursor-pointer">
+<input class="sr-only ipss-radio" name="q1" type="radio" value="2"/>
+<span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">2</span>
+</label>
+<label class="flex flex-col items-center cursor-pointer">
+<input class="sr-only ipss-radio" name="q1" type="radio" value="3"/>
+<span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">3</span>
+</label>
+<label class="flex flex-col items-center cursor-pointer">
+<input class="sr-only ipss-radio" name="q1" type="radio" value="4"/>
+<span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">4</span>
+</label>
+<label class="flex flex-col items-center cursor-pointer">
+<input class="sr-only ipss-radio" name="q1" type="radio" value="5"/>
+<span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">5</span>
+</label>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-2 py-md px-sm group hover:bg-surface-container-low transition-colors items-center" data-question="q2">
+<div class="col-span-12 md:col-span-6">
+<p class="font-body-md font-semibold text-on-surface">2. Frequency</p>
+<p class="text-body-sm text-on-surface-variant">Urinate again less than 2 hours after you finished?</p>
+</div>
+<div class="col-span-12 md:col-span-6 grid grid-cols-6 gap-1 mt-2 md:mt-0">
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q2" type="radio" value="0"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">0</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q2" type="radio" value="1"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">1</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q2" type="radio" value="2"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">2</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q2" type="radio" value="3"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">3</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q2" type="radio" value="4"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">4</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q2" type="radio" value="5"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">5</span></label>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-2 py-md px-sm group hover:bg-surface-container-low transition-colors items-center" data-question="q3">
+<div class="col-span-12 md:col-span-6">
+<p class="font-body-md font-semibold text-on-surface">3. Intermittency</p>
+<p class="text-body-sm text-on-surface-variant">Stopped and started again several times during urination?</p>
+</div>
+<div class="col-span-12 md:col-span-6 grid grid-cols-6 gap-1 mt-2 md:mt-0">
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q3" type="radio" value="0"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">0</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q3" type="radio" value="1"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">1</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q3" type="radio" value="2"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">2</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q3" type="radio" value="3"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">3</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q3" type="radio" value="4"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">4</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q3" type="radio" value="5"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">5</span></label>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-2 py-md px-sm group hover:bg-surface-container-low transition-colors items-center" data-question="q4">
+<div class="col-span-12 md:col-span-6">
+<p class="font-body-md font-semibold text-on-surface">4. Urgency</p>
+<p class="text-body-sm text-on-surface-variant">Found it difficult to postpone urination?</p>
+</div>
+<div class="col-span-12 md:col-span-6 grid grid-cols-6 gap-1 mt-2 md:mt-0">
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q4" type="radio" value="0"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">0</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q4" type="radio" value="1"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">1</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q4" type="radio" value="2"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">2</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q4" type="radio" value="3"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">3</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q4" type="radio" value="4"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">4</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q4" type="radio" value="5"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">5</span></label>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-2 py-md px-sm group hover:bg-surface-container-low transition-colors items-center" data-question="q5">
+<div class="col-span-12 md:col-span-6">
+<p class="font-body-md font-semibold text-on-surface">5. Weak Stream</p>
+<p class="text-body-sm text-on-surface-variant">Had a weak urinary stream?</p>
+</div>
+<div class="col-span-12 md:col-span-6 grid grid-cols-6 gap-1 mt-2 md:mt-0">
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q5" type="radio" value="0"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">0</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q5" type="radio" value="1"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">1</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q5" type="radio" value="2"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">2</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q5" type="radio" value="3"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">3</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q5" type="radio" value="4"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">4</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q5" type="radio" value="5"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">5</span></label>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-2 py-md px-sm group hover:bg-surface-container-low transition-colors items-center" data-question="q6">
+<div class="col-span-12 md:col-span-6">
+<p class="font-body-md font-semibold text-on-surface">6. Straining</p>
+<p class="text-body-sm text-on-surface-variant">Had to push or strain to begin urination?</p>
+</div>
+<div class="col-span-12 md:col-span-6 grid grid-cols-6 gap-1 mt-2 md:mt-0">
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q6" type="radio" value="0"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">0</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q6" type="radio" value="1"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">1</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q6" type="radio" value="2"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">2</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q6" type="radio" value="3"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">3</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q6" type="radio" value="4"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">4</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q6" type="radio" value="5"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">5</span></label>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-2 py-md px-sm group hover:bg-surface-container-low transition-colors items-center" data-question="q7">
+<div class="col-span-12 md:col-span-6">
+<p class="font-body-md font-semibold text-on-surface">7. Nocturia</p>
+<p class="text-body-sm text-on-surface-variant">Times you get up to urinate from going to bed until waking?</p>
+</div>
+<div class="col-span-12 md:col-span-6 grid grid-cols-6 gap-1 mt-2 md:mt-0">
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q7" type="radio" value="0"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">0</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q7" type="radio" value="1"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">1</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q7" type="radio" value="2"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">2</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q7" type="radio" value="3"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">3</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q7" type="radio" value="4"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">4</span></label>
+<label class="flex flex-col items-center cursor-pointer"><input class="sr-only ipss-radio" name="q7" type="radio" value="5"/><span class="w-full py-1 text-center border border-outline-variant rounded font-mono-data">5</span></label>
+</div>
+</div>
+</div>
+<!-- Scale Legend Mobile -->
+<div class="md:hidden mt-lg p-sm bg-surface-container rounded-lg text-label-md text-on-surface-variant">
+<p><strong>Scale:</strong> 0 = Not at all, 5 = Almost always</p>
+</div>
+<div class="hidden md:grid grid-cols-6 gap-1 px-sm mt-md text-[10px] text-on-surface-variant font-bold uppercase text-center ml-auto w-1/2">
+<span>Not at all</span>
+<span><1/5th</span>
+<span><1/2</span>
+<span>About 1/2</span>
+<span>>1/2</span>
+<span>Almost always</span>
+</div>
+</section>
+<!-- Quality of Life Section -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md">
+<div class="flex items-center mb-md px-sm">
+<h3 class="font-headline-sm text-headline-sm flex items-center">
+<span class="material-symbols-outlined mr-2 text-primary">sentiment_satisfied</span>
+                                Quality of Life (QoL)
+                            </h3>
+</div>
+<div class="px-sm">
+<p class="font-body-md text-on-surface mb-md">How would you feel if you were to spend the rest of your life with your urinary condition just the way it is now?</p>
+<div class="grid grid-cols-7 gap-2">
+<label class="flex flex-col items-center cursor-pointer" title="Delighted">
+<input class="sr-only ipss-radio" name="qol" type="radio" value="0"/>
+<span class="w-full py-3 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">0</span>
+<span class="text-[10px] mt-1 text-center hidden md:block">Delighted</span>
+</label>
+<label class="flex flex-col items-center cursor-pointer" title="Pleased">
+<input class="sr-only ipss-radio" name="qol" type="radio" value="1"/>
+<span class="w-full py-3 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">1</span>
+<span class="text-[10px] mt-1 text-center hidden md:block">Pleased</span>
+</label>
+<label class="flex flex-col items-center cursor-pointer" title="Mostly satisfied">
+<input class="sr-only ipss-radio" name="qol" type="radio" value="2"/>
+<span class="w-full py-3 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">2</span>
+<span class="text-[10px] mt-1 text-center hidden md:block">Satisfied</span>
+</label>
+<label class="flex flex-col items-center cursor-pointer" title="Mixed">
+<input class="sr-only ipss-radio" name="qol" type="radio" value="3"/>
+<span class="w-full py-3 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">3</span>
+<span class="text-[10px] mt-1 text-center hidden md:block">Mixed</span>
+</label>
+<label class="flex flex-col items-center cursor-pointer" title="Mostly dissatisfied">
+<input class="sr-only ipss-radio" name="qol" type="radio" value="4"/>
+<span class="w-full py-3 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">4</span>
+<span class="text-[10px] mt-1 text-center hidden md:block">Dissatisfied</span>
+</label>
+<label class="flex flex-col items-center cursor-pointer" title="Unhappy">
+<input class="sr-only ipss-radio" name="qol" type="radio" value="5"/>
+<span class="w-full py-3 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">5</span>
+<span class="text-[10px] mt-1 text-center hidden md:block">Unhappy</span>
+</label>
+<label class="flex flex-col items-center cursor-pointer" title="Terrible">
+<input class="sr-only ipss-radio" name="qol" type="radio" value="6"/>
+<span class="w-full py-3 text-center border border-outline-variant rounded font-mono-data hover:bg-surface-container transition-colors">6</span>
+<span class="text-[10px] mt-1 text-center hidden md:block">Terrible</span>
+</label>
+</div>
+</div>
+</section>
+</div>
+<!-- Results Panel (Right Column) -->
+<div class="space-y-lg">
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md sticky top-24 shadow-sm transition-all" id="results-panel">
+<h3 class="font-headline-sm text-headline-sm mb-lg border-b border-outline-variant pb-2">Results</h3>
+<div class="space-y-6">
+<!-- IPSS Score Display -->
+<div class="text-center p-md bg-surface-container-low rounded-lg border border-outline-variant">
+<p class="text-on-surface-variant font-label-md uppercase tracking-widest mb-1">Total Score</p>
+<p class="text-5xl font-bold text-primary" id="total-score">--</p>
+<p class="mt-2 font-bold text-headline-sm" id="severity-label">Select all questions</p>
+</div>
+<!-- QoL Score Display -->
+<div class="flex items-center justify-between px-md py-3 border border-outline-variant rounded-lg">
+<div>
+<p class="text-on-surface-variant text-label-md">QoL Score</p>
+<p class="font-semibold" id="qol-result-text">Pending</p>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center font-bold text-headline-sm text-primary" id="qol-score">--</div>
+</div>
+<!-- Action Buttons -->
+<div class="space-y-sm pt-4">
+<button class="w-full py-3 bg-primary text-on-primary rounded-lg font-semibold hover:bg-primary-container transition-transform active:scale-95 flex items-center justify-center" onclick="window.print()">
+<span class="material-symbols-outlined mr-2">print</span> Print Results
+                                </button>
+<button class="w-full py-3 border border-outline-variant text-on-surface-variant rounded-lg font-semibold hover:bg-surface-container transition-colors flex items-center justify-center" id="reset-btn">
+<span class="material-symbols-outlined mr-2">restart_alt</span> Reset
+                                </button>
+</div>
+</div>
+</section>
+<!-- Interpretation Card -->
+<section class="bg-surface-container-high border border-outline-variant rounded-xl p-md">
+<h4 class="font-label-md text-on-surface-variant uppercase mb-md">Clinical Interpretation</h4>
+<ul class="space-y-md text-body-sm text-on-surface">
+<li class="flex items-start">
+<span class="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 mr-3 shrink-0"></span>
+<span><strong>0-7 (Mild):</strong> Generally watchful waiting or minimal intervention required.</span>
+</li>
+<li class="flex items-start">
+<span class="w-2 h-2 rounded-full bg-amber-500 mt-1.5 mr-3 shrink-0"></span>
+<span><strong>8-19 (Moderate):</strong> Medical management (alpha-blockers, 5-ARIs) often indicated.</span>
+</li>
+<li class="flex items-start">
+<span class="w-2 h-2 rounded-full bg-rose-500 mt-1.5 mr-3 shrink-0"></span>
+<span><strong>20-35 (Severe):</strong> Consider surgical intervention or specialized referral.</span>
+</li>
+</ul>
+<div class="mt-lg pt-md border-t border-outline-variant">
+<p class="text-[11px] text-on-surface-variant italic leading-relaxed">Note: IPSS is a tool for symptom quantification and treatment monitoring. It does not replace clinical diagnosis (e.g., DRE, PSA).</p>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Component -->
+<footer class="fixed bottom-0 right-0 w-[calc(100%-260px)] h-12 bg-surface-container-low border-t border-outline-variant flex justify-between items-center py-sm px-lg z-10">
+<p class="text-on-surface-variant font-label-md">Disclaimer: Clinical decision support tool. Verify with local guidelines.</p>
+<div class="flex items-center space-x-lg">
+<a class="text-on-surface-variant hover:text-primary font-label-md transition-colors" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary font-label-md transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary font-label-md transition-colors" href="#">Contact Support</a>
+</div>
+</footer>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const symptomInputs = document.querySelectorAll('.ipss-radio[name^="q"]');
+            const qolInputs = document.querySelectorAll('.ipss-radio[name="qol"]');
+            const totalScoreEl = document.getElementById('total-score');
+            const severityLabelEl = document.getElementById('severity-label');
+            const qolScoreEl = document.getElementById('qol-score');
+            const qolResultTextEl = document.getElementById('qol-result-text');
+            const resetBtn = document.getElementById('reset-btn');
+
+            const qolLabels = [
+                "Delighted", "Pleased", "Mostly satisfied", 
+                "Mixed", "Mostly dissatisfied", "Unhappy", "Terrible"
+            ];
+
+            function calculateScores() {
+                let total = 0;
+                let symptomsCount = 0;
+                
+                // IPSS Sum
+                for (let i = 1; i <= 7; i++) {
+                    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                    if (selected) {
+                        total += parseInt(selected.value);
+                        symptomsCount++;
+                    }
+                }
+
+                // Update Total Display
+                if (symptomsCount === 7) {
+                    totalScoreEl.textContent = total;
+                    if (total <= 7) {
+                        severityLabelEl.textContent = "Mild Symptoms";
+                        severityLabelEl.className = "mt-2 font-bold text-headline-sm text-emerald-600";
+                    } else if (total <= 19) {
+                        severityLabelEl.textContent = "Moderate Symptoms";
+                        severityLabelEl.className = "mt-2 font-bold text-headline-sm text-amber-600";
+                    } else {
+                        severityLabelEl.textContent = "Severe Symptoms";
+                        severityLabelEl.className = "mt-2 font-bold text-headline-sm text-rose-600";
+                    }
+                } else {
+                    totalScoreEl.textContent = "--";
+                    severityLabelEl.textContent = "Complete all questions";
+                    severityLabelEl.className = "mt-2 font-bold text-body-md text-on-surface-variant";
+                }
+
+                // QoL Update
+                const selectedQol = document.querySelector('input[name="qol"]:checked');
+                if (selectedQol) {
+                    const val = parseInt(selectedQol.value);
+                    qolScoreEl.textContent = val;
+                    qolResultTextEl.textContent = qolLabels[val];
+                    qolResultTextEl.className = "font-semibold text-primary";
+                } else {
+                    qolScoreEl.textContent = "--";
+                    qolResultTextEl.textContent = "Pending";
+                    qolResultTextEl.className = "font-semibold text-on-surface-variant";
+                }
+            }
+
+            symptomInputs.forEach(input => {
+                input.addEventListener('change', calculateScores);
+            });
+
+            qolInputs.forEach(input => {
+                input.addEventListener('change', calculateScores);
+            });
+
+            resetBtn.addEventListener('click', () => {
+                document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+                calculateScores();
+            });
+        });
+    </script>
+</body></html>

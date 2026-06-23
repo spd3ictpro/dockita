@@ -1455,23 +1455,15 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 
 .home-quote-section {
   margin-top: 24px;
-  padding: 48px 24px;
+  padding: 56px 40px;
   background: var(--surface-container-low);
   border: 1px solid var(--outline-variant);
-  border-radius: 8px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  min-height: 300px;
   justify-content: center;
-}
-
-.home-quote-section .quote-icon {
-  font-size: 4rem;
-  color: color-mix(in srgb, var(--primary) 20%, transparent);
-  margin-bottom: 16px;
-  user-select: none;
 }
 
 .home-quote-section blockquote {
@@ -1479,11 +1471,12 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 }
 
 .home-quote-section blockquote p {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 500;
   font-style: italic;
-  color: var(--on-surface);
-  line-height: 1.6;
+  color: var(--on-surface-variant);
+  line-height: 1.75;
   margin-bottom: 12px;
 }
 
@@ -1879,6 +1872,11 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   display: block;
 }
 
+.score-card-icon img {
+  background: var(--surface-container);
+  border-radius: 4px;
+}
+
 .score-card-desc {
   font-size: 0.82rem;
   color: var(--on-surface-variant);
@@ -2177,6 +2175,17 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   box-shadow: var(--hover-shadow);
 }
 
+.info-thumb-wrap {
+  height: 180px;
+  overflow: hidden;
+}
+
+.info-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .info-card-placeholder {
   display: flex;
   flex-direction: column;
@@ -2214,6 +2223,10 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   font-size: 0.8rem;
   color: var(--on-surface-variant);
   line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ===== Drug Database Page ===== */
@@ -2999,6 +3012,454 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 
 .toggle-btn.active .toggle-sub { opacity: 0.9; }
 
+/* ===== Dyslipidemia Page ===== */
+.ref-card {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ref-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--outline-variant);
+}
+
+.ref-card-header .material-symbols-outlined {
+  font-size: 20px;
+  color: var(--primary);
+}
+
+.ref-card-header h2 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.ref-card-body {
+  padding: 20px;
+}
+
+/* Framingham grid */
+.framingham-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.framingham-field .field-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--on-surface-variant);
+  margin-bottom: 6px;
+}
+
+.framingham-field input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  background: var(--surface-container-low);
+  color: var(--on-surface);
+  font-size: 0.82rem;
+  font-family: monospace;
+  box-sizing: border-box;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.framingham-field input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+/* Segmented control (reference-style toggle buttons) */
+.segmented-control {
+  display: flex;
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.segmented-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  text-align: center;
+}
+
+.segmented-btn + .segmented-btn {
+  border-left: 1px solid var(--outline-variant);
+}
+
+.segmented-btn.active {
+  background: var(--surface-container-high);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Framingham result card */
+.framingham-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.framingham-result-card {
+  padding: 14px 16px;
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.framingham-result-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--on-surface-variant);
+  margin-bottom: 2px;
+}
+
+.framingham-result-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: monospace;
+  color: var(--on-surface);
+  line-height: 1.2;
+}
+
+.framingham-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* Risk stratification cards */
+.dyslipid-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.page-content:has(.dyslipid-body) {
+  max-width: 1280px;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.dyslipid-bento {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.dyslipid-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dyslipid-table tbody tr[data-tier="very-high"] { background: #FDB7B7; }
+.dyslipid-table tbody tr[data-tier="high"] { background: #FCE7F3; }
+.dyslipid-table tbody tr[data-tier="moderate"] { background: #FEF3C7; }
+.dyslipid-table tbody tr[data-tier="low"] { background: #DCFCE7; }
+.dyslipid-table tbody tr[data-tier="none"] { background: #F3F4F6; }
+
+[data-theme="dark"] .dyslipid-table tbody tr[data-tier="very-high"] { background: color-mix(in srgb, #7a1a1a 50%, var(--surface-container-lowest)); }
+[data-theme="dark"] .dyslipid-table tbody tr[data-tier="high"] { background: color-mix(in srgb, #831843 50%, var(--surface-container-lowest)); }
+[data-theme="dark"] .dyslipid-table tbody tr[data-tier="moderate"] { background: color-mix(in srgb, #5c4a00 50%, var(--surface-container-lowest)); }
+[data-theme="dark"] .dyslipid-table tbody tr[data-tier="low"] { background: color-mix(in srgb, #1b4332 50%, var(--surface-container-lowest)); }
+[data-theme="dark"] .dyslipid-table tbody tr[data-tier="none"] { background: color-mix(in srgb, #6b7280 50%, var(--surface-container-lowest)); }
+
+.dyslipid-table tbody tr[data-tier="very-high"] .cell-population { color: #991b1b; }
+.dyslipid-table tbody tr[data-tier="high"] .cell-population { color: #9d174d; }
+.dyslipid-table tbody tr[data-tier="moderate"] .cell-population { color: #854d0e; }
+.dyslipid-table tbody tr[data-tier="low"] .cell-population { color: #166534; }
+.dyslipid-table tbody tr[data-tier="none"] .cell-population { color: #4b5563; }
+
+[data-theme="dark"] .dyslipid-table tbody tr[data-tier="very-high"] .cell-population { color: #fca5a5; }
+[data-theme="dark"] .dyslipid-table tbody tr[data-tier="high"] .cell-population { color: #f9a8d4; }
+[data-theme="dark"] .dyslipid-table tbody tr[data-tier="moderate"] .cell-population { color: #fde68a; }
+[data-theme="dark"] .dyslipid-table tbody tr[data-tier="low"] .cell-population { color: #86efac; }
+[data-theme="dark"] .dyslipid-table tbody tr[data-tier="none"] .cell-population { color: #9ca3af; }
+
+.dyslipid-table tbody tr[data-tier] :where(td) {
+  border-bottom-color: color-mix(in srgb, var(--outline-variant) 60%, transparent);
+}
+
+/* Dyslipidemia table */
+.dyslipid-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.dyslipid-table th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--surface-container);
+  color: var(--on-surface);
+  font-weight: 700;
+  border-bottom: 2px solid var(--outline-variant);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dyslipid-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--outline-variant);
+  vertical-align: top;
+}
+
+.dyslipid-table tbody tr:hover { background: var(--surface-container); }
+.dyslipid-table tbody tr:where(:nth-child(even)) {
+  background: color-mix(in srgb, var(--surface-container) 50%, transparent);
+}
+.dyslipid-table tbody tr:where(:nth-child(even)):hover { background: var(--surface-container); }
+.dyslipid-table tbody tr:last-child td { border-bottom: none; }
+
+.dyslipid-table .header-sub {
+  font-weight: 400;
+  font-size: 0.65rem;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+.dyslipid-table .cell-population {
+  white-space: nowrap;
+  font-weight: 700;
+  color: var(--on-surface);
+  width: 1%;
+}
+
+.dyslipid-table .ldl-criteria {
+  font-size: 0.78rem;
+  color: var(--on-surface-variant);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* Statin cards */
+.statin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.statin-tier-card {
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--surface);
+}
+
+.statin-tier-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.statin-tier-indicator {
+  width: 6px;
+  height: 24px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.statin-tier-0 .statin-tier-indicator { background: var(--risk-high); }
+.statin-tier-1 .statin-tier-indicator { background: var(--risk-mod); }
+.statin-tier-2 .statin-tier-indicator { background: var(--outline); }
+
+.statin-tier-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.statin-tier-desc {
+  font-size: 0.72rem;
+  color: var(--on-surface-variant);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.statin-drug-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.statin-drug-list li {
+  padding: 8px 12px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  background: var(--surface-container-lowest);
+  font-size: 0.82rem;
+}
+
+/* Monitoring timeline */
+.monitoring-timeline {
+  position: relative;
+  padding-left: 28px;
+}
+
+.monitoring-timeline::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  background: var(--outline-variant);
+  border-radius: 1px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 24px;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -22px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid var(--surface-container-lowest);
+}
+
+.timeline-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-bottom: 2px;
+}
+
+.timeline-desc {
+  font-size: 0.78rem;
+  color: var(--on-surface-variant);
+  line-height: 1.4;
+  margin: 0 0 0 0;
+}
+
+.monitoring-note {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: var(--surface-container-low);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--on-surface-variant);
+  font-style: italic;
+}
+
+/* Footnote cards */
+.footnote-cards {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.footnote-card:nth-child(1) { grid-column: 1; grid-row: 1; }
+.footnote-card:nth-child(2) { grid-column: 1; grid-row: 2; }
+.footnote-card:nth-child(3) { grid-column: 1; grid-row: 3; }
+.footnote-card:nth-child(4) { grid-column: 2; grid-row: 1 / 4; align-self: center; }
+
+.footnote-card {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.footnote-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.footnote-card-sym {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.footnote-card-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+}
+
+.footnote-card-text {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.footnote-card-list {
+  margin: 4px 0 4px 16px;
+  padding: 0;
+  list-style: disc;
+}
+
+.footnote-card-list li {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--on-surface);
+  margin-bottom: 2px;
+}
+
+/* LDL Goals banner */
+
+
 .checkbox-group {
   display: flex;
   flex-direction: column;
@@ -3065,8 +3526,8 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   padding: 60px 80px;
   box-sizing: border-box;
 }
@@ -3194,12 +3655,38 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   }
 
   .home-quote-section {
-    padding: 24px 16px;
-    min-height: 200px;
+    padding: 40px 20px;
   }
 
   .home-quote-section blockquote p {
-    font-size: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .dyslipid-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .framingham-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dyslipid-bento {
+    grid-template-columns: 1fr;
+  }
+
+  .dyslipid-table {
+    table-layout: auto;
+  }
+
+  .dyslipid-table th,
+  .dyslipid-table td {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+  }
+
+  .statin-grid {
+    grid-template-columns: 1fr;
   }
 
   .calculators-grid,
@@ -3246,6 +3733,19 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 
   .drug-dosage-cards {
     grid-template-columns: 1fr;
+  }
+
+  .footnote-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .footnote-card:nth-child(1),
+  .footnote-card:nth-child(2),
+  .footnote-card:nth-child(3),
+  .footnote-card:nth-child(4) {
+    grid-column: auto;
+    grid-row: auto;
+    align-self: auto;
   }
 
   .screening-tools-row {

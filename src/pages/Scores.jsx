@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { framingham, ipss, phq9, gad7, curb65, act, cat, aria, stopbang, epworth, cha2ds2vasc, hasbled, cvRiskHtn } from '../data/scoresData'
+import { framingham, ipss, phq9, gad7, curb65, act, cat, aria, stopbang, epworth, cvRiskHtn } from '../data/scoresData'
 
 const scoreMeta = [
   { id: 'psychiatric', icon: 'psychiatry', category: 'Mental Health', title: 'Psychiatric Assessment', desc: 'PHQ-9 and GAD-7 screening tools for depression and anxiety.' },
-  { id: 'cha2ds2vasc', icon: 'cardiology', category: 'Cardiology', title: 'CHA\u2082DS\u2082-VASc', desc: 'Stroke risk assessment in patients with non-valvular Atrial Fibrillation.' },
-  { id: 'hasbled', icon: 'bloodtype', category: 'Cardiology', title: 'HAS-BLED', desc: 'Bleeding risk assessment for patients on anticoagulation therapy.' },
+
   { id: 'curb65', icon: 'pulmonology', category: 'Respiratory', title: 'CURB-65', desc: 'Severity score for Community-Acquired Pneumonia mortality risk.' },
   { id: 'ipss', icon: 'water_drop', category: 'Urology', title: 'IPSS', desc: 'International Prostate Symptom Score for evaluating LUTS.' },
   { id: 'framingham', icon: 'favorite', category: 'Preventive', title: 'Framingham', desc: '10-year cardiovascular risk assessment based on lipid profiles.' },
@@ -55,12 +54,6 @@ function ScoreCard({ meta }) {
 function InlineForm({ scoreId, scoreData, onCalculate, onClear }) {
 
   if (scoreId === 'curb65' && scoreData.inputs) {
-    return <SimpleScoreForm scoreData={scoreData} onCalculate={onCalculate} onClear={onClear} />
-  }
-  if (scoreId === 'cha2ds2vasc' && scoreData.inputs) {
-    return <SimpleScoreForm scoreData={scoreData} onCalculate={onCalculate} onClear={onClear} />
-  }
-  if (scoreId === 'hasbled' && scoreData.inputs) {
     return <SimpleScoreForm scoreData={scoreData} onCalculate={onCalculate} onClear={onClear} />
   }
   if (scoreId === 'framingham' && scoreData.inputs) {
@@ -689,7 +682,7 @@ export function ScoreDetail() {
 
 function getScoreData(id) {
   const map = {
-    phq9, gad7, psychiatric: { id: 'psychiatric' }, framingham, ipss, curb65, cha2ds2vasc, hasbled,
+    phq9, gad7, psychiatric: { id: 'psychiatric' }, framingham, ipss, curb65,
     stopbang, epworth, aria, act, cat, 'cv-risk-htn': cvRiskHtn,
   }
   return map[id]

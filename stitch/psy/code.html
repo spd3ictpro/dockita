@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Clinical Assessment | PHQ-9 &amp; GAD-7</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#e1e3e4",
+                    "secondary": "#4f5b93",
+                    "primary-fixed": "#dde1ff",
+                    "inverse-surface": "#2e3132",
+                    "on-tertiary-container": "#fffbff",
+                    "surface-tint": "#2d50d9",
+                    "surface-container-low": "#f3f4f5",
+                    "on-secondary-container": "#424d84",
+                    "surface-variant": "#e1e3e4",
+                    "tertiary": "#954500",
+                    "primary-fixed-dim": "#b9c3ff",
+                    "on-error-container": "#93000a",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#b9c3ff",
+                    "on-primary-container": "#fffbff",
+                    "on-background": "#191c1d",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#edeeef",
+                    "on-tertiary-fixed-variant": "#743500",
+                    "surface": "#f8f9fa",
+                    "outline-variant": "#c4c5d7",
+                    "on-primary-fixed": "#001257",
+                    "tertiary-fixed-dim": "#ffb68a",
+                    "outline": "#747686",
+                    "inverse-primary": "#b9c3ff",
+                    "tertiary-fixed": "#ffdbc8",
+                    "on-primary-fixed-variant": "#0034c0",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#38437a",
+                    "on-secondary-fixed": "#08154c",
+                    "inverse-on-surface": "#f0f1f2",
+                    "background": "#f8f9fa",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#321300",
+                    "surface-bright": "#f8f9fa",
+                    "secondary-container": "#b5c0ff",
+                    "surface-container-high": "#e7e8e9",
+                    "primary-container": "#4868f1",
+                    "surface-dim": "#d9dadb",
+                    "primary": "#2a4dd7",
+                    "secondary-fixed": "#dde1ff",
+                    "tertiary-container": "#bb5800",
+                    "on-surface-variant": "#444654",
+                    "on-surface": "#191c1d",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-error": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px",
+                    "sm": "8px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "gutter": "16px",
+                    "md": "16px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "mono-data": ["monospace"],
+                    "body-sm": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "mono-data": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-sm": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .scroll-hide::-webkit-scrollbar { display: none; }
+        .scoring-btn { 
+            border: 1px solid #c4c5d7; 
+            transition: all 0.15s ease-in-out;
+            min-width: 80px;
+        }
+        .scoring-btn:hover { background-color: #f3f4f5; border-color: #747686; }
+        .scoring-btn.selected { background-color: #2a4dd7; color: white; border-color: #2a4dd7; box-shadow: 0 2px 4px rgba(42, 77, 215, 0.2); }
+        .sticky-column { position: sticky; top: 88px; height: calc(100vh - 120px); overflow-y: auto; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed">
+<!-- SideNavBar -->
+<aside class="w-[260px] h-screen fixed left-0 top-0 flex flex-col py-lg px-md border-r border-outline-variant dark:border-outline bg-surface z-50">
+<div class="mb-xl px-sm">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">dockita</h1>
+<div class="flex items-center mt-md gap-sm">
+<img class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="A professional close-up portrait of a male doctor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCFeHT3lK2iy0Apk8Q3mFZTv3tLzDLFF6WXDsGL8pBFDrKYOKO_9e7NO5a2Tj6SKLV1S_AoQ413BdknGUcgr8xyVDaoJpJGExdsCWQTJ28ijNQAaH5f8zugD8-U1-KMARr-95sXPQ84szVKWF-pYqvZwczDFYM77TGocekXshdS_KnvAVoTBifHWjRs-Ka25Hh_VKXeiQ-5SkwvFyM-UVkAvjKDfLMUrxysZCWJ273D6MJUQSE19XYyRq_0_5FAob660L-2NVYTGQq"/>
+<div>
+<p class="font-label-md text-label-md font-bold text-on-surface">Doctor profile</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Medical Officer</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-xs overflow-y-auto scroll-hide">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">clinical_notes</span>
+<span class="font-label-md text-label-md">Screening</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">medical_services</span>
+<span class="font-label-md text-label-md">Diabetes</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">blood_pressure</span>
+<span class="font-label-md text-label-md">Hypertension</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">science</span>
+<span class="font-label-md text-label-md">Dyslipidemia</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">calculate</span>
+<span class="font-label-md text-label-md">Calculators</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary font-bold bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-label-md text-label-md">Scores &amp; Scales</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">pill</span>
+<span class="font-label-md text-label-md">Drug Database</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">elderly</span>
+<span class="font-label-md text-label-md">Geriatric</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-md text-label-md">Infographics</span>
+</a>
+</nav>
+</aside>
+<!-- TopNavBar -->
+<header class="sticky top-0 right-0 h-16 ml-[260px] flex justify-between items-center px-lg border-b border-outline-variant bg-surface-container-lowest z-40">
+<div class="flex items-center gap-md bg-surface-container rounded-lg px-md py-xs w-96 border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full placeholder:text-on-surface-variant" placeholder="Search scales, criteria, or drugs..." type="text"/>
+</div>
+<div class="flex items-center gap-lg">
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">settings</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">help</span></button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[260px] p-lg pb-32">
+<div class="max-w-[1280px] mx-auto">
+<!-- Header & Toggle -->
+<div class="flex flex-col md:flex-row justify-between items-end mb-lg gap-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Psychiatric Assessment</h2>
+<p class="text-on-surface-variant font-body-md mt-xs">Standardized screening tools for Depression and Anxiety management.</p>
+</div>
+<div class="flex bg-surface-container rounded-lg p-1 border border-outline-variant">
+<button class="px-xl py-xs font-label-md text-label-md rounded transition-all bg-surface-container-lowest text-primary shadow-sm border border-outline-variant" id="toggle-phq9" onclick="switchScale('phq9')">PHQ-9</button>
+<button class="px-xl py-xs font-label-md text-label-md rounded transition-all text-on-surface-variant" id="toggle-gad7" onclick="switchScale('gad7')">GAD-7</button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Questionnaire -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden">
+<div class="bg-surface px-lg py-md border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm text-on-surface" id="scale-title">PHQ-9 Patient Health Questionnaire</h3>
+<span class="text-xs font-mono-data bg-secondary-container text-on-secondary-container px-sm py-base rounded uppercase tracking-wider">Clinical Tool</span>
+</div>
+<div class="p-lg divide-y divide-outline-variant" id="questionnaire-container">
+<!-- Question rows injected by JS -->
+</div>
+</div>
+</div>
+<!-- Right Column: Results & Interpretation -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter sticky-column scroll-hide">
+<!-- Total Score Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-lg text-center">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-sm">Total Assessment Score</p>
+<div class="flex items-baseline justify-center gap-xs">
+<span class="text-6xl font-extrabold text-primary" id="total-score">0</span>
+<span class="text-2xl font-bold text-on-surface-variant" id="max-score">/ 27</span>
+</div>
+<div class="mt-lg inline-flex px-md py-base rounded-full text-label-md font-bold bg-surface-container-high text-on-surface-variant transition-colors" id="severity-chip">
+                            UNSCORED
+                        </div>
+</div>
+<!-- Clinical Interpretation -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg">
+<div class="px-lg py-md border-b border-outline-variant bg-surface">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Clinical Interpretation</h4>
+</div>
+<div class="p-lg space-y-md">
+<div class="flex gap-md">
+<span class="material-symbols-outlined text-primary">clinical_notes</span>
+<div>
+<p class="font-label-md text-label-md font-bold text-on-surface">Recommendation</p>
+<p class="text-body-md text-on-surface-variant mt-xs" id="clinical-rec">Score has not been calculated. Please complete the questionnaire to see professional guidance.</p>
+</div>
+</div>
+<hr class="border-outline-variant"/>
+<div class="flex gap-md" id="safety-container">
+<span class="material-symbols-outlined text-tertiary" id="safety-icon">priority_high</span>
+<div>
+<p class="font-label-md text-label-md font-bold text-on-surface">Safety Alert</p>
+<p class="text-body-sm text-on-surface-variant mt-xs italic" id="safety-alert">If the patient answers anything other than '0' for Question 9 (PHQ-9), clinical urgency is advised regardless of total score.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-lg space-y-md">
+<button class="w-full bg-primary text-on-primary py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-md hover:opacity-90 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">save</span>
+                            Save to Patient Record
+                        </button>
+<button class="w-full border border-outline text-on-surface-variant py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-md hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">print</span>
+                            Print Referral Note
+                        </button>
+<button class="w-full text-error py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-md hover:bg-error-container transition-all" onclick="resetForm()">
+<span class="material-symbols-outlined">restart_alt</span>
+                            Clear Assessment
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 right-0 w-[calc(100%-260px)] h-12 flex justify-between items-center py-sm px-lg bg-surface-container-low border-t border-outline-variant z-10">
+<p class="font-label-md text-label-md text-on-surface-variant">Disclaimer: Clinical decision support tool. Verify with local guidelines.</p>
+<div class="flex gap-lg">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary" href="#">Terms of Service</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary" href="#">Privacy Policy</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary" href="#">Contact Support</a>
+</div>
+</footer>
+<script>
+        const scales = {
+            phq9: {
+                title: "PHQ-9 Patient Health Questionnaire",
+                max: 27,
+                questions: [
+                    "Little interest or pleasure in doing things",
+                    "Feeling down, depressed, or hopeless",
+                    "Trouble falling or staying asleep, or sleeping too much",
+                    "Feeling tired or having little energy",
+                    "Poor appetite or overeating",
+                    "Feeling bad about yourself — or that you are a failure or have let yourself or your family down",
+                    "Trouble concentrating on things, such as reading the newspaper or watching television",
+                    "Moving or speaking so slowly that other people could have noticed? Or the opposite — being so fidgety or restless that you have been moving around a lot more than usual",
+                    "Thoughts that you would be better off dead or of hurting yourself in some way"
+                ],
+                interpret: (score) => {
+                    if (score <= 4) return { label: "Minimal Depression", class: "bg-surface-container-high text-on-surface", rec: "None. Monitor at next clinical follow-up." };
+                    if (score <= 9) return { label: "Mild Depression", class: "bg-green-100 text-green-800", rec: "Watchful waiting; repeat PHQ-9 at follow-up." };
+                    if (score <= 14) return { label: "Moderate Depression", class: "bg-yellow-100 text-yellow-800", rec: "Treatment plan, considering counseling, follow-up and/or pharmacotherapy." };
+                    if (score <= 19) return { label: "Moderately Severe", class: "bg-orange-100 text-orange-800", rec: "Active treatment with pharmacotherapy and/or psychotherapy." };
+                    return { label: "Severe Depression", class: "bg-red-100 text-red-800", rec: "Immediate initiation of pharmacotherapy and, if severe impairment, referral to specialist." };
+                }
+            },
+            gad7: {
+                title: "GAD-7 Generalized Anxiety Disorder",
+                max: 21,
+                questions: [
+                    "Feeling nervous, anxious or on edge",
+                    "Not being able to stop or control worrying",
+                    "Worrying too much about different things",
+                    "Trouble relaxing",
+                    "Being so restless that it is hard to sit still",
+                    "Becoming easily annoyed or irritable",
+                    "Feeling afraid as if something awful might happen"
+                ],
+                interpret: (score) => {
+                    if (score <= 4) return { label: "Minimal Anxiety", class: "bg-surface-container-high text-on-surface", rec: "None. Monitor at next follow-up." };
+                    if (score <= 9) return { label: "Mild Anxiety", class: "bg-green-100 text-green-800", rec: "Watchful waiting; repeat GAD-7 at follow-up." };
+                    if (score <= 14) return { label: "Moderate Anxiety", class: "bg-yellow-100 text-yellow-800", rec: "Further evaluation and potential therapy required." };
+                    return { label: "Severe Anxiety", class: "bg-red-100 text-red-800", rec: "Initiate active treatment and/or referral to mental health specialist." };
+                }
+            }
+        };
+
+        let activeScale = 'phq9';
+        let scores = [];
+
+        function switchScale(id) {
+            activeScale = id;
+            const config = scales[id];
+            
+            document.getElementById('toggle-phq9').className = id === 'phq9' ? "px-xl py-xs font-label-md text-label-md rounded transition-all bg-surface-container-lowest text-primary shadow-sm border border-outline-variant" : "px-xl py-xs font-label-md text-label-md rounded transition-all text-on-surface-variant";
+            document.getElementById('toggle-gad7').className = id === 'gad7' ? "px-xl py-xs font-label-md text-label-md rounded transition-all bg-surface-container-lowest text-primary shadow-sm border border-outline-variant" : "px-xl py-xs font-label-md text-label-md rounded transition-all text-on-surface-variant";
+            
+            document.getElementById('scale-title').innerText = config.title;
+            document.getElementById('max-score').innerText = `/ ${config.max}`;
+            
+            document.getElementById('safety-alert').innerText = id === 'phq9' 
+                ? "If the patient answers anything other than '0' for Question 9 (PHQ-9), clinical urgency is advised regardless of total score."
+                : "A score of 10 or greater on GAD-7 warrants further evaluation for GAD and possibly other anxiety disorders.";
+            
+            renderQuestions(config.questions);
+            resetForm();
+        }
+
+        function renderQuestions(questions) {
+            const container = document.getElementById('questionnaire-container');
+            container.innerHTML = '';
+            scores = new Array(questions.length).fill(null);
+            
+            questions.forEach((q, idx) => {
+                const row = document.createElement('div');
+                row.className = `py-md flex flex-col md:flex-row items-start md:items-center gap-md`;
+                row.innerHTML = `
+                    <div class="flex-1 min-w-0 pr-lg">
+                        <p class="font-body-md text-on-surface leading-snug">
+                            <span class="font-bold mr-xs">${idx + 1}.</span>${q}
+                        </p>
+                    </div>
+                    <div class="flex flex-nowrap gap-xs shrink-0 bg-surface-container-low p-xs rounded-lg border border-outline-variant">
+                        <button onclick="setScore(${idx}, 0)" id="q${idx}-0" class="scoring-btn py-sm px-3 rounded text-label-md font-bold flex flex-col items-center">
+                            <span>0</span>
+                            <span class="text-[9px] font-normal opacity-70 whitespace-nowrap">None</span>
+                        </button>
+                        <button onclick="setScore(${idx}, 1)" id="q${idx}-1" class="scoring-btn py-sm px-3 rounded text-label-md font-bold flex flex-col items-center">
+                            <span>1</span>
+                            <span class="text-[9px] font-normal opacity-70 whitespace-nowrap">Several</span>
+                        </button>
+                        <button onclick="setScore(${idx}, 2)" id="q${idx}-2" class="scoring-btn py-sm px-3 rounded text-label-md font-bold flex flex-col items-center">
+                            <span>2</span>
+                            <span class="text-[9px] font-normal opacity-70 whitespace-nowrap">Half+</span>
+                        </button>
+                        <button onclick="setScore(${idx}, 3)" id="q${idx}-3" class="scoring-btn py-sm px-3 rounded text-label-md font-bold flex flex-col items-center">
+                            <span>3</span>
+                            <span class="text-[9px] font-normal opacity-70 whitespace-nowrap">Daily</span>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function setScore(qIdx, val) {
+            scores[qIdx] = val;
+            for(let i=0; i<=3; i++) {
+                document.getElementById(`q${qIdx}-${i}`).classList.remove('selected');
+            }
+            document.getElementById(`q${qIdx}-${val}`).classList.add('selected');
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const total = scores.reduce((a, b) => a + (b || 0), 0);
+            const isComplete = scores.every(s => s !== null);
+            document.getElementById('total-score').innerText = total;
+            
+            if (isComplete) {
+                const interpretation = scales[activeScale].interpret(total);
+                const chip = document.getElementById('severity-chip');
+                chip.innerText = interpretation.label.toUpperCase();
+                chip.className = `mt-lg inline-flex px-md py-base rounded-full text-label-md font-bold transition-all ${interpretation.class}`;
+                document.getElementById('clinical-rec').innerText = interpretation.rec;
+                
+                if(activeScale === 'phq9' && scores[8] > 0) {
+                    document.getElementById('safety-container').classList.add('bg-error-container', 'p-sm', 'rounded');
+                    document.getElementById('safety-icon').classList.replace('text-tertiary', 'text-error');
+                } else {
+                    document.getElementById('safety-container').classList.remove('bg-error-container', 'p-sm', 'rounded');
+                    document.getElementById('safety-icon').classList.replace('text-error', 'text-tertiary');
+                }
+            }
+        }
+
+        function resetForm() {
+            scores = scores.map(() => null);
+            document.querySelectorAll('.scoring-btn').forEach(btn => btn.classList.remove('selected'));
+            document.getElementById('total-score').innerText = '0';
+            const chip = document.getElementById('severity-chip');
+            chip.innerText = 'UNSCORED';
+            chip.className = 'mt-lg inline-flex px-md py-base rounded-full text-label-md font-bold bg-surface-container-high text-on-surface-variant transition-colors';
+            document.getElementById('clinical-rec').innerText = 'Score has not been calculated. Please complete the questionnaire to see professional guidance.';
+            document.getElementById('safety-container').classList.remove('bg-error-container', 'p-sm', 'rounded');
+            document.getElementById('safety-icon').classList.replace('text-error', 'text-tertiary');
+        }
+
+        switchScale('phq9');
+    </script>
+</body></html>

@@ -62,7 +62,7 @@ export default function Screening() {
             <div className="score-card-category">{cat.condition}</div>
             <h1>{focusTitles[focus]}</h1>
           </div>
-          {Icon && <Icon size={28} className="score-card-icon" style={{ color: meta.color }} />}
+          {Icon && <Icon size={40} className="score-card-icon" style={{ color: meta.color }} />}
         </div>
         <p className="score-detail-desc">{cat.source}</p>
 
@@ -112,7 +112,7 @@ export default function Screening() {
                   <div className="score-card-category">{cat.condition}</div>
                   <div className="score-card-title">{cat.title}</div>
                 </div>
-                {Icon && <Icon size={24} className="score-card-icon" style={{ color: meta.color }} />}
+                {Icon && <Icon size={32} className="score-card-icon" style={{ color: meta.color }} />}
               </div>
               <p className="score-card-desc">{cat.source}</p>
             </div>
