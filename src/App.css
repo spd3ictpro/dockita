@@ -48,10 +48,15 @@
   --on-background: #191c1d;
   --surface-variant: #e1e3e4;
   --risk-low: #d3f9d8;
+  --risk-low-text: #000;
   --risk-low-mid: #fff3bf;
+  --risk-low-mid-text: #000;
   --risk-mod: #ffd8a8;
+  --risk-mod-text: #000;
   --risk-high-mid: #ffc9c9;
+  --risk-high-mid-text: #000;
   --risk-high: #ffa8a8;
+  --risk-high-text: #000;
   --risk-high-dark: #c92a2a;
   --bmi-under: #d0ebff;
   --bmi-normal: #d3f9d8;
@@ -104,10 +109,15 @@
   --on-background: #e2e8f0;
   --surface-variant: #334155;
   --risk-low: #1b4332;
+  --risk-low-text: #fff;
   --risk-low-mid: #5c4a00;
+  --risk-low-mid-text: #fff;
   --risk-mod: #7a4a00;
+  --risk-mod-text: #fff;
   --risk-high-mid: #5c1a1a;
+  --risk-high-mid-text: #fff;
   --risk-high: #7a1a1a;
+  --risk-high-text: #fff;
   --bmi-under: #1a3a5c;
   --bmi-normal: #1b4332;
   --bmi-over: #5c4a00;
@@ -1645,7 +1655,6 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   font-size: 0.82rem;
   border-bottom: 1px solid var(--outline-variant);
 }
-.statin-drug-list li:last-child { border-bottom: none; }
 .statin-table { table-layout: fixed; }
 .statin-table th, .statin-table td { width: 33.33%; }
 
@@ -3107,8 +3116,8 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 }
 
 .segmented-btn.active {
-  background: var(--surface-container-high);
-  color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
   font-weight: 700;
 }
 
@@ -3120,14 +3129,15 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 }
 
 .framingham-result-card {
-  padding: 14px 16px;
-  background: var(--surface-container-low);
-  border: 1px solid var(--outline-variant);
-  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  padding: 14px 16px;
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  margin-top: 16px;
 }
 
 .framingham-result-label {
@@ -3147,15 +3157,27 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   line-height: 1.2;
 }
 
-.framingham-badge {
+.framingham-field {
+  position: relative;
+}
+
+.field-error {
+  color: var(--error);
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.framingham-result-category {
   display: inline-flex;
   align-items: center;
-  padding: 6px 14px;
-  border-radius: 999px;
+  padding: 8px 18px;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  background: var(--result-color, var(--primary));
+  color: var(--result-color-text, #000);
   white-space: nowrap;
 }
 
@@ -3241,11 +3263,9 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   vertical-align: top;
 }
 
-.dyslipid-table tbody tr:hover { background: var(--surface-container); }
 .dyslipid-table tbody tr:where(:nth-child(even)) {
   background: color-mix(in srgb, var(--surface-container) 50%, transparent);
 }
-.dyslipid-table tbody tr:where(:nth-child(even)):hover { background: var(--surface-container); }
 .dyslipid-table tbody tr:last-child td { border-bottom: none; }
 
 .dyslipid-table .header-sub {

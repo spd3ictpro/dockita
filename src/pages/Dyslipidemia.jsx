@@ -36,15 +36,35 @@ const monitoringSteps = [
 function FraminghamWidget() {
   const [vals, setVals] = useState({ gender: 'male', age: '', cholesterol: '', hdl: '', sbp: '', treated: '0', smoker: '0', diabetes: '0' })
   const [result, setResult] = useState(null)
+  const [fieldErrors, setFieldErrors] = useState({})
 
-  const set = (k) => (e) => setVals(v => ({ ...v, [k]: e.target.value }))
+  const set = (k) => (e) => {
+    setFieldErrors(f => ({ ...f, [k]: undefined }))
+    setVals(v => ({ ...v, [k]: e.target.value }))
+  }
   const calc = () => {
+    const err = {}
+    const age = Number(vals.age)
+    if (!vals.age || isNaN(age) || age < 20 || age > 100) err.age = 'Must be 20–100'
+    const chol = Number(vals.cholesterol)
+    if (!vals.cholesterol || isNaN(chol) || chol < 1 || chol > 15) err.cholesterol = 'Must be 1–15 mmol/L'
+    const h = Number(vals.hdl)
+    if (!vals.hdl || isNaN(h) || h < 0.1 || h > 5) err.hdl = 'Must be 0.1–5 mmol/L'
+    const s = Number(vals.sbp)
+    if (!vals.sbp || isNaN(s) || s < 60 || s > 300) err.sbp = 'Must be 60–300 mmHg'
+
+    if (Object.keys(err).length) {
+      setFieldErrors(err)
+      setResult(null)
+      return
+    }
+    setFieldErrors({})
     const r = framingham.calculate(vals)
-    if (!r) { setResult({ error: 'Please fill in all fields with valid values.' }); return }
+    if (!r) { setResult({ error: 'Unable to calculate risk score.' }); return }
     const interpretation = framingham.interpret(r.risk)
     setResult({ points: r.points, risk: r.risk, ...interpretation })
   }
-  const clear = () => { setVals({ gender: 'male', age: '', cholesterol: '', hdl: '', sbp: '', treated: '0', smoker: '0', diabetes: '0' }); setResult(null) }
+  const clear = () => { setVals({ gender: 'male', age: '', cholesterol: '', hdl: '', sbp: '', treated: '0', smoker: '0', diabetes: '0' }); setResult(null); setFieldErrors({}) }
 
   const SegmentedGroup = ({ label, value, options, onChange }) => (
     <div className="framingham-field">
@@ -68,19 +88,23 @@ function FraminghamWidget() {
           <div className="framingham-field">
             <span className="field-label">Age (Years)</span>
             <input type="number" value={vals.age} onChange={set('age')} min={20} max={100} placeholder="e.g. 45" />
+            {fieldErrors.age && <div className="field-error">{fieldErrors.age}</div>}
           </div>
           <SegmentedGroup label="Gender" value={vals.gender} options={[{ value: 'male', label: 'Male' }, { value: 'female', label: 'Female' }]} onChange={v => setVals(s => ({ ...s, gender: v }))} />
           <div className="framingham-field">
             <span className="field-label">Total Cholesterol (mmol/L)</span>
             <input type="number" value={vals.cholesterol} onChange={set('cholesterol')} min={1} max={15} step={0.1} placeholder="e.g. 5.2" />
+            {fieldErrors.cholesterol && <div className="field-error">{fieldErrors.cholesterol}</div>}
           </div>
           <div className="framingham-field">
             <span className="field-label">HDL Cholesterol (mmol/L)</span>
             <input type="number" value={vals.hdl} onChange={set('hdl')} min={0.1} max={5} step={0.1} placeholder="e.g. 1.1" />
+            {fieldErrors.hdl && <div className="field-error">{fieldErrors.hdl}</div>}
           </div>
           <div className="framingham-field">
             <span className="field-label">Systolic BP (mmHg)</span>
             <input type="number" value={vals.sbp} onChange={set('sbp')} min={60} max={300} placeholder="e.g. 135" />
+            {fieldErrors.sbp && <div className="field-error">{fieldErrors.sbp}</div>}
           </div>
           <SegmentedGroup label="On BP Medication" value={vals.treated} options={[{ value: '1', label: 'Yes' }, { value: '0', label: 'No' }]} onChange={v => setVals(s => ({ ...s, treated: v }))} />
           <SegmentedGroup label="Smoking Status" value={vals.smoker} options={[{ value: '1', label: 'Current Smoker' }, { value: '0', label: 'Non-Smoker' }]} onChange={v => setVals(s => ({ ...s, smoker: v }))} />
@@ -99,14 +123,12 @@ function FraminghamWidget() {
           result.error ? (
             <p className="widget-note" style={{ color: 'var(--error)', fontStyle: 'normal', fontWeight: 600 }}>{result.error}</p>
           ) : (
-            <div className="framingham-result-card">
+            <div className="framingham-result-card" style={{ '--result-color': result.color, '--result-color-text': result.textColor }}>
               <div>
                 <div className="framingham-result-label">10-Year CV Risk</div>
                 <div className="framingham-result-value">{result.risk}%</div>
               </div>
-              <span className="framingham-badge" style={{ background: result.color, color: result.textColor || '#fff' }}>
-                {result.category}
-              </span>
+              <span className="framingham-result-category">{result.category}</span>
             </div>
           )
         )}
@@ -123,7 +145,10 @@ export default function Dyslipidemia() {
       <div className="dyslipid-header">
         <div>
           <h1><span className="material-symbols-outlined page-heading-icon">monitor_heart</span> Dyslipidaemia</h1>
-          <p className="page-subtitle">Clinical reference for lipid management and risk stratification</p>
+          <p className="page-subtitle">
+            Clinical reference for lipid management and risk stratification<br />
+            <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>Adapted from CPG Management of Dyslipidaemia 2023 (6th Edition)</span>
+          </p>
         </div>
       </div>
 

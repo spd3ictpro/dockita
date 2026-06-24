@@ -92,7 +92,8 @@ function SimpleScoreForm({ scoreData, onCalculate }) {
 
   const calc = () => {
     const total = scoreData.calculate(vals)
-    const cat = scoreData.getCategory(total)
+    const riskVal = total?.risk ?? total
+    const cat = scoreData.getCategory(riskVal)
     onCalculate({ total, ...cat })
   }
 

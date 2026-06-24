@@ -87,6 +87,7 @@ export const framingham = {
         '9': 7.9, '10': 9.4, '11': 11.2, '12': 13.2, '13': 15.6,
         '14': 18.4, '15': 21.6, '16': 25.3, '17': 29.4, '18': '>30',
       }
+      if (points < -3) return { risk: '<1', points }
       return { risk: maleTable[String(points)] || '>30', points }
     }
 
@@ -140,14 +141,17 @@ export const framingham = {
       '13': '10.0', '14': '11.7', '15': '13.7', '16': '15.9', '17': '18.5',
       '18': '21.5', '19': '24.8', '20': '28.5', '21': '>30',
     }
-    return { risk: femaleTable[String(points)] || '>30', points }
+      if (points < -2) return { risk: '<1', points }
+      return { risk: femaleTable[String(points)] || '>30', points }
   },
   interpret: (riskVal) => {
+    if (riskVal === '<1') return { category: 'Low Risk', color: 'var(--risk-low)', textColor: 'var(--risk-low-text)' }
+    if (riskVal === '>30') return { category: 'High Risk', color: 'var(--risk-high)', textColor: 'var(--risk-high-text)' }
     const risk = parseFloat(riskVal)
-    if (isNaN(risk)) return { category: 'High Risk', color: 'var(--risk-high)' }
-    if (risk < 10) return { category: 'Low Risk', color: 'var(--risk-low)' }
-    if (risk <= 20) return { category: 'Moderate Risk', color: 'var(--risk-mod)' }
-    return { category: 'High Risk', color: 'var(--risk-high)' }
+    if (isNaN(risk)) return { category: 'High Risk', color: 'var(--risk-high)', textColor: 'var(--risk-high-text)' }
+    if (risk < 10) return { category: 'Low Risk', color: 'var(--risk-low)', textColor: 'var(--risk-low-text)' }
+    if (risk <= 20) return { category: 'Moderate Risk', color: 'var(--risk-mod)', textColor: 'var(--risk-mod-text)' }
+    return { category: 'High Risk', color: 'var(--risk-high)', textColor: 'var(--risk-high-text)' }
   },
   getCategory: (riskVal) => {
     const r = framingham.interpret(riskVal)
