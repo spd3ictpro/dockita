@@ -254,34 +254,6 @@ export const phq9 = {
   keywords: 'phq9 phq depression mental health screening',
 }
 
-export const curb65 = {
-  id: 'curb65',
-  title: 'CURB-65 — Pneumonia Severity Score',
-  description: 'Community-acquired pneumonia severity and admission decision',
-  inputs: [
-    { key: 'confusion', label: 'Confusion (new disorientation / AMTS ≤8)', type: 'select', options: [{ value: '0', label: 'No' }, { value: '1', label: 'Yes' }] },
-    { key: 'bun', label: 'BUN >7 mmol/L (19 mg/dL)', type: 'select', options: [{ value: '0', label: 'No (≤7)' }, { value: '1', label: 'Yes (>7)' }] },
-    { key: 'rr', label: 'Respiratory Rate ≥30/min', type: 'select', options: [{ value: '0', label: 'No (<30)' }, { value: '1', label: 'Yes (≥30)' }] },
-    { key: 'sbp', label: 'SBP <90 mmHg or DBP ≤60 mmHg', type: 'select', options: [{ value: '0', label: 'No' }, { value: '1', label: 'Yes' }] },
-    { key: 'age', label: 'Age ≥65 years', type: 'select', options: [{ value: '0', label: 'No (<65)' }, { value: '1', label: 'Yes (≥65)' }] },
-  ],
-  calculate: (values) => {
-    let score = 0
-    score += Number(values.confusion)
-    score += Number(values.bun)
-    score += Number(values.rr)
-    score += Number(values.sbp)
-    score += Number(values.age)
-    return score
-  },
-  getCategory: (score) => {
-    if (score <= 1) return { label: 'Low severity — consider home treatment', recommendation: 'Low mortality (0.6–2.1%)', color: 'var(--risk-low)' }
-    if (score === 2) return { label: 'Moderate severity — consider hospital admission', recommendation: 'Intermediate mortality (8.2%)', color: 'var(--risk-mod)' }
-    return { label: 'High severity — urgent hospital admission', recommendation: 'High mortality (15–46%); consider ICU', color: 'var(--risk-high)' }
-  },
-  keywords: 'curb65 pneumonia severity cap admission score',
-}
-
 export const cvRiskHtn = {
   id: 'cv-risk-htn',
   title: 'CV Risk for HTN Medication Initiation',

@@ -1,9 +1,9 @@
 import { screeningCategories } from './screeningData'
-import { framingham, ipss, gad7, phq9, curb65, cvRiskHtn, act, cat, aria, stopbang, epworth } from './scoresData'
+import { framingham, ipss, gad7, phq9, cvRiskHtn, act, cat, aria, stopbang, epworth } from './scoresData'
 import { clinicalFrailtyScale, morseFallScale } from './geriatricData'
 import { patientInfoItems } from './patientInfoData'
 
-const allScoreData = [framingham, ipss, gad7, phq9, curb65, cvRiskHtn, act, cat, aria, stopbang, epworth]
+const allScoreData = [framingham, ipss, gad7, phq9, cvRiskHtn, act, cat, aria, stopbang, epworth]
 
 export const searchIndex = [
   { path: '/', label: 'Home', keywords: 'home dashboard dockita' },

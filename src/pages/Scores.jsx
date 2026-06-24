@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { framingham, ipss, phq9, gad7, curb65, act, cat, aria, stopbang, epworth, cvRiskHtn } from '../data/scoresData'
+import { framingham, ipss, phq9, gad7, act, cat, aria, stopbang, epworth, cvRiskHtn } from '../data/scoresData'
 
 const scoreMeta = [
   { id: 'psychiatric', icon: 'psychiatry', category: 'Mental Health', title: 'Psychiatric Assessment', desc: 'PHQ-9 and GAD-7 screening tools for depression and anxiety.' },
@@ -682,7 +682,7 @@ export function ScoreDetail() {
 
 function getScoreData(id) {
   const map = {
-    phq9, gad7, psychiatric: { id: 'psychiatric' }, framingham, ipss, curb65,
+    phq9, gad7, psychiatric: { id: 'psychiatric' }, framingham, ipss,
     stopbang, epworth, aria, act, cat, 'cv-risk-htn': cvRiskHtn,
   }
   return map[id]
