@@ -1,6 +1,6 @@
 import { screeningCategories } from './screeningData'
 import { framingham, ipss, gad7, phq9, cvRiskHtn, act, cat, aria, stopbang, epworth } from './scoresData'
-import { clinicalFrailtyScale, morseFallScale } from './geriatricData'
+import { clinicalFrailtyScale, barthelIndex } from './geriatricData'
 import { patientInfoItems } from './patientInfoData'
 
 const allScoreData = [framingham, ipss, gad7, phq9, cvRiskHtn, act, cat, aria, stopbang, epworth]
@@ -26,7 +26,7 @@ export const searchIndex = [
   ...allScoreData.map(s => ({ path: '/scores', label: s.title, keywords: s.keywords, id: s.id })),
 
   { path: '/geriatric', label: clinicalFrailtyScale.title, keywords: clinicalFrailtyScale.keywords, id: clinicalFrailtyScale.id },
-  { path: '/geriatric', label: morseFallScale.title, keywords: morseFallScale.keywords, id: morseFallScale.id },
+  { path: '/geriatric', label: barthelIndex.title, keywords: barthelIndex.keywords, id: barthelIndex.id },
 
   { path: '/drugs', label: 'Drug Database', keywords: 'drug medication medicine pharmaceutical database search prescription formulary' },
 

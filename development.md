@@ -10,7 +10,7 @@ Provides clinical tools: screening guidelines, calculators, scores, geriatric as
 - **5 calculators** implemented (BMI, eGFR, Age, EDD, Basic)
 - **7 scoring tools** implemented (Framingham, IPSS, GAD-7, PHQ-9, CURB-65, CHA2DS2-VASc, HAS-BLED)
 - **10 screening guideline categories** with accordion tables
-- **2 geriatric tools** (Clinical Frailty Scale, Morse Fall Scale)
+- **2 geriatric tools** (Clinical Frailty Scale, Barthel Index)
 - **Global search** with keyboard navigation
 - **Dark/light theme** toggle
 - **Responsive layout**
@@ -33,6 +33,24 @@ Provides clinical tools: screening guidelines, calculators, scores, geriatric as
 - `src/pages/Calculators.jsx` — Added NeoBili card
 - `src/App.css` — Added sidebar group toggle and child link styles; added `.neobili-page` max-width; `.htn-class-table` section-label styling
 - Removed orphaned files: `08062026 session.txt`, `stitch/`, `icons/`
+
+## 28 Jun 2026 — UI polish & Geriatric page overhaul
+- **UI anti-pattern fixes** (Impeccable detect):
+  - `.calc-result`: Replaced `border-left: 4px` with `border-top: 3px` accent
+  - `.screening-card` & `.drug-list-item`: Replaced `border-left: 4px` with `::before` pseudo-element
+  - `.screening-card-body`: Replaced `max-height`/`padding` transition with performant `grid-template-rows`
+- **Lint cleanup** (91 errors → 0):
+  - `eslint.config.js`: Added `.agents/**` to `globalIgnores`
+  - `Sidebar.jsx`: Supressed `set-state-in-effect` rule for nav auto-expand
+  - `Calculators.jsx`: Removed empty initializers on `let` vars; removed unused `isAction`
+  - `DrugDatabase.jsx`: Removed unused `badgeChar`; moved `useMemo` before early return
+  - `Dyslipidemia.jsx`: Extracted `SegmentedGroup` to module scope
+  - `Scores.jsx`: Removed unused `useNavigate` in `Scores` component
+- **Geriatric page — complete redesign**:
+  - `geriatricData.js`: Removed Morse Fall Scale; added Barthel Index (10-item ADL, 0–100, 5 dependency levels)
+  - `searchIndex.js`: Updated imports and search entries
+  - `Geriatric.jsx`: New CFS widget (clean 3×3 grid, bigger buttons, inline detail, hover lift, no tier colors); new Barthel widget (live scoring, progress bar, full-label radio rows, sticky results panel with scale reference)
+  - `App.css`: Replaced all CFS/Barthel CSS with new `.geriatric-card`, `.cfs-spectrum`, `.adl-checklist` system
 
 ## Pending Work
 ### High Priority

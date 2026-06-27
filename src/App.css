@@ -1562,21 +1562,32 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 }
 
 .screening-card {
+  position: relative;
   background: var(--surface-container-lowest);
   border: 1px solid var(--outline-variant);
-  border-left: 4px solid transparent;
   border-radius: 8px;
   overflow: hidden;
   transition: box-shadow var(--transition), border-color var(--transition);
 }
 
-.screening-card:hover {
-  border-color: var(--outline-variant);
+.screening-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  border-radius: 8px 0 0 8px;
+  transition: background var(--transition);
 }
 
-.screening-card.expanded {
-  box-shadow: var(--hover-shadow);
-  border-left-color: var(--card-accent, var(--primary));
+.screening-card:hover::before {
+  background: color-mix(in srgb, var(--card-accent, var(--primary)) 25%, transparent);
+}
+
+.screening-card.expanded::before {
+  background: var(--card-accent, var(--primary));
 }
 
 .screening-card-header {
@@ -1636,18 +1647,25 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   transform: rotate(90deg);
 }
 
-.screening-card-body {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height 0.35s ease, opacity 0.3s ease, padding 0.3s ease;
-  padding: 0 20px 0 74px;
+.screening-card-body-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
 }
 
-.screening-card-body.visible {
-  max-height: 2000px;
-  opacity: 1;
+.screening-card-body-wrap.visible {
+  grid-template-rows: 1fr;
+}
+
+.screening-card-body {
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
   padding: 0 20px 20px 74px;
+}
+
+.screening-card-body-wrap.visible .screening-card-body {
+  opacity: 1;
 }
 
 .screening-table {
@@ -1839,7 +1857,7 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   font-size: 0.85rem;
   line-height: 1.5;
   margin-top: 8px;
-  border-left: 4px solid var(--result-color, var(--primary));
+  border-top: 3px solid var(--result-color, var(--primary));
   background: color-mix(in srgb, var(--result-color, var(--primary-fixed)) 20%, var(--surface-container-low));
 }
 
@@ -2146,79 +2164,450 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 }
 
 /* ===== Geriatric Page ===== */
-.cfs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
-  gap: 6px;
-  margin-bottom: 12px;
+.geriatric-page .page-subtitle {
+  margin-bottom: 0;
 }
 
-.cfs-level {
+.geriatric-page-header {
+  margin-bottom: 20px;
+}
+
+.geriatric-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 900px) {
+  .geriatric-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.geriatric-card {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.geriatric-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.geriatric-card-icon {
+  flex-shrink: 0;
+  color: var(--primary);
+  margin-top: 2px;
+}
+
+.geriatric-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--on-surface);
+  line-height: 1.3;
+}
+
+.geriatric-card-desc {
+  font-size: 0.82rem;
+  color: var(--on-surface-variant);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+/* ─── CFS Spectrum ─── */
+.cfs-spectrum {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cfs-spectrum-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--on-surface-variant);
+  padding: 0 4px;
+}
+
+.cfs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.cfs-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 8px 4px;
-  border: 2px solid var(--outline-variant);
+  gap: 4px;
+  padding: 16px 8px;
+  border: 1px solid var(--outline-variant);
   border-radius: 8px;
   background: var(--surface-container);
   cursor: pointer;
-  transition: all var(--transition);
+  transition: all 0.2s ease;
 }
 
-.cfs-level:hover {
+.cfs-btn:hover {
   border-color: var(--primary);
   background: var(--surface-container-high);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
-.cfs-level.selected {
-  border-color: var(--primary);
+.cfs-btn:active {
+  transform: scale(0.97);
+}
+
+.cfs-btn.selected {
+  border: 2px solid var(--primary);
+  background: color-mix(in srgb, var(--primary) 10%, var(--surface-container));
+  color: var(--primary);
+}
+
+.cfs-btn-score {
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: inherit;
+}
+
+.cfs-btn-label {
+  font-size: 0.75rem;
+  text-align: center;
+  line-height: 1.2;
+  color: inherit;
+  opacity: 0.85;
+}
+
+.cfs-btn.selected .cfs-btn-label {
+  opacity: 1;
+}
+
+.cfs-btn.selected .cfs-btn-label {
+  opacity: 1;
+}
+
+.cfs-detail {
+  background: var(--surface-container);
+  border-radius: 8px;
+  padding: 14px 16px;
+  animation: slideDown 0.25s ease-out;
+}
+
+.cfs-detail-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.cfs-detail-score {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cfs-detail-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.cfs-detail-text {
+  font-size: 0.82rem;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+}
+
+/* ===== Barthel Index — ADL Checklist ===== */
+.adl-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 600px) {
+  .adl-layout {
+    grid-template-columns: 1fr 220px;
+  }
+}
+
+.adl-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ─── Progress ─── */
+.adl-progress {
+  margin-bottom: 4px;
+}
+
+.adl-progress-text {
+  font-size: 0.75rem;
+  color: var(--on-surface-variant);
+  margin-bottom: 4px;
+}
+
+.adl-progress-bar {
+  height: 3px;
+  background: var(--surface-container-high);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.adl-progress-fill {
+  height: 100%;
   background: var(--primary);
-  color: var(--on-primary);
+  border-radius: 2px;
+  transition: width 0.3s ease;
 }
 
-.cfs-level.selected .cfs-icon { color: var(--on-primary); }
-
-.cfs-level[data-tier="1"] { background: var(--risk-low); }
-.cfs-level[data-tier="2"] { background: var(--risk-low-mid); }
-.cfs-level[data-tier="3"] { background: var(--risk-mod); }
-.cfs-level[data-tier="4"] { background: var(--risk-high-mid); }
-.cfs-level[data-tier="5"] { background: var(--risk-high); }
-
-.cfs-level.selected[data-tier="1"],
-.cfs-level.selected[data-tier="2"],
-.cfs-level.selected[data-tier="3"],
-.cfs-level.selected[data-tier="4"],
-.cfs-level.selected[data-tier="5"] {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: var(--on-primary);
+/* ─── Items ─── */
+.adl-item {
+  background: var(--surface-container);
+  border-radius: 8px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.cfs-icon {
+.adl-item-done {
+  border-color: var(--outline-variant);
+  background: var(--surface-container-lowest);
+}
+
+.adl-item-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.adl-item-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface-container-high);
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 22px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--on-surface-variant);
+  flex-shrink: 0;
+}
+
+.adl-item-done .adl-item-num {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.adl-item-question {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--on-surface);
+  line-height: 1.3;
+}
+
+.adl-options {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.adl-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+  background: var(--surface-container-lowest);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.adl-opt:hover {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 6%, var(--surface-container-lowest));
+}
+
+.adl-opt.selected {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, var(--surface-container-lowest));
+}
+
+.adl-opt-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--outline);
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.adl-opt-dot.filled {
+  border-color: var(--primary);
+  background: var(--primary);
+  box-shadow: inset 0 0 0 2px var(--surface-container-lowest);
+}
+
+.adl-opt-score {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--on-surface-variant);
+  min-width: 18px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.adl-opt.selected .adl-opt-score {
+  color: var(--primary);
+}
+
+.adl-opt-label {
+  font-size: 0.8rem;
+  color: var(--on-surface);
+  line-height: 1.3;
+}
+
+/* ─── Result Panel ─── */
+.adl-result-panel {
+  order: -1;
+}
+
+@media (min-width: 600px) {
+  .adl-result-panel {
+    order: 0;
+  }
+}
+
+.adl-result-sticky {
+  background: var(--surface-container);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 600px) {
+  .adl-result-sticky {
+    position: sticky;
+    top: 80px;
+  }
+}
+
+.adl-result-header {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.adl-result-score {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.adl-result-value {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
   color: var(--on-surface-variant);
 }
 
-.cfs-score {
-  font-size: 1rem;
-  font-weight: 800;
-  line-height: 1;
+.adl-layout-complete .adl-result-value {
+  color: var(--on-surface);
 }
 
-.cfs-label {
-  font-size: 0.6rem;
-  text-align: center;
-  line-height: 1.2;
+.adl-result-max {
+  font-size: 0.85rem;
+  color: var(--on-surface-variant);
 }
 
-.cfs-detail p {
-  margin-top: 6px;
-  font-size: 0.82rem;
-  font-weight: 400;
+.adl-result-chip {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 12px;
+  border-radius: 6px;
+  align-self: flex-start;
+}
+
+.adl-result-prompt {
+  font-size: 0.78rem;
+  color: var(--on-surface-variant);
+  line-height: 1.4;
+}
+
+.adl-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  background: none;
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  align-self: flex-start;
+}
+
+.adl-reset-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ─── Scale Reference ─── */
+.adl-scale-ref {
+  border-top: 1px solid var(--outline-variant);
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.adl-scale-ref-header {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.adl-scale-ref-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: var(--on-surface-variant);
+}
+
+.adl-scale-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 /* ===== Patient Info Page ===== */
@@ -2441,6 +2830,7 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 .drug-list { list-style: none; }
 
 .drug-list-item {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -2448,8 +2838,19 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   cursor: pointer;
   transition: background var(--transition);
   border-bottom: 1px solid var(--outline-variant);
-  border-left: 4px solid transparent;
   outline: none;
+}
+
+.drug-list-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  border-radius: 0 2px 2px 0;
+  transition: background var(--transition);
 }
 
 .drug-list-item:last-child { border-bottom: none; }
@@ -2458,8 +2859,12 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 .drug-list-item.selected,
 .drug-list-item.focused {
   background: color-mix(in srgb, var(--primary-fixed) 30%, transparent);
-  border-left-color: var(--primary);
   border-bottom: 1px solid var(--primary);
+}
+
+.drug-list-item.selected::before,
+.drug-list-item.focused::before {
+  background: var(--primary);
 }
 
 .drug-list-item-top {

@@ -16,8 +16,6 @@ const scoreMeta = [
 ]
 
 export default function Scores() {
-  const navigate = useNavigate()
-
   return (
     <div className="page" style={{ paddingTop: 0 }}>
       <div style={{ marginBottom: '24px' }}>

@@ -6,12 +6,6 @@ function R({ html, value }) {
   return html ? <span dangerouslySetInnerHTML={{ __html: value }} /> : <>{value}</>
 }
 
-function badgeChar(cat) {
-  if (!cat || cat === 'NOT APPLICABLE' || cat.startsWith('DELISTED') || cat.startsWith('NOT APPLICABLE')) return null
-  const m = cat.match(/^([A-Za-z*])/)
-  return m ? m[1] : null
-}
-
 const popIcon = { adult: 'person', child: 'child_care', neonate: 'child_care' }
 const popLabel = { adult: 'Adult', child: 'Child', neonate: 'Neonate' }
 
@@ -54,10 +48,10 @@ function DosageCards({ parsed }) {
 }
 
 function DrugDetail({ drug }) {
+  const parsedDosages = useMemo(() => drug ? parseDosages(drug.dosages) : null, [drug?.dosages]) // eslint-disable-line react-hooks/exhaustive-deps
   if (!drug) return null
   const cat = drug.prescriberCategory
   const showCat = cat && cat !== 'NOT APPLICABLE' && !cat.startsWith('DELISTED') && !cat.startsWith('NOT APPLICABLE')
-  const parsedDosages = useMemo(() => parseDosages(drug.dosages), [drug.dosages])
 
   return (
     <div className="drug-detail-inner">

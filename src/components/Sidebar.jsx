@@ -26,13 +26,19 @@ const navItems = [
 
 export default function Sidebar({ open, onClose }) {
   const location = useLocation()
-  const [expandedGroups, setExpandedGroups] = useState(new Set())
+  const [expandedGroups, setExpandedGroups] = useState(() => {
+    const group = navItems.find(
+      item => item.type === 'group' && item.children?.some(c => location.pathname.startsWith(c.to))
+    )
+    return group ? new Set([group.key]) : new Set()
+  })
 
   useEffect(() => {
     const group = navItems.find(
       item => item.type === 'group' && item.children?.some(c => location.pathname.startsWith(c.to))
     )
     if (group) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setExpandedGroups(prev => new Set([...prev, group.key]))
     }
   }, [location.pathname])

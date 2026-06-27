@@ -33,6 +33,19 @@ const monitoringSteps = [
   { label: 'Every 3 – 12 Months', desc: 'Periodic assessment of lipids based on clinical judgment and stability.' },
 ]
 
+function SegmentedGroup({ label, value, options, onChange }) {
+  return (
+    <div className="framingham-field">
+      <span className="field-label">{label}</span>
+      <div className="segmented-control">
+        {options.map(o => (
+          <button key={o.value} className={`segmented-btn ${value === o.value ? 'active' : ''}`} onClick={() => onChange(o.value)} type="button">{o.label}</button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function FraminghamWidget() {
   const [vals, setVals] = useState({ gender: 'male', age: '', cholesterol: '', hdl: '', sbp: '', treated: '0', smoker: '0', diabetes: '0' })
   const [result, setResult] = useState(null)
@@ -65,17 +78,6 @@ function FraminghamWidget() {
     setResult({ points: r.points, risk: r.risk, ...interpretation })
   }
   const clear = () => { setVals({ gender: 'male', age: '', cholesterol: '', hdl: '', sbp: '', treated: '0', smoker: '0', diabetes: '0' }); setResult(null); setFieldErrors({}) }
-
-  const SegmentedGroup = ({ label, value, options, onChange }) => (
-    <div className="framingham-field">
-      <span className="field-label">{label}</span>
-      <div className="segmented-control">
-        {options.map(o => (
-          <button key={o.value} className={`segmented-btn ${value === o.value ? 'active' : ''}`} onClick={() => onChange(o.value)} type="button">{o.label}</button>
-        ))}
-      </div>
-    </div>
-  )
 
   return (
     <div className="ref-card">

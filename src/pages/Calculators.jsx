@@ -11,7 +11,7 @@ function BMICalculator() {
     const w = parseFloat(weight), h = parseFloat(height)
     if (!w || !h || h > 2.5) { setResult(null); return }
     const bmi = (w / (h * h))
-    let cls = '', color = '', risk = ''
+    let cls, color, risk
     if (bmi < 18.5) { cls = 'Underweight'; color = 'var(--bmi-under)'; risk = 'Low, but with increased risk of other clinical problems' }
     else if (bmi <= 22.9) { cls = 'Normal'; color = 'var(--bmi-normal)'; risk = 'Optimal' }
     else if (bmi <= 27.4) { cls = 'Pre-obese (Overweight)'; color = 'var(--bmi-over)'; risk = 'Increased' }
@@ -62,7 +62,7 @@ function EGFRCalculator() {
     const egfr = 141 * Math.pow(minScr, alpha) * Math.pow(maxScr, -1.209) * Math.pow(0.993, a)
     const val = Math.round(egfr)
 
-    let stage = '', color = ''
+    let stage, color
     if (val >= 90) { stage = 'Stage 1 — Normal'; color = 'var(--bmi-normal)' }
     else if (val >= 60) { stage = 'Stage 2 — Mildly reduced'; color = 'var(--risk-low-mid)' }
     else if (val >= 45) { stage = 'Stage 3a — Mild-moderate'; color = 'var(--risk-mod)' }
@@ -250,7 +250,7 @@ function BasicCalc() {
     if (!op) return
     const a = parseFloat(prev), b = parseFloat(display)
     if (isNaN(a) || isNaN(b)) return
-    let result = 0
+    let result
     switch (op) {
       case '+': result = a + b; break
       case '-': result = a - b; break
@@ -292,7 +292,6 @@ function BasicCalc() {
   ]
 
   const isOp = (b) => ['+', '-', '×', '÷'].includes(b)
-  const isAction = (b) => ['C', '±', '%', '=', '.'].includes(b)
 
   return (
     <div className="calc-card basic-calc-card">

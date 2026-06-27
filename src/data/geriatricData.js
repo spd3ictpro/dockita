@@ -16,66 +16,108 @@ export const clinicalFrailtyScale = {
   keywords: 'clinical frailty scale cfs frailty geriatric elderly assessment',
 }
 
-export const morseFallScale = {
-  id: 'morse',
-  title: 'Morse Fall Scale',
-  description: 'Fall risk assessment (6 items) — scores ≥45 indicate high fall risk',
+export const barthelIndex = {
+  id: 'barthel',
+  title: 'Barthel Index',
+  description: '10-item ADL assessment for functional independence (score 0–100)',
   items: [
     {
-      key: 'falls',
-      question: 'History of falling (immediate or previous admission)',
+      key: 'feeding',
+      question: 'Feeding',
       options: [
-        { value: 0, label: 'No' },
-        { value: 25, label: 'Yes' },
+        { value: 0, label: 'Dependent (needs help with feeding)' },
+        { value: 5, label: 'Needs help with cutting, spreading butter, etc.' },
+        { value: 10, label: 'Independent (able to feed self)' },
       ],
     },
     {
-      key: 'secondary',
-      question: 'Secondary diagnosis (≥2 medical diagnoses)',
+      key: 'bathing',
+      question: 'Bathing',
       options: [
-        { value: 0, label: 'No' },
-        { value: 15, label: 'Yes' },
+        { value: 0, label: 'Dependent (needs help)' },
+        { value: 5, label: 'Independent (washes self without help)' },
       ],
     },
     {
-      key: 'aid',
-      question: 'Ambulatory aid',
+      key: 'grooming',
+      question: 'Grooming',
       options: [
-        { value: 0, label: 'None / bed rest / nurse assist' },
-        { value: 15, label: 'Crutches / cane / walker' },
-        { value: 30, label: 'Furniture' },
+        { value: 0, label: 'Needs help with personal care' },
+        { value: 5, label: 'Independent (face, hair, teeth, shaving)' },
       ],
     },
     {
-      key: 'iv',
-      question: 'IV / Heparin lock / Saline lock',
+      key: 'dressing',
+      question: 'Dressing',
       options: [
-        { value: 0, label: 'No' },
-        { value: 20, label: 'Yes' },
+        { value: 0, label: 'Dependent (needs help)' },
+        { value: 5, label: 'Needs help but can do half unaided' },
+        { value: 10, label: 'Independent (buttons, zips, laces)' },
       ],
     },
     {
-      key: 'gait',
-      question: 'Gait / Transferring',
+      key: 'bowels',
+      question: 'Bowels',
       options: [
-        { value: 0, label: 'Normal / bed rest / wheelchair' },
-        { value: 10, label: 'Weak (stooped, short steps, holds furniture)' },
-        { value: 20, label: 'Impaired (difficulty rising, unsteady, shuffling)' },
+        { value: 0, label: 'Incontinent (or needs enemas)' },
+        { value: 5, label: 'Occasional accidents (≤1/week)' },
+        { value: 10, label: 'Continent' },
       ],
     },
     {
-      key: 'mental',
-      question: 'Mental status',
+      key: 'bladder',
+      question: 'Bladder',
       options: [
-        { value: 0, label: 'Oriented to own ability' },
-        { value: 15, label: 'Overestimates / forgets limitations' },
+        { value: 0, label: 'Incontinent (or catheterised, unable to manage)' },
+        { value: 5, label: 'Occasional accidents (≤1/day)' },
+        { value: 10, label: 'Continent' },
+      ],
+    },
+    {
+      key: 'toilet',
+      question: 'Toilet Use',
+      options: [
+        { value: 0, label: 'Dependent (needs help)' },
+        { value: 5, label: 'Needs some help, but can do some alone' },
+        { value: 10, label: 'Independent (on and off, wiping, flushing)' },
+      ],
+    },
+    {
+      key: 'transfers',
+      question: 'Transfers (bed to chair & back)',
+      options: [
+        { value: 0, label: 'Unable — no sitting balance' },
+        { value: 5, label: 'Major help (one or two people, physical lift)' },
+        { value: 10, label: 'Minor help (verbal or physical cue)' },
+        { value: 15, label: 'Independent' },
+      ],
+    },
+    {
+      key: 'mobility',
+      question: 'Mobility (on level surfaces)',
+      options: [
+        { value: 0, label: 'Immobile or <50 yards' },
+        { value: 5, label: 'Wheelchair independent (includes corners)' },
+        { value: 10, label: 'Walks with help of one person (verbal or physical)' },
+        { value: 15, label: 'Independent (but may use aid, e.g. stick)' },
+      ],
+    },
+    {
+      key: 'stairs',
+      question: 'Stairs',
+      options: [
+        { value: 0, label: 'Unable' },
+        { value: 5, label: 'Needs help (verbal, physical, carrying aid)' },
+        { value: 10, label: 'Independent (up and down)' },
       ],
     },
   ],
   getCategory: (score) => {
-    if (score < 25) return { label: 'Low risk', color: 'var(--risk-low)' }
-    if (score < 45) return { label: 'Moderate risk', color: 'var(--risk-mod)' }
-    return { label: 'High risk', color: 'var(--risk-high)' }
+    if (score <= 20) return { label: 'Total dependency', color: 'var(--risk-high)' }
+    if (score <= 60) return { label: 'Severe dependency', color: '#ff922b' }
+    if (score <= 90) return { label: 'Moderate dependency', color: 'var(--risk-mod)' }
+    if (score <= 99) return { label: 'Mild dependency', color: 'var(--risk-low-mid)' }
+    return { label: 'Independent', color: 'var(--risk-low)' }
   },
-  keywords: 'morse fall scale risk assessment elderly geriatric',
+  keywords: 'barthel index adl activities of daily living functional independence assessment geriatric elderly',
 }
