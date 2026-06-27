@@ -10,10 +10,10 @@ export const searchIndex = [
   { path: '/screening', label: 'Screening Home', keywords: 'screening guidelines cpg' },
   ...screeningCategories.map(s => ({ path: '/screening', label: s.title, keywords: s.keywords, id: s.id })),
 
-  { path: '/diabetes', label: 'Diabetes Mellitus', keywords: 'diabetes diabetic dm sugar hba1c glucose screening diagnostic criteria glycemic targets prediabetes ifg ogtt' },
-  { path: '/hypertension', label: 'Hypertension', keywords: 'hypertension high blood pressure htn bp cardiovascular risk classification medication initiation' },
-  { path: '/dyslipidemia', label: 'Dyslipidaemia', keywords: 'lipid cholesterol dyslipidaemia dyslipidemia hdl ldl tg screening classification treatment targets' },
-  { path: '/neobili', label: 'NeoBili — Neonatal Bilirubin', keywords: 'neobili bilirubin neonatal jaundice tsb phototherapy exchange transfusion hyperbilirubinemia newborn aap 2022' },
+  { path: '/diabetes', label: 'Diabetes Mellitus', keywords: 'diabetes diabetic dm sugar hba1c glucose screening diagnostic criteria glycemic targets prediabetes ifg ogtt complications monitoring medication initiation foot retina kidney neuropathy' },
+  { path: '/hypertension', label: 'Hypertension', keywords: 'hypertension high blood pressure htn bp cardiovascular risk classification medication initiation staging abpm home monitoring nice 2011 target organ damage' },
+  { path: '/dyslipidemia', label: 'Dyslipidaemia', keywords: 'lipid cholesterol dyslipidaemia dyslipidemia hdl ldl tg screening classification treatment targets statin dose framingham risk lifestyle therapy' },
+  { path: '/neobili', label: 'NeoBili — Neonatal Bilirubin', keywords: 'neobili bilirubin neonatal jaundice tsb phototherapy exchange transfusion hyperbilirubinemia newborn aap 2022 risk factors ihd dat g6pd deficiency hemolytic albumin sepsis instability threshold' },
 
   { path: '/calculators', label: 'Calculators Home', keywords: 'calculators calculation tools' },
   { path: '/calculators', label: 'BMI Calculator', keywords: 'bmi body mass index obesity weight height calculator', id: 'bmi' },

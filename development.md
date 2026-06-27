@@ -23,6 +23,16 @@ Provides clinical tools: screening guidelines, calculators, scores, geriatric as
 - `src/components/Sidebar.jsx` — Imported `ThemeToggle` instead of defining inline
 - `index.html` — Changed favicon href from `/favicon.svg` to `%BASE%favicon.svg` (fixes gh-pages production path)
 - `AGENTS.md` — Removed stale `useTheme.js` and `BasicCalc` entries from Known Issues
+- `src/pages/NeoBili.jsx` — New neonatal bilirubin calculator with AAP 2022 thresholds, color-coded result box, field validation, GA pill buttons
+- `src/data/neobiliData.js` — Corrected PT/ET threshold tables verified against PediTools API at 60+ points; fixed GA 35-37 curve direction (96-336h); independently populated any-risk tables, removed flawed derivation
+- `src/pages/Diabetes.jsx` — Redesigned to match Dyslipid layout
+- `src/pages/Hypertension.jsx` — Redesigned to match Dyslipid layout, BP classification table with section-label rows
+- `src/pages/Screening.jsx` — Removed Diabetes, Hypertension, Dyslipidemia cards (moved to dedicated pages)
+- `src/data/screeningData.js` — Removed diabetes, hypertension, dyslipidaemia entries
+- `src/components/Sidebar.jsx` — Restructured: Calculators is now an expandable group with NeoBili as child item
+- `src/pages/Calculators.jsx` — Added NeoBili card
+- `src/App.css` — Added sidebar group toggle and child link styles; added `.neobili-page` max-width; `.htn-class-table` section-label styling
+- Removed orphaned files: `08062026 session.txt`, `stitch/`, `icons/`
 
 ## Pending Work
 ### High Priority
@@ -37,7 +47,7 @@ Provides clinical tools: screening guidelines, calculators, scores, geriatric as
 ### Low Priority
 - Framingham lacks input bounds validation
 - Dark mode contrast audit on result cards
-- `public/icons.svg` is orphaned
+- `public/icons.svg`, `icons/`, `stitch/` — removed (orphaned)
 - No print styles, no `<label>` elements on inputs
 
 ## References
