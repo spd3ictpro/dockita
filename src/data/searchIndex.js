@@ -13,6 +13,7 @@ export const searchIndex = [
   { path: '/diabetes', label: 'Diabetes Mellitus', keywords: 'diabetes diabetic dm sugar hba1c glucose screening diagnostic criteria glycemic targets prediabetes ifg ogtt' },
   { path: '/hypertension', label: 'Hypertension', keywords: 'hypertension high blood pressure htn bp cardiovascular risk classification medication initiation' },
   { path: '/dyslipidemia', label: 'Dyslipidaemia', keywords: 'lipid cholesterol dyslipidaemia dyslipidemia hdl ldl tg screening classification treatment targets' },
+  { path: '/neobili', label: 'NeoBili — Neonatal Bilirubin', keywords: 'neobili bilirubin neonatal jaundice tsb phototherapy exchange transfusion hyperbilirubinemia newborn aap 2022' },
 
   { path: '/calculators', label: 'Calculators Home', keywords: 'calculators calculation tools' },
   { path: '/calculators', label: 'BMI Calculator', keywords: 'bmi body mass index obesity weight height calculator', id: 'bmi' },

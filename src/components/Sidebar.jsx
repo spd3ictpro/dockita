@@ -1,20 +1,51 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import ThemeToggle from './ThemeToggle'
 
-const links = [
-  { to: '/', icon: 'dashboard', label: 'Home' },
-  { to: '/screening', icon: 'clinical_notes', label: 'Screening' },
-  { to: '/diabetes', icon: 'medical_services', label: 'Diabetes' },
-  { to: '/hypertension', icon: 'blood_pressure', label: 'Hypertension' },
-  { to: '/dyslipidemia', icon: 'science', label: 'Dyslipidemia' },
-  { to: '/calculators', icon: 'calculate', label: 'Calculators' },
-  { to: '/scores', icon: 'analytics', label: 'Scores & Scales' },
-  { to: '/drugs', icon: 'pill', label: 'Drug Database' },
-  { to: '/geriatric', icon: 'elderly', label: 'Geriatric' },
-  { to: '/patient-info', icon: 'monitoring', label: 'Patient Info' },
+const navItems = [
+  { type: 'link', to: '/', icon: 'dashboard', label: 'Home' },
+  { type: 'link', to: '/screening', icon: 'clinical_notes', label: 'Screening' },
+  { type: 'link', to: '/diabetes', icon: 'medical_services', label: 'Diabetes' },
+  { type: 'link', to: '/hypertension', icon: 'blood_pressure', label: 'Hypertension' },
+  { type: 'link', to: '/dyslipidemia', icon: 'science', label: 'Dyslipidemia' },
+  {
+    type: 'group',
+    key: 'calculators',
+    icon: 'calculate',
+    label: 'Calculators',
+    to: '/calculators',
+    children: [
+      { to: '/neobili', icon: 'healing', label: 'NeoBili' },
+    ],
+  },
+  { type: 'link', to: '/scores', icon: 'analytics', label: 'Scores & Scales' },
+  { type: 'link', to: '/drugs', icon: 'pill', label: 'Drug Database' },
+  { type: 'link', to: '/geriatric', icon: 'elderly', label: 'Geriatric' },
+  { type: 'link', to: '/patient-info', icon: 'monitoring', label: 'Patient Info' },
 ]
 
 export default function Sidebar({ open, onClose }) {
+  const location = useLocation()
+  const [expandedGroups, setExpandedGroups] = useState(new Set())
+
+  useEffect(() => {
+    const group = navItems.find(
+      item => item.type === 'group' && item.children?.some(c => location.pathname.startsWith(c.to))
+    )
+    if (group) {
+      setExpandedGroups(prev => new Set([...prev, group.key]))
+    }
+  }, [location.pathname])
+
+  const toggleGroup = (key) => {
+    setExpandedGroups(prev => {
+      const next = new Set(prev)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
+      return next
+    })
+  }
+
   return (
     <>
       <div className={`sidebar-overlay ${open ? 'open' : ''}`} onClick={onClose} />
@@ -37,18 +68,60 @@ export default function Sidebar({ open, onClose }) {
         </div>
 
         <nav className="sidebar-nav">
-          {links.map(link => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              end={link.to === '/'}
-              className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
-              onClick={onClose}
-            >
-              <span className="material-symbols-outlined">{link.icon}</span>
-              <span>{link.label}</span>
-            </NavLink>
-          ))}
+          {navItems.map(item => {
+            if (item.type === 'group') {
+              const isExpanded = expandedGroups.has(item.key)
+              const isChildActive = item.children?.some(c => location.pathname.startsWith(c.to))
+              return (
+                <div key={item.key} style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <NavLink
+                      to={item.to}
+                      end
+                      className={({ isActive }) => `sidebar-link ${isActive || isChildActive ? 'active' : ''}`}
+                      onClick={() => { toggleGroup(item.key); onClose() }}
+                      style={{ flex: 1 }}
+                    >
+                      <span className="material-symbols-outlined">{item.icon}</span>
+                      <span>{item.label}</span>
+                    </NavLink>
+                    <button
+                      type="button"
+                      className="sidebar-group-toggle"
+                      onClick={() => toggleGroup(item.key)}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>
+                        {isExpanded ? 'expand_less' : 'expand_more'}
+                      </span>
+                    </button>
+                  </div>
+                  {isExpanded && item.children?.map(child => (
+                    <NavLink
+                      key={child.to}
+                      to={child.to}
+                      className={({ isActive }) => `sidebar-child-link ${isActive ? 'active' : ''}`}
+                      onClick={onClose}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>{child.icon}</span>
+                      <span>{child.label}</span>
+                    </NavLink>
+                  ))}
+                </div>
+              )
+            }
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === '/'}
+                className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
+                onClick={onClose}
+              >
+                <span className="material-symbols-outlined">{item.icon}</span>
+                <span>{item.label}</span>
+              </NavLink>
+            )
+          })}
         </nav>
 
         <div className="sidebar-footer">
@@ -59,4 +132,3 @@ export default function Sidebar({ open, onClose }) {
     </>
   )
 }
-

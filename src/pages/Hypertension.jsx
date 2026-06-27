@@ -1,88 +1,58 @@
-import { useState } from 'react'
-import { screeningCategories } from '../data/screeningData'
-import { cvRiskHtn } from '../data/scoresData'
-import { HeartIcon } from '../components/icons'
-
-const htnScreening = screeningCategories.find(c => c.id === 'hypertension')
+const htnScreening = {
+  title: 'Hypertension Screening',
+  condition: 'Hypertension',
+  guidelines: [
+    { age: '≥18', test: 'BP measurement at every visit', note: 'More frequently for those at risk (family history, obese and those at-risk of high blood pressure)' },
+    { age: 'Elevated BP', test: 'Confirm with HBPM or ABPM', note: 'HBPM = home BP monitoring × 7 days' },
+  ],
+  source: 'Malaysia CPG: Management of Hypertension 2023',
+}
 
 const bpClassification = [
-  { category: 'Optimal', sbp: '<120', dbp: '<80', action: 'Reassess in 1–3 years' },
-  { category: 'Normal', sbp: '120–129', dbp: '80–84', action: 'Reassess in 1 year' },
-  { category: 'High Normal', sbp: '130–139', dbp: '85–89', action: 'Reassess in 6–12 months' },
-  { category: 'Grade 1 Hypertension', sbp: '140–159', dbp: '90–99', action: 'Confirm with HBPM/ABPM; initiate management' },
-  { category: 'Grade 2 Hypertension', sbp: '≥160', dbp: '≥100', action: 'Prompt pharmacological therapy' },
+  { category: 'Optimal', sbp: '<120', dbp: '<80', prevalence: '30.7' },
+  { category: 'Normal', sbp: '120–129', dbp: '80–84', prevalence: '25.3' },
+  { category: 'At Risk', sbp: '130–139', dbp: '85–89', prevalence: '18.6' },
+  { category: 'Hypertension', sbp: '', dbp: '', prevalence: '' },
+  { category: 'Stage 1 (Mild)', sbp: '140–159', dbp: '90–99', prevalence: '17.3' },
+  { category: 'Stage 2 (Moderate)', sbp: '160–179', dbp: '100–109', prevalence: '5.7' },
+  { category: 'Stage 3 (Severe)', sbp: '≥180', dbp: '≥110', prevalence: '2.4' },
+  { category: 'Isolated Systolic Hypertension', sbp: '≥140', dbp: '<90', prevalence: '11.2' },
 ]
 
-function CvRiskWidget() {
-  const [vals, setVals] = useState({
-    gender: 'male', age: '', sbp: '', dbp: '',
-    smoking: '0', diabetes: '0', family_hx: '0', obesity: '0', dyslipidemia: '0',
-  })
-  const [result, setResult] = useState(null)
+const stagingCriteria = [
+  { category: 'Stage I Hypertension', clinic: '≥140/90', homeAbpm: '≥135/85' },
+  { category: 'Stage II Hypertension', clinic: '≥160/100', homeAbpm: '≥150/95' },
+  { category: 'Severe Hypertension', clinic: 'SBP ≥180 or DBP ≥110', homeAbpm: '—' },
+]
 
-  const set = (k) => (e) => setVals(v => ({ ...v, [k]: e.target.value }))
-  const calc = () => {
-    const r = cvRiskHtn.calculate(vals)
-    if (!r) { setResult({ error: 'Please fill in age and BP values.' }); return }
-    const cat = cvRiskHtn.getCategory(r)
-    setResult({ ...r, color: cat.color, label: cat.label })
-  }
-  const clear = () => {
-    setVals({ gender: 'male', age: '', sbp: '', dbp: '', smoking: '0', diabetes: '0', family_hx: '0', obesity: '0', dyslipidemia: '0' })
-    setResult(null)
-  }
-
-  return (
-    <div className="score-widget">
-      <h3><HeartIcon size={20} className="widget-heading-icon" /> {cvRiskHtn.title}</h3>
-      <p className="widget-desc">{cvRiskHtn.description}</p>
-      <div className="score-inputs">
-        {cvRiskHtn.inputs.map(inp => (
-          inp.type === 'select' ? (
-            <select key={inp.key} value={vals[inp.key]} onChange={set(inp.key)}>
-              {inp.options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-            </select>
-          ) : (
-            <input key={inp.key} type="number" placeholder={inp.label} value={vals[inp.key]} onChange={set(inp.key)} min={inp.min} max={inp.max} step={inp.step || 1} />
-          )
-        ))}
-      </div>
-      <div className="calc-actions">
-        <button className="btn btn-primary" onClick={calc}>Assess Risk</button>
-        <button className="btn btn-secondary" onClick={clear}>Clear</button>
-      </div>
-      {result && (
-        result.error ? <div className="calc-result">{result.error}</div> : (
-          <div className="calc-result" style={{ '--result-color': result.color }}>
-            <div><strong>{result.label}</strong> — {result.riskCount} risk factor(s)</div>
-            <div className="widget-sub">BP: {result.sbp}/{result.dbp} mmHg ({result.bpGrade})</div>
-            <div className="widget-sub" style={{ marginTop: '8px' }}>{result.recommendation}</div>
-          </div>
-        )
-      )}
-    </div>
-  )
-}
+const monitoringSteps = [
+  { label: 'Every Visit', desc: 'BP measurement and review of home BP log.' },
+  { label: 'Every 3–6 Months', desc: 'Monitor BP control, medication adherence, and side effects.' },
+  { label: 'Annual', desc: 'Full lipid profile, HbA1c, renal function (eGFR + uACR), and ECG.' },
+  { label: 'Every 2 Years', desc: 'CV risk reassessment using FRS if no new risk factors.' },
+]
 
 export default function Hypertension() {
   return (
-    <div className="page page--narrow">
-      <h1><HeartIcon size={28} className="page-heading-icon" /> Hypertension</h1>
-      <p className="page-subtitle">Hypertension screening, BP classification, and CV risk-guided management</p>
+    <div className="page htn-page">
+      <div className="dyslipid-header">
+        <div>
+          <h1><span className="material-symbols-outlined page-heading-icon">monitor_heart</span> Hypertension</h1>
+          <p className="page-subtitle">
+            Hypertension screening, BP classification, and management<br />
+            <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>Adapted from CPG Management of Hypertension 2023 (5th Edition)</span>
+          </p>
+        </div>
+      </div>
 
-      <div className="screening-list">
-        <div className="screening-card expanded">
-          <div className="screening-card-header">
-            <div className="screening-card-header-left">
-              <HeartIcon size={24} className="screening-card-icon" style={{ color: '#fa5252' }} />
-              <div>
-                <h3>{htnScreening.title}</h3>
-                <span className="screening-source">{htnScreening.source}</span>
-              </div>
-            </div>
+      <div className="htn-body">
+        <div className="ref-card">
+          <div className="ref-card-header">
+            <span className="material-symbols-outlined">search</span>
+            <h2>{htnScreening.title}</h2>
           </div>
-          <div className="screening-card-body visible">
-            <table className="screening-table">
+          <div className="ref-card-body">
+            <table className="dyslipid-table">
               <thead>
                 <tr>
                   <th>Population</th>
@@ -94,8 +64,8 @@ export default function Hypertension() {
                 {htnScreening.guidelines.map((g, i) => (
                   <tr key={i}>
                     <td className="cell-population">{g.age}</td>
-                    <td className="cell-test">{g.test}</td>
-                    <td className="note-cell">{g.note}</td>
+                    <td>{g.test}</td>
+                    <td style={{ fontSize: '0.82rem', color: 'var(--on-surface-variant)' }}>{g.note}</td>
                   </tr>
                 ))}
               </tbody>
@@ -103,42 +73,85 @@ export default function Hypertension() {
           </div>
         </div>
 
-        <div className="screening-card expanded">
-          <div className="screening-card-header">
-            <div className="screening-card-header-left">
-              <HeartIcon size={24} className="screening-card-icon" style={{ color: '#fa5252' }} />
-              <div>
-                <h3>Blood Pressure Classification</h3>
-                <span className="screening-source">Malaysia CPG: Management of Hypertension 2023</span>
-              </div>
-            </div>
+        <div className="ref-card">
+          <div className="ref-card-header">
+            <span className="material-symbols-outlined">speed</span>
+            <h2>Blood Pressure Classification</h2>
           </div>
-          <div className="screening-card-body visible">
-            <table className="screening-table">
+          <div className="ref-card-body">
+            <table className="dyslipid-table htn-class-table">
               <thead>
                 <tr>
-                  <th>Category</th>
-                  <th>SBP (mmHg)</th>
-                  <th>DBP (mmHg)</th>
-                  <th>Action</th>
+                  <th style={{ width: '30%' }}>Classification*</th>
+                  <th style={{ textAlign: 'center' }}>Systolic (mmHg)</th>
+                  <th style={{ textAlign: 'center' }}>Diastolic (mmHg)</th>
+                  <th>Prevalence in Malaysia</th>
                 </tr>
               </thead>
               <tbody>
                 {bpClassification.map((b, i) => (
-                  <tr key={i}>
-                    <td className="cell-population">{b.category}</td>
-                    <td>{b.sbp}</td>
-                    <td>{b.dbp}</td>
-                    <td className="note-cell">{b.action}</td>
+                  <tr key={i} className={b.sbp === '' ? 'htn-section-label' : ''}>
+                    <td><div className="cell-population">{b.category}</div></td>
+                    <td style={{ textAlign: 'center', fontWeight: 600 }}>{b.sbp}</td>
+                    <td style={{ textAlign: 'center', fontWeight: 600 }}>{b.dbp}</td>
+                    <td style={{ textAlign: 'center', fontWeight: 600 }}>{b.prevalence}%</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            <p className="widget-note" style={{ marginTop: '12px' }}>
+              Home and Ambulatory BP may be used to diagnose and classify elevated blood pressure (Table 1-B).
+            </p>
           </div>
         </div>
 
-        <div className="section-label">CV Risk Assessment Tool</div>
-        <CvRiskWidget />
+        <div className="ref-card">
+          <div className="ref-card-header">
+            <span className="material-symbols-outlined">monitor</span>
+            <h2>Criteria for Staging Hypertension Based on Clinic, Home and Ambulatory Blood Pressure Monitoring</h2>
+          </div>
+          <div className="ref-card-body">
+            <table className="dyslipid-table htn-class-table">
+              <thead>
+                <tr>
+                  <th style={{ width: '30%' }}>Category</th>
+                  <th>Clinic BP (mmHg)</th>
+                  <th>Home BP Monitoring Average or Ambulatory BP Daytime Average (mmHg)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stagingCriteria.map((s, i) => (
+                  <tr key={i}>
+                    <td><div className="cell-population">{s.category}</div></td>
+                    <td style={{ fontWeight: 600 }}>{s.clinic}</td>
+                    <td style={{ fontWeight: 600, textAlign: 'center' }}>{s.homeAbpm}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="widget-note" style={{ marginTop: '12px' }}>
+              Adapted from National Institute for Health and Clinical Excellence (NICE) Hypertension, 2011.
+            </p>
+          </div>
+        </div>
+
+        <div className="ref-card">
+          <div className="ref-card-header">
+            <span className="material-symbols-outlined">schedule</span>
+            <h2>Monitoring Schedule</h2>
+          </div>
+          <div className="ref-card-body">
+            <div className="monitoring-timeline">
+              {monitoringSteps.map((step, i) => (
+                <div key={i} className="timeline-item">
+                  <div className="timeline-dot" />
+                  <div className="timeline-label">{step.label}</div>
+                  <p className="timeline-desc">{step.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

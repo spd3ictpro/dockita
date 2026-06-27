@@ -1,7 +1,12 @@
-import { screeningCategories } from '../data/screeningData'
-import { DropletIcon } from '../components/icons'
-
-const diabetesScreening = screeningCategories.find(c => c.id === 'diabetes')
+const diabetesScreening = {
+  title: 'Type 2 Diabetes Screening',
+  condition: 'Diabetes mellitus',
+  guidelines: [
+    { age: '≥18', test: 'Fasting glucose or HbA1c every 3 years', note: 'Start earlier if BMI ≥23 + ≥1 risk factor' },
+    { age: 'High risk', test: 'Annual screening', note: 'Risk factors: FH, overweight, HTN, PCOS, prior GDM, prediabetes' },
+  ],
+  source: 'Malaysia CPG: Management of T2DM 2021',
+}
 
 const venousPlasmaGlucose = [
   { type: 'Fasting', value: '≥7.0 mmol/L' },
@@ -27,25 +32,34 @@ const glycemicTargets = [
   { group: 'Pregnancy (pregestational DM)', hba1c: '<6.0%', fpg: '3.5–5.3 mmol/L', ppg: '<7.8 mmol/L' },
 ]
 
+const monitoringSteps = [
+  { label: 'Every 3 Months', desc: 'HbA1c assessment for patients not meeting targets or undergoing therapy adjustment.' },
+  { label: 'Every 6 Months', desc: 'HbA1c assessment for patients who are stable and meeting targets.' },
+  { label: 'Annual', desc: 'Comprehensive foot examination, dilated eye exam, renal function (eGFR + uACR), and lipid profile.' },
+  { label: 'Every Visit', desc: 'Blood pressure monitoring and review of self-monitoring blood glucose (SMBG) log.' },
+]
+
 export default function Diabetes() {
   return (
-    <div className="page page--narrow">
-      <h1><DropletIcon size={28} className="page-heading-icon" /> Diabetes Mellitus</h1>
-      <p className="page-subtitle">Type 2 diabetes screening, diagnostic criteria, and glycemic targets</p>
+    <div className="page diabetes-page">
+      <div className="dyslipid-header">
+        <div>
+          <h1><span className="material-symbols-outlined page-heading-icon">monitoring</span> Diabetes Mellitus</h1>
+          <p className="page-subtitle">
+            Type 2 diabetes screening, diagnostic criteria, and glycemic targets<br />
+            <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>Adapted from CPG Management of T2DM 2021 (6th Edition)</span>
+          </p>
+        </div>
+      </div>
 
-      <div className="screening-list">
-        <div className="screening-card expanded">
-          <div className="screening-card-header">
-            <div className="screening-card-header-left">
-              <DropletIcon size={24} className="screening-card-icon" style={{ color: '#20c997' }} />
-              <div>
-                <h3>{diabetesScreening.title}</h3>
-                <span className="screening-source">{diabetesScreening.source}</span>
-              </div>
-            </div>
+      <div className="diabetes-body">
+        <div className="ref-card">
+          <div className="ref-card-header">
+            <span className="material-symbols-outlined">search</span>
+            <h2>{diabetesScreening.title}</h2>
           </div>
-          <div className="screening-card-body visible">
-            <table className="screening-table">
+          <div className="ref-card-body">
+            <table className="dyslipid-table">
               <thead>
                 <tr>
                   <th>Population</th>
@@ -57,8 +71,8 @@ export default function Diabetes() {
                 {diabetesScreening.guidelines.map((g, i) => (
                   <tr key={i}>
                     <td className="cell-population">{g.age}</td>
-                    <td className="cell-test">{g.test}</td>
-                    <td className="note-cell">{g.note}</td>
+                    <td>{g.test}</td>
+                    <td style={{ fontSize: '0.82rem', color: 'var(--on-surface-variant)' }}>{g.note}</td>
                   </tr>
                 ))}
               </tbody>
@@ -66,123 +80,135 @@ export default function Diabetes() {
           </div>
         </div>
 
-        <div className="screening-card expanded">
-          <div className="screening-card-header">
-            <div className="screening-card-header-left">
-              <DropletIcon size={24} className="screening-card-icon" style={{ color: '#20c997' }} />
-              <div>
-                <h3>Diagnostic Criteria for Diabetes Mellitus</h3>
-                <span className="screening-source">Malaysia CPG: Management of T2DM 2021</span>
-              </div>
+        <div className="dyslipid-bento">
+          <div className="ref-card">
+            <div className="ref-card-header">
+              <span className="material-symbols-outlined">lab_profile</span>
+              <h2>Diagnostic Criteria</h2>
+            </div>
+            <div className="ref-card-body">
+              <h4 className="section-label">Venous Plasma Glucose</h4>
+              <table className="dyslipid-table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Diagnostic Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {venousPlasmaGlucose.map((d, i) => (
+                    <tr key={i}>
+                      <td className="cell-population">{d.type}</td>
+                      <td>{d.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="widget-note">
+                In symptomatic individuals, one abnormal glucose value is diagnostic. In asymptomatic individuals, 2 abnormal test results (plasma glucose and HbA1c) from the same sample or from 2 separate test samples are required for diagnosis.
+              </p>
+
+              <h4 className="section-label" style={{ marginTop: '20px' }}>HbA1c</h4>
+              <table className="dyslipid-table">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>HbA1c</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hba1cDiagnostic.map((h, i) => (
+                    <tr key={i}>
+                      <td className="cell-population">{h.category}</td>
+                      <td>{h.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="widget-note">
+                A repeat HbA1c should be done 4 weeks after the first positive test for asymptomatic patients (if an accompanying FPG or RPG is indeterminate). For symptomatic patients, a single positive test is sufficient.
+              </p>
             </div>
           </div>
-          <div className="screening-card-body visible">
-            <div className="diag-grid">
-              <div>
-                <h4 className="section-label">Table 2-3: Venous Plasma Glucose</h4>
-                <table className="screening-table">
-                  <thead>
-                    <tr>
-                      <th>Type</th>
-                      <th>Diagnostic Value</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {venousPlasmaGlucose.map((d, i) => (
-                      <tr key={i}>
-                        <td className="cell-population">{d.type}</td>
-                        <td className="cell-test">{d.value}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <p className="widget-note">
-                  In symptomatic individuals, one abnormal glucose value is diagnostic. In asymptomatic individuals, 2 abnormal test results (plasma glucose and HbA1c) from the same sample or from 2 separate test samples are required for diagnosis.
-                </p>
 
-                <h4 className="section-label" style={{ marginTop: '20px' }}>Table 2-5: HbA1c</h4>
-                <table className="screening-table">
-                  <thead>
-                    <tr>
-                      <th>Category</th>
-                      <th>HbA1c</th>
+          <div className="ref-card">
+            <div className="ref-card-header">
+              <span className="material-symbols-outlined">science</span>
+              <h2>OGTT (75 g glucose load)</h2>
+            </div>
+            <div className="ref-card-body">
+              <table className="dyslipid-table">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>0-hour (mmol/L)</th>
+                    <th>2-hour (mmol/L)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ogtt.map((o, i) => (
+                    <tr key={i}>
+                      <td className="cell-population">{o.category}</td>
+                      <td>{o.hr0}</td>
+                      <td>{o.hr2}</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {hba1cDiagnostic.map((h, i) => (
-                      <tr key={i}>
-                        <td className="cell-population">{h.category}</td>
-                        <td className="cell-test">{h.value}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <p className="widget-note">
-                  A repeat HbA1c should be done 4 weeks after the first positive test for asymptomatic patients (if an accompanying FPG or RPG is indeterminate). For symptomatic patients, a single positive test is sufficient.
-                </p>
-              </div>
-              <div>
-                <h4 className="section-label">Table 2-3: OGTT (75 g glucose load)</h4>
-                <table className="screening-table">
-                  <thead>
-                    <tr>
-                      <th>Category</th>
-                      <th>0-hour (mmol/L)</th>
-                      <th>2-hour (mmol/L)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ogtt.map((o, i) => (
-                      <tr key={i}>
-                        <td className="cell-population">{o.category}</td>
-                        <td className="cell-test">{o.hr0}</td>
-                        <td className="cell-test">{o.hr2}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <p className="widget-note">
-                  In adolescents, the glucose load in OGTT is based on body weight (1.75 g/kg body weight, maximum of 75 g).
-                </p>
-              </div>
+                  ))}
+                </tbody>
+              </table>
+              <p className="widget-note">
+                In adolescents, the glucose load in OGTT is based on body weight (1.75 g/kg body weight, maximum of 75 g).
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="screening-card expanded">
-          <div className="screening-card-header">
-            <div className="screening-card-header-left">
-              <DropletIcon size={24} className="screening-card-icon" style={{ color: '#20c997' }} />
-              <div>
-                <h3>Glycaemic Control Targets</h3>
-                <span className="screening-source">Malaysia CPG: Management of T2DM 2021</span>
-              </div>
-            </div>
+        <div className="ref-card">
+          <div className="ref-card-header">
+            <span className="material-symbols-outlined">track_changes</span>
+            <h2>Glycaemic Control Targets</h2>
           </div>
-          <div className="screening-card-body visible">
-            <table className="screening-table">
+          <div className="ref-card-body">
+            <table className="dyslipid-table">
               <thead>
                 <tr>
-                  <th>Population</th>
-                  <th>HbA1c</th>
-                  <th>Fasting Glucose</th>
-                  <th>Postprandial Glucose</th>
+                  <th style={{ width: '30%' }}>Population</th>
+                  <th style={{ textAlign: 'center' }}>HbA1c</th>
+                  <th style={{ textAlign: 'center' }}>Fasting Glucose</th>
+                  <th style={{ textAlign: 'center' }}>Postprandial Glucose</th>
                 </tr>
               </thead>
               <tbody>
                 {glycemicTargets.map((t, i) => (
                   <tr key={i}>
-                    <td className="cell-population">{t.group}</td>
-                    <td>{t.hba1c}</td>
-                    <td>{t.fpg}</td>
-                    <td>{t.ppg}</td>
+                    <td><div className="cell-population">{t.group}</div></td>
+                    <td style={{ textAlign: 'center', fontWeight: 600 }}>{t.hba1c}</td>
+                    <td style={{ textAlign: 'center', fontWeight: 600 }}>{t.fpg}</td>
+                    <td style={{ textAlign: 'center', fontWeight: 600 }}>{t.ppg}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <p className="widget-note" style={{ marginTop: '12px' }}>
+            <p className="widget-note">
               Targets should be individualised based on age, comorbidities, hypoglycaemia risk, and patient preference.
             </p>
+          </div>
+        </div>
+
+        <div className="ref-card">
+          <div className="ref-card-header">
+            <span className="material-symbols-outlined">schedule</span>
+            <h2>Monitoring Schedule</h2>
+          </div>
+          <div className="ref-card-body">
+            <div className="monitoring-timeline">
+              {monitoringSteps.map((step, i) => (
+                <div key={i} className="timeline-item">
+                  <div className="timeline-dot" />
+                  <div className="timeline-label">{step.label}</div>
+                  <p className="timeline-desc">{step.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

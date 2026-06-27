@@ -180,7 +180,8 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   padding: 24px 32px 80px;
   max-width: 1280px;
   width: 100%;
-  margin: 0 auto;
+  margin-left: 0;
+  margin-right: auto;
 }
 
 /* ===== Sidebar Overlay (mobile) ===== */
@@ -314,6 +315,60 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 
 .sidebar-link.active .material-symbols-outlined {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  color: var(--primary);
+}
+
+.sidebar-group-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--on-surface-variant);
+  border-radius: 6px;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+
+.sidebar-group-toggle:hover {
+  background: var(--surface-container);
+  color: var(--on-surface);
+}
+
+.sidebar-child-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px 8px 44px;
+  border-radius: 8px;
+  color: var(--on-surface-variant);
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: all var(--transition);
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.sidebar-child-link:hover {
+  background: var(--surface-container);
+  color: var(--on-surface);
+}
+
+.sidebar-child-link.active {
+  background: var(--surface-container-high);
+  color: var(--primary);
+}
+
+.sidebar-child-link.active .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
   color: var(--primary);
 }
 
@@ -570,7 +625,8 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 
 .page--narrow {
   max-width: 960px;
-  margin-inline: auto;
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .diag-grid {
@@ -3207,6 +3263,65 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.diabetes-page {
+  max-width: 960px;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.diabetes-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.neobili-page {
+  max-width: 700px;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.htn-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.htn-page {
+  max-width: 800px;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.htn-class-table td,
+.htn-class-table th {
+  padding: 14px 18px;
+}
+
+.htn-class-table tbody tr:nth-child(even) {
+  background: #e8f4fd;
+}
+
+.htn-class-table thead th {
+  background: #5b7cfa;
+  color: #fff;
+  border-bottom: 1px solid #5b7cfa;
+}
+
+.htn-class-table tr.htn-section-label td {
+  border-top: 2px solid #5b7cfa;
+  background: #5b7cfa;
+  color: #fff;
+}
+
+.htn-class-table tr.htn-section-label .cell-population {
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
 }
 
 .dyslipid-table tbody tr[data-tier="very-high"] { background: #FDB7B7; }

@@ -1,14 +1,11 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { screeningCategories } from '../data/screeningData'
-import { ScreeningIcon, FemaleIcon, BreastIcon, GutIcon, DropletIcon, HeartIcon, ChartBarIcon, BoneIcon, LungsIcon, LiverIcon, PulseIcon } from '../components/icons'
+import { ScreeningIcon, FemaleIcon, BreastIcon, GutIcon, BoneIcon, LungsIcon, LiverIcon, PulseIcon } from '../components/icons'
 
 const categoryMeta = {
   'cervical-cancer': { icon: FemaleIcon, color: '#f06595' },
   'breast-cancer': { icon: BreastIcon, color: '#f59f00' },
   'colorectal-cancer': { icon: GutIcon, color: '#9775fa' },
-  'diabetes': { icon: DropletIcon, color: '#20c997' },
-  'hypertension': { icon: HeartIcon, color: '#fa5252' },
-  'dyslipidaemia': { icon: ChartBarIcon, color: '#ff922b' },
   'osteoporosis': { icon: BoneIcon, color: '#748ffc' },
   'lung-cancer': { icon: LungsIcon, color: '#38d9a9' },
   'hep-b': { icon: LiverIcon, color: '#fcc419' },
@@ -19,9 +16,6 @@ const focusTitles = {
   'cervical-cancer': 'Cervical Cancer',
   'breast-cancer': 'Breast Cancer',
   'colorectal-cancer': 'Colorectal Cancer',
-  'diabetes': 'Diabetes Mellitus',
-  'hypertension': 'Hypertension',
-  'dyslipidaemia': 'Dyslipidaemia',
   'osteoporosis': 'Osteoporosis',
   'lung-cancer': 'Lung Cancer',
   'hep-b': 'Hepatitis B',

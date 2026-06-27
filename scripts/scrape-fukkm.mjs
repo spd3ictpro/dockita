@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const BASE = 'https://pharmacy.moh.gov.my/ms/apps/fukkm'
-const OUTPUT = resolve(__dirname, '..', 'public', 'fukkm-drugs.json')
+const OUTPUT = resolve(__dirname, '..', 'data', 'fukkmdb.json')
 
 function decodeHtmlEntities(text) {
   return text

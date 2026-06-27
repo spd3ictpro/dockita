@@ -38,39 +38,6 @@ export const screeningCategories = [
     keywords: 'colon colorectal bowel iFOBT FIT stool blood cancer screening',
   },
   {
-    id: 'diabetes',
-    title: 'Type 2 Diabetes Screening',
-    condition: 'Diabetes mellitus',
-    guidelines: [
-      { age: '≥18', test: 'Fasting glucose or HbA1c every 3 years', note: 'Start earlier if BMI ≥23 + ≥1 risk factor' },
-      { age: 'High risk', test: 'Annual screening', note: 'Risk factors: FH, overweight, HTN, PCOS, prior GDM, prediabetes' },
-    ],
-    source: 'Malaysia CPG: Management of T2DM 2021',
-    keywords: 'diabetes diabetic dm sugar hba1c glucose screening',
-  },
-  {
-    id: 'hypertension',
-    title: 'Hypertension Screening',
-    condition: 'Hypertension',
-    guidelines: [
-      { age: '≥18', test: 'BP measurement at every visit', note: 'Adults ≥40: at least annual' },
-      { age: 'Elevated BP', test: 'Confirm with HBPM or ABPM', note: 'HBPM = home BP monitoring × 7 days' },
-    ],
-    source: 'Malaysia CPG: Management of Hypertension 2023',
-    keywords: 'hypertension high blood pressure htn bp screening',
-  },
-  {
-    id: 'dyslipidaemia',
-    title: 'Dyslipidaemia / Lipid Screening',
-    condition: 'Dyslipidaemia',
-    guidelines: [
-      { age: '≥40', test: 'Fasting lipid profile every 1–3 years', note: 'Start earlier (≥18) if other risk factors present' },
-      { age: 'High risk', test: 'Annual lipid profile', note: 'High risk = DM, CVD, FH, CKD, ASCVD equivalent' },
-    ],
-    source: 'Malaysia CPG: Management of Dyslipidaemia 2022',
-    keywords: 'lipid cholesterol dyslipidaemia dyslipidemia hdl ldl tg screening',
-  },
-  {
     id: 'osteoporosis',
     title: 'Osteoporosis Screening',
     condition: 'Osteoporosis',

@@ -11,6 +11,7 @@ import DrugDatabase from './pages/DrugDatabase'
 import Diabetes from './pages/Diabetes'
 import Hypertension from './pages/Hypertension'
 import Dyslipidemia from './pages/Dyslipidemia'
+import NeoBili from './pages/NeoBili'
 
 const routeLabels = {
   '/screening': 'Screening',
@@ -22,6 +23,7 @@ const routeLabels = {
   '/diabetes': 'Diabetes Mellitus',
   '/hypertension': 'Hypertension',
   '/dyslipidemia': 'Dyslipidaemia',
+  '/neobili': 'NeoBili — Neonatal Bilirubin',
 }
 
 function App() {
@@ -56,6 +58,7 @@ function App() {
         <Route path="/diabetes" element={<Diabetes />} />
         <Route path="/hypertension" element={<Hypertension />} />
         <Route path="/dyslipidemia" element={<Dyslipidemia />} />
+        <Route path="/neobili" element={<NeoBili />} />
       </Route>
     </Routes>
   )

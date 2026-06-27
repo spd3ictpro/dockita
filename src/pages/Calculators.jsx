@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { ScaleIcon, KidneyIcon, LiverIcon, CalendarIcon, CalendarDaysIcon, CalculatorIcon } from '../components/icons'
 
 function BMICalculator() {
@@ -135,7 +135,7 @@ function Fib4Calculator() {
         <input type="number" placeholder="Age (years)" value={age} onChange={e => setAge(e.target.value)} />
         <input type="number" step="0.1" placeholder="AST (U/L)" value={ast} onChange={e => setAst(e.target.value)} />
         <input type="number" step="0.1" placeholder="ALT (U/L)" value={alt} onChange={e => setAlt(e.target.value)} />
-        <input type="number" step="1" placeholder="Platelet count (\u00d710\u2079/L)" value={platelets} onChange={e => setPlatelets(e.target.value)} />
+        <input type="number" step="1" placeholder="Platelet count (×10⁹/L)" value={platelets} onChange={e => setPlatelets(e.target.value)} />
       </div>
       <div className="calc-actions">
         <button className="btn btn-primary" onClick={calc}>Calculate FIB-4</button>
@@ -337,6 +337,7 @@ const calcFocusTitle = {
 
 export default function Calculators() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
   const focus = searchParams.get('focus')
 
   if (focus && calcFocusMap[focus]) {
@@ -364,6 +365,12 @@ export default function Calculators() {
         <AgeCalculator />
         <EDDCalculator />
         <BasicCalc />
+        <div className="calc-card" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 8, minHeight: 120 }} onClick={() => navigate('/neobili')}>
+          <span className="material-symbols-outlined" style={{ fontSize: 36, color: '#f59f00' }}>healing</span>
+          <h3>NeoBili — Neonatal Bilirubin</h3>
+          <p className="calc-desc">AAP 2022 TSB thresholds for phototherapy & exchange transfusion</p>
+          <span style={{ fontSize: '0.8rem', color: 'var(--primary)' }}>Open calculator →</span>
+        </div>
       </div>
     </div>
   )
