@@ -54,10 +54,12 @@ export const screeningCategories = [
     title: 'Lung Cancer Screening',
     condition: 'Lung cancer',
     guidelines: [
-      { age: '50–80', test: 'Low-dose CT chest annually', note: 'For high-risk: ≥30 pack-year smoking history, current smoker or quit <15 years' },
+      { age: 'General', test: 'Low-dose CT thoracic imaging', note: 'Gold standard for lung cancer screening' },
+      { age: '45–75', test: 'Low-dose CT thoracic imaging', note: 'Tobacco smoking history ≥20 pack-years (current or former smoker)' },
+      { age: '>40 (high-risk non-smokers)', test: 'Low-dose CT thoracic imaging', note: 'Significant family history (first-degree relative) of lung cancer' },
     ],
-    source: 'Malaysia CPG: Lung Cancer Screening 2021',
-    keywords: 'lung cancer ldct ct chest smoking screening',
+    source: 'CPG for the Peri-Operative Management of Resectable Early-Stage Non-Small Cell Lung Cancer in Malaysia 1st Edition (April 2025)',
+    keywords: 'lung cancer ldct ct chest smoking screening nsclc low-dose computed tomography',
   },
   {
     id: 'hep-b',
@@ -69,17 +71,6 @@ export const screeningCategories = [
     ],
     source: 'Malaysia CPG: Management of Hepatitis B 2021',
     keywords: 'hepatitis b hbsag liver screening',
-  },
-  {
-    id: 'cvd-risk',
-    title: 'Cardiovascular Risk Assessment',
-    condition: 'CVD risk',
-    guidelines: [
-      { age: '≥40', test: 'ASCVD / Framingham Risk Score every 3–5 years', note: 'Start at 30–39 if ≥1 risk factor' },
-      { age: 'Diabetic', test: 'Annual risk assessment', note: 'Diabetics are automatically high risk' },
-    ],
-    source: 'Malaysia CPG: Primary Prevention of CVD 2022',
-    keywords: 'cardiovascular cvd risk ascvd framingham heart screening',
   },
 ]
 

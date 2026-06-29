@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { framingham, ipss, phq9, gad7, act, cat, aria, stopbang, epworth, cvRiskHtn } from '../data/scoresData'
+import { ipss, phq9, gad7, act, cat, aria, stopbang, epworth, cvRiskHtn } from '../data/scoresData'
 
 const scoreMeta = [
   { id: 'psychiatric', icon: 'psychiatry', category: 'Mental Health', title: 'Psychiatric Assessment', desc: 'PHQ-9 and GAD-7 screening tools for depression and anxiety.' },
@@ -36,7 +36,7 @@ function ScoreCard({ meta }) {
   const navigate = useNavigate()
 
   return (
-    <div className="score-card" onClick={() => navigate('/scores/' + meta.id)}>
+    <div className="score-card" onClick={() => navigate(meta.id === 'framingham' ? '/dyslipidemia' : '/scores/' + meta.id)}>
       <div className="score-card-header">
         <div>
           <div className="score-card-category">{meta.category}</div>
@@ -52,9 +52,6 @@ function ScoreCard({ meta }) {
 function InlineForm({ scoreId, scoreData, onCalculate, onClear }) {
 
   if (scoreId === 'curb65' && scoreData.inputs) {
-    return <SimpleScoreForm scoreData={scoreData} onCalculate={onCalculate} onClear={onClear} />
-  }
-  if (scoreId === 'framingham' && scoreData.inputs) {
     return <SimpleScoreForm scoreData={scoreData} onCalculate={onCalculate} onClear={onClear} />
   }
   if (scoreId === 'stopbang' && scoreData.items) {
@@ -610,6 +607,11 @@ export function ScoreDetail() {
     return null
   }
 
+  if (scoreId === 'framingham') {
+    navigate('/dyslipidemia', { replace: true })
+    return null
+  }
+
   if (scoreId === 'psychiatric') {
     return <PsyForm />
   }
@@ -681,7 +683,7 @@ export function ScoreDetail() {
 
 function getScoreData(id) {
   const map = {
-    phq9, gad7, psychiatric: { id: 'psychiatric' }, framingham, ipss,
+    phq9, gad7, psychiatric: { id: 'psychiatric' }, ipss,
     stopbang, epworth, aria, act, cat, 'cv-risk-htn': cvRiskHtn,
   }
   return map[id]

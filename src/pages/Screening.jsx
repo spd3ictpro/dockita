@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { screeningCategories } from '../data/screeningData'
-import { ScreeningIcon, FemaleIcon, BreastIcon, GutIcon, BoneIcon, LungsIcon, LiverIcon, PulseIcon } from '../components/icons'
+import { ScreeningIcon, FemaleIcon, BreastIcon, GutIcon, BoneIcon, LungsIcon, LiverIcon } from '../components/icons'
 
 const categoryMeta = {
   'cervical-cancer': { icon: FemaleIcon, color: '#f06595' },
@@ -9,7 +9,6 @@ const categoryMeta = {
   'osteoporosis': { icon: BoneIcon, color: '#748ffc' },
   'lung-cancer': { icon: LungsIcon, color: '#38d9a9' },
   'hep-b': { icon: LiverIcon, color: '#fcc419' },
-  'cvd-risk': { icon: PulseIcon, color: '#4f6ef7' },
 }
 
 const focusTitles = {
@@ -19,7 +18,6 @@ const focusTitles = {
   'osteoporosis': 'Osteoporosis',
   'lung-cancer': 'Lung Cancer',
   'hep-b': 'Hepatitis B',
-  'cvd-risk': 'CVD Risk',
 }
 
 export default function Screening() {

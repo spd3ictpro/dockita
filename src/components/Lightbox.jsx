@@ -2,9 +2,22 @@ import { useState, useEffect, useCallback } from 'react'
 
 export default function Lightbox({ images, initialIndex, onClose }) {
   const [idx, setIdx] = useState(initialIndex || 0)
+  const [loading, setLoading] = useState(true)
 
-  const prev = useCallback(() => setIdx(i => (i > 0 ? i - 1 : images.length - 1)), [images.length])
-  const next = useCallback(() => setIdx(i => (i < images.length - 1 ? i + 1 : 0)), [images.length])
+  const prev = useCallback(() => {
+    setLoading(true)
+    setIdx(i => (i > 0 ? i - 1 : images.length - 1))
+  }, [images.length])
+
+  const next = useCallback(() => {
+    setLoading(true)
+    setIdx(i => (i < images.length - 1 ? i + 1 : 0))
+  }, [images.length])
+
+  const goTo = useCallback((i) => {
+    setLoading(true)
+    setIdx(i)
+  }, [])
 
   useEffect(() => {
     const handler = (e) => {
@@ -28,8 +41,16 @@ export default function Lightbox({ images, initialIndex, onClose }) {
         <button className="lightbox-nav lightbox-prev" onClick={(e) => { e.stopPropagation(); prev() }}>&lsaquo;</button>
       )}
 
-      <div className="lightbox-content" onClick={e => e.stopPropagation()}>
-        <img src={images[idx]} alt="" className="lightbox-image" />
+      <div className="lightbox-content">
+        {loading && <div className="lightbox-spinner" />}
+        <img
+          src={images[idx]}
+          alt=""
+          className="lightbox-image"
+          onClick={e => e.stopPropagation()}
+          onLoad={() => setLoading(false)}
+          style={{ opacity: loading ? 0 : 1 }}
+        />
       </div>
 
       {images.length > 1 && (
@@ -39,7 +60,7 @@ export default function Lightbox({ images, initialIndex, onClose }) {
       {images.length > 1 && (
         <div className="lightbox-dots">
           {images.map((_, i) => (
-            <button key={i} className={`lightbox-dot${i === idx ? ' active' : ''}`} onClick={() => setIdx(i)} />
+            <button key={i} className={`lightbox-dot${i === idx ? ' active' : ''}`} onClick={() => goTo(i)} />
           ))}
         </div>
       )}
