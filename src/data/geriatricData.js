@@ -113,11 +113,11 @@ export const barthelIndex = {
     },
   ],
   getCategory: (score) => {
-    if (score <= 20) return { label: 'Total dependency', color: 'var(--risk-high)' }
-    if (score <= 60) return { label: 'Severe dependency', color: '#ff922b' }
-    if (score <= 90) return { label: 'Moderate dependency', color: 'var(--risk-mod)' }
-    if (score <= 99) return { label: 'Mild dependency', color: 'var(--risk-low-mid)' }
-    return { label: 'Independent', color: 'var(--risk-low)' }
+    if (score <= 20) return { label: 'Total dependency', color: 'var(--risk-high)', textColor: 'var(--risk-high-text)' }
+    if (score <= 60) return { label: 'Severe dependency', color: '#ff922b', textColor: '#000' }
+    if (score <= 90) return { label: 'Moderate dependency', color: 'var(--risk-mod)', textColor: 'var(--risk-mod-text)' }
+    if (score <= 99) return { label: 'Mild dependency', color: 'var(--risk-low-mid)', textColor: 'var(--risk-low-mid-text)' }
+    return { label: 'Independent', color: 'var(--risk-low)', textColor: 'var(--risk-low-text)' }
   },
   keywords: 'barthel index adl activities of daily living functional independence assessment geriatric elderly',
 }

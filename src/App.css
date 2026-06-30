@@ -2328,282 +2328,254 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   line-height: 1.5;
 }
 
-/* ===== Barthel Index — ADL Checklist ===== */
-.adl-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-
-@media (min-width: 600px) {
-  .adl-layout {
-    grid-template-columns: 1fr 220px;
-  }
-}
-
-.adl-items {
+/* ===== Barthel Index — ADL Compact Grid ===== */
+.barthel-progress {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
 }
 
-/* ─── Progress ─── */
-.adl-progress {
-  margin-bottom: 4px;
-}
-
-.adl-progress-text {
+.barthel-progress-text {
   font-size: 0.75rem;
   color: var(--on-surface-variant);
-  margin-bottom: 4px;
+  white-space: nowrap;
 }
 
-.adl-progress-bar {
-  height: 3px;
+.barthel-progress-bar {
+  flex: 1;
+  height: 4px;
   background: var(--surface-container-high);
   border-radius: 2px;
   overflow: hidden;
 }
 
-.adl-progress-fill {
+.barthel-progress-fill {
   height: 100%;
   background: var(--primary);
   border-radius: 2px;
   transition: width 0.3s ease;
 }
 
-/* ─── Items ─── */
-.adl-item {
-  background: var(--surface-container);
-  border-radius: 8px;
-  padding: 10px 12px;
-  border: 1px solid transparent;
-  transition: border-color 0.2s ease, background 0.2s ease;
+.barthel-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.adl-item-done {
-  border-color: var(--outline-variant);
+.barthel-grid-header {
+  display: grid;
+  grid-template-columns: 24px 1fr repeat(4, 44px);
+  gap: 2px;
+  align-items: center;
+  padding: 0 4px 4px 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  border-bottom: 1px solid var(--outline-variant);
+}
+
+.barthel-col-num {
+  text-align: center;
+}
+
+.barthel-col-score {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.15;
+}
+
+.barthel-col-score-label {
+  font-size: 0.58rem;
+  font-weight: 500;
+  color: var(--on-surface-variant);
+}
+
+.barthel-col-score-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.barthel-row {
+  display: grid;
+  grid-template-columns: 24px 1fr repeat(4, 44px);
+  gap: 2px;
+  align-items: center;
+  padding: 5px 4px;
+  border-radius: 6px;
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.barthel-row-answered {
+  border-color: var(--primary);
   background: var(--surface-container-lowest);
 }
 
-.adl-item-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.adl-item-num {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--surface-container-high);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.barthel-row-num {
   font-size: 0.7rem;
   font-weight: 700;
   color: var(--on-surface-variant);
-  flex-shrink: 0;
+  text-align: center;
 }
 
-.adl-item-done .adl-item-num {
-  background: var(--primary);
-  color: var(--on-primary);
+.barthel-row-answered .barthel-row-num {
+  color: var(--primary);
 }
 
-.adl-item-question {
+.barthel-row-question {
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--on-surface);
   line-height: 1.3;
 }
 
-.adl-options {
+.barthel-radio {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 2px;
 }
 
-.adl-opt {
+.barthel-radio input {
+  position: absolute;
+  opacity: 0;
+  outline: 0;
+}
+
+.barthel-radio-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--on-surface-variant);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--on-surface-variant) 30%, transparent);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--on-surface-variant);
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.barthel-radio:hover .barthel-radio-btn {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 8%, var(--surface-container-lowest));
+}
+
+.barthel-radio-btn.selected {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.barthel-radio-empty {
+  display: block;
+}
+
+/* Selected label — spans full width below the row */
+.barthel-selected-label {
+  grid-column: 1 / -1;
+  font-size: 0.72rem;
+  color: var(--on-surface-variant);
+  line-height: 1.3;
+  padding: 0 0 0 28px;
+  margin-top: -2px;
+}
+
+/* Footer — total + actions */
+.barthel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--outline-variant);
+}
+
+.barthel-total {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 10px;
-  border: 1px solid var(--outline-variant);
-  border-radius: 6px;
-  background: var(--surface-container-lowest);
-  cursor: pointer;
-  transition: all 0.15s ease;
-  text-align: left;
-  width: 100%;
 }
 
-.adl-opt:hover {
-  border-color: var(--primary);
-  background: color-mix(in srgb, var(--primary) 6%, var(--surface-container-lowest));
-}
-
-.adl-opt.selected {
-  border-color: var(--primary);
-  background: color-mix(in srgb, var(--primary) 12%, var(--surface-container-lowest));
-}
-
-.adl-opt-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid var(--outline);
-  flex-shrink: 0;
-  transition: all 0.15s ease;
-}
-
-.adl-opt-dot.filled {
-  border-color: var(--primary);
-  background: var(--primary);
-  box-shadow: inset 0 0 0 2px var(--surface-container-lowest);
-}
-
-.adl-opt-score {
+.barthel-total-label {
   font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--on-surface-variant);
-  min-width: 18px;
-  text-align: right;
-  flex-shrink: 0;
-}
-
-.adl-opt.selected .adl-opt-score {
-  color: var(--primary);
-}
-
-.adl-opt-label {
-  font-size: 0.8rem;
-  color: var(--on-surface);
-  line-height: 1.3;
-}
-
-/* ─── Result Panel ─── */
-.adl-result-panel {
-  order: -1;
-}
-
-@media (min-width: 600px) {
-  .adl-result-panel {
-    order: 0;
-  }
-}
-
-.adl-result-sticky {
-  background: var(--surface-container);
-  border-radius: 8px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-@media (min-width: 600px) {
-  .adl-result-sticky {
-    position: sticky;
-    top: 80px;
-  }
-}
-
-.adl-result-header {
-  font-size: 0.75rem;
   font-weight: 600;
   color: var(--on-surface-variant);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
-.adl-result-score {
+.barthel-total-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--on-surface);
+}
+
+.barthel-total-max {
+  font-size: 0.78rem;
+  color: var(--on-surface-variant);
+}
+
+.barthel-category {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 3px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.barthel-actions {
   display: flex;
-  align-items: baseline;
+  gap: 6px;
+}
+
+.barthel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid var(--outline-variant);
+  background: none;
+  color: var(--on-surface-variant);
+}
+
+.barthel-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Scale reference inline */
+.barthel-scale-ref {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  font-size: 0.68rem;
+  color: var(--on-surface-variant);
+}
+
+.barthel-scale-item {
+  display: inline-flex;
+  align-items: center;
   gap: 4px;
 }
 
-.adl-result-value {
-  font-size: 2.2rem;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--on-surface-variant);
-}
-
-.adl-layout-complete .adl-result-value {
-  color: var(--on-surface);
-}
-
-.adl-result-max {
-  font-size: 0.85rem;
-  color: var(--on-surface-variant);
-}
-
-.adl-result-chip {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  padding: 4px 12px;
-  border-radius: 6px;
-  align-self: flex-start;
-}
-
-.adl-result-prompt {
-  font-size: 0.78rem;
-  color: var(--on-surface-variant);
-  line-height: 1.4;
-}
-
-.adl-reset-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--on-surface-variant);
-  background: none;
-  border: 1px solid var(--outline-variant);
-  border-radius: 6px;
-  padding: 6px 12px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  align-self: flex-start;
-}
-
-.adl-reset-btn:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-/* ─── Scale Reference ─── */
-.adl-scale-ref {
-  border-top: 1px solid var(--outline-variant);
-  padding-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.adl-scale-ref-header {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--on-surface-variant);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 2px;
-}
-
-.adl-scale-ref-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.72rem;
-  color: var(--on-surface-variant);
-}
-
-.adl-scale-dot {
+.barthel-scale-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;

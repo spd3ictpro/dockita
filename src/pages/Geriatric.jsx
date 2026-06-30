@@ -47,6 +47,13 @@ function CFSWidget() {
   )
 }
 
+const barthelScores = [
+  { value: 0, label: 'Dependent' },
+  { value: 5, label: 'Assisted' },
+  { value: 10, label: 'Indep.' },
+  { value: 15, label: 'Full' },
+]
+
 function BarthelWidget() {
   const [answers, setAnswers] = useState({})
 
@@ -72,87 +79,82 @@ function BarthelWidget() {
         </div>
       </div>
 
-      <div className={`adl-layout ${allAnswered ? 'adl-layout-complete' : ''}`}>
-        <div className="adl-items">
-          <div className="adl-progress">
-            <div className="adl-progress-text">{answeredCount} of {barthelIndex.items.length} activities scored</div>
-            <div className="adl-progress-bar">
-              <div className="adl-progress-fill" style={{ width: `${(answeredCount / barthelIndex.items.length) * 100}%` }} />
-            </div>
-          </div>
+      <div className="barthel-progress">
+        <span className="barthel-progress-text">
+          {answeredCount === 0
+            ? 'Select a level for each activity'
+            : `${answeredCount} of ${barthelIndex.items.length} scored`}
+        </span>
+        <div className="barthel-progress-bar">
+          <div className="barthel-progress-fill" style={{ width: `${(answeredCount / barthelIndex.items.length) * 100}%` }} />
+        </div>
+      </div>
 
-          {barthelIndex.items.map((item, idx) => (
-            <div key={item.key} className={`adl-item ${answers[item.key] !== undefined ? 'adl-item-done' : ''}`}>
-              <div className="adl-item-header">
-                <span className="adl-item-num">{idx + 1}</span>
-                <span className="adl-item-question">{item.question}</span>
-              </div>
-              <div className="adl-options">
-                {item.options.map(opt => (
-                  <button
-                    key={opt.value}
-                    className={`adl-opt ${answers[item.key] === opt.value ? 'selected' : ''}`}
-                    onClick={() => handleSelect(item.key, opt.value)}
-                  >
-                    <span className={`adl-opt-dot ${answers[item.key] === opt.value ? 'filled' : ''}`} />
-                    <span className="adl-opt-score">{opt.value}</span>
-                    <span className="adl-opt-label">{opt.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
+      <div className="barthel-grid">
+        <div className="barthel-grid-header">
+          <span className="barthel-col-num">#</span>
+          <span className="barthel-col-question">Activity</span>
+          {barthelScores.map(({ value, label }) => (
+            <span key={value} className="barthel-col-score">
+              <span className="barthel-col-score-label">{label}</span>
+              <span className="barthel-col-score-num">{value}</span>
+            </span>
           ))}
         </div>
 
-        <div className="adl-result-panel">
-          <div className="adl-result-sticky">
-            <div className="adl-result-header">Total Score</div>
-            <div className={`adl-result-score ${cat ? `adl-result-score-${cat.label.split(' ')[0].toLowerCase()}` : ''}`}>
-              <span className="adl-result-value">{answeredCount > 0 ? total : '\u2014'}</span>
-              <span className="adl-result-max">/ 100</span>
+        {barthelIndex.items.map((item, idx) => {
+          const selected = answers[item.key]
+          return (
+            <div key={item.key} className={`barthel-row ${selected !== undefined ? 'barthel-row-answered' : ''}`}>
+              <span className="barthel-row-num">{idx + 1}</span>
+              <span className="barthel-row-question">{item.question}</span>
+              {barthelScores.map(({ value }) => {
+                const opt = item.options.find(o => o.value === value)
+                return opt ? (
+                  <label key={value} className="barthel-radio" title={opt.label}>
+                    <input type="radio" name={item.key} value={value} checked={selected === value} onChange={() => handleSelect(item.key, opt.value)} />
+                    <span className={`barthel-radio-btn ${selected === value ? 'selected' : ''}`}>{value}</span>
+                  </label>
+                ) : (
+                  <span key={value} className="barthel-radio-empty" />
+                )
+              })}
+              <span className="barthel-selected-label">
+                {selected !== undefined
+                  ? item.options.find(o => o.value === selected)?.label
+                  : '\u00a0'}
+              </span>
             </div>
-            {allAnswered && cat ? (
-              <div className="adl-result-chip" style={{ background: cat.color, color: total > 80 ? '#1e293b' : '#fff' }}>
-                {cat.label}
-              </div>
-            ) : (
-              <div className="adl-result-prompt">
-                {answeredCount === 0
-                  ? 'Select a level of independence for each activity'
-                  : `${barthelIndex.items.length - answeredCount} activities remaining`}
-              </div>
-            )}
+          )
+        })}
+      </div>
 
-            <button className="adl-reset-btn" onClick={() => setAnswers({})}>
-              <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>restart_alt</span>
-              Clear All
-            </button>
-
-            <div className="adl-scale-ref">
-              <div className="adl-scale-ref-header">Scale</div>
-              <div className="adl-scale-ref-item">
-                <span className="adl-scale-dot" style={{ background: 'var(--risk-high)' }} />
-                0–20: Total dependency
-              </div>
-              <div className="adl-scale-ref-item">
-                <span className="adl-scale-dot" style={{ background: '#ff922b' }} />
-                21–60: Severe dependency
-              </div>
-              <div className="adl-scale-ref-item">
-                <span className="adl-scale-dot" style={{ background: 'var(--risk-mod)' }} />
-                61–90: Moderate dependency
-              </div>
-              <div className="adl-scale-ref-item">
-                <span className="adl-scale-dot" style={{ background: 'var(--risk-low-mid)' }} />
-                91–99: Mild dependency
-              </div>
-              <div className="adl-scale-ref-item">
-                <span className="adl-scale-dot" style={{ background: 'var(--risk-low)' }} />
-                100: Independent
-              </div>
-            </div>
-          </div>
+      <div className="barthel-footer">
+        <div className="barthel-total">
+          <span className="barthel-total-label">Total</span>
+          <span className="barthel-total-value">{answeredCount > 0 ? total : '\u2014'}</span>
+          <span className="barthel-total-max">/ 100</span>
+          {cat && (
+            <span className="barthel-category" style={{ background: cat.color, color: cat.textColor }}>
+              {cat.label}
+            </span>
+          )}
         </div>
+
+        <div className="barthel-actions">
+          <button className="barthel-btn" onClick={() => setAnswers({})}>
+            <span className="material-symbols-outlined" style={{ fontSize: '0.9rem' }}>restart_alt</span>
+            Clear
+          </button>
+        </div>
+      </div>
+
+      <div className="barthel-scale-ref">
+        <span className="barthel-scale-item"><span className="barthel-scale-dot" style={{ background: 'var(--risk-high)' }} /> 0–20: Total</span>
+        <span className="barthel-scale-item"><span className="barthel-scale-dot" style={{ background: '#ff922b' }} /> 21–60: Severe</span>
+        <span className="barthel-scale-item"><span className="barthel-scale-dot" style={{ background: 'var(--risk-mod)' }} /> 61–90: Moderate</span>
+        <span className="barthel-scale-item"><span className="barthel-scale-dot" style={{ background: 'var(--risk-low-mid)' }} /> 91–99: Mild</span>
+        <span className="barthel-scale-item"><span className="barthel-scale-dot" style={{ background: 'var(--risk-low)' }} /> 100: Independent</span>
       </div>
     </div>
   )
