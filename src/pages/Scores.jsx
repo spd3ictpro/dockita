@@ -130,10 +130,11 @@ const psyRecs = {
   ],
 }
 
-function PsyForm() {
-  const [active, setActive] = useState('phq9')
+function PsyForm({ initialScale }) {
+  const [active, setActive] = useState(initialScale && initialScale !== 'psychiatric' ? initialScale : 'phq9')
   const [answers, setAnswers] = useState({})
   const navigate = useNavigate()
+  const [lastResult, setLastResult] = useState(null)
 
   const scale = active === 'phq9' ? phq9 : gad7
   const questions = scale.questions
@@ -141,14 +142,30 @@ function PsyForm() {
   const allDone = questions.every(q => answers[`${active}_${q.key}`] !== undefined)
   const rec = allDone ? psyRecs[active].find(r => total <= r.max) : null
 
-  const setScore = (qKey, val) => setAnswers(a => ({ ...a, [`${active}_${qKey}`]: val }))
-
-  const switchScale = (id) => {
-    setActive(id)
-    setAnswers({})
+  const setScore = (qKey, val) => {
+    setAnswers(a => ({ ...a, [`${active}_${qKey}`]: val }))
+    setLastResult(null)
   }
 
-  const handleReset = () => setAnswers({})
+  const switchScale = (id) => {
+    if (id !== active) {
+      if (allDone && rec) {
+        setLastResult({ total, rec, label: rec.label, cls: rec.cls })
+      }
+      setActive(id)
+      setAnswers({})
+    }
+  }
+
+  const handleReset = () => {
+    setAnswers({})
+    setLastResult(null)
+  }
+
+  const showLastResult = !allDone && lastResult !== null
+  const effectiveCls = rec ? rec.cls : (showLastResult ? lastResult.cls : null)
+  const effectiveRec = rec || (showLastResult ? lastResult.rec : null)
+  const effectiveTotal = allDone ? total : (showLastResult ? lastResult.total : null)
 
   return (
     <div className="page">
@@ -210,16 +227,16 @@ function PsyForm() {
         </div>
 
         <div className="psych-results">
-          <div className={`psych-card psych-result-card${allDone && rec ? ` psych-result-card-${rec.cls}` : ''}`}>
+          <div className={`psych-card psych-result-card${effectiveRec ? ` psych-result-card-${effectiveCls}` : ''}${showLastResult ? ' psych-result-fading' : ''}`}>
             <p className="psych-result-label">Total Assessment Score</p>
             <div className="psych-result-main">
-              <span className="psych-result-num">{total}</span>
+              <span className="psych-result-num">{effectiveTotal ?? total}</span>
               <span className="psych-result-max">/ {scale.maxScore}</span>
             </div>
-            {allDone && rec && (
-              <span className={`psych-chip psych-chip-${rec.cls}`}>{rec.label.toUpperCase()}</span>
+            {effectiveRec && (
+              <span className={`psych-chip psych-chip-${effectiveCls}`}>{effectiveRec.label.toUpperCase()}</span>
             )}
-            {!allDone && (
+            {!effectiveRec && (
               <span className="psych-chip psych-chip-empty">UNSCORED</span>
             )}
           </div>
@@ -234,7 +251,7 @@ function PsyForm() {
             <div className="psych-interp-body">
               <p className="psych-interp-label">Recommendation</p>
               <p className="psych-interp-text">
-                {allDone && rec ? rec.rec : 'Score has not been calculated. Please complete the questionnaire to see professional guidance.'}
+                {effectiveRec ? effectiveRec.rec : 'Score has not been calculated. Please complete the questionnaire to see professional guidance.'}
               </p>
             </div>
           </div>
@@ -569,15 +586,17 @@ function AriaForm({ scoreData }) {
   return (
     <div>
       <div className="widget-label">Duration</div>
-      <div className="toggle-group">
-        <button className={`toggle-btn ${duration === 'intermittent' ? 'active' : ''}`} onClick={() => setDuration('intermittent')}>
-          <span>Intermittent</span>
-          <span className="toggle-sub">&lt;4 days/week or &lt;4 weeks</span>
-        </button>
-        <button className={`toggle-btn ${duration === 'persistent' ? 'active' : ''}`} onClick={() => setDuration('persistent')}>
-          <span>Persistent</span>
-          <span className="toggle-sub">≥4 days/week and ≥4 weeks</span>
-        </button>
+      <div style={{ maxWidth: '380px' }}>
+        <div className="toggle-group">
+          <button className={`toggle-btn ${duration === 'intermittent' ? 'active' : ''}`} onClick={() => setDuration('intermittent')}>
+            <span>Intermittent</span>
+            <span className="toggle-sub">&lt;4 days/week or &lt;4 weeks</span>
+          </button>
+          <button className={`toggle-btn ${duration === 'persistent' ? 'active' : ''}`} onClick={() => setDuration('persistent')}>
+            <span>Persistent</span>
+            <span className="toggle-sub">≥4 days/week and ≥4 weeks</span>
+          </button>
+        </div>
       </div>
       <div className="widget-label">Severity — tick if present</div>
       <div className="checkbox-group">
@@ -602,9 +621,8 @@ export function ScoreDetail() {
   const navigate = useNavigate()
   const [result, setResult] = useState(null)
 
-  if (scoreId === 'phq9' || scoreId === 'gad7') {
-    navigate('/scores/psychiatric', { replace: true })
-    return null
+  if (scoreId === 'phq9' || scoreId === 'gad7' || scoreId === 'psychiatric') {
+    return <PsyForm initialScale={scoreId} />
   }
 
   if (scoreId === 'framingham') {
@@ -624,7 +642,7 @@ export function ScoreDetail() {
 
   if (!meta) {
     return (
-      <div className="page">
+    <div className="page">
         <button className="focus-back" onClick={() => navigate('/scores')}>
           <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>arrow_back</span>
           All Scores & Scales
@@ -635,7 +653,7 @@ export function ScoreDetail() {
   }
 
   return (
-    <div className="page">
+    <div className={`page${scoreId === 'aria' ? ' page--narrow' : ''}`}>
       <button className="focus-back" onClick={() => navigate('/scores')}>
         <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>arrow_back</span>
         All Scores & Scales

@@ -4,10 +4,10 @@ import ThemeToggle from './ThemeToggle'
 
 const navItems = [
   { type: 'link', to: '/', icon: 'dashboard', label: 'Home' },
-  { type: 'link', to: '/screening', icon: 'clinical_notes', label: 'Screening' },
   { type: 'link', to: '/diabetes', icon: 'medical_services', label: 'Diabetes' },
   { type: 'link', to: '/hypertension', icon: 'blood_pressure', label: 'Hypertension' },
   { type: 'link', to: '/dyslipidemia', icon: 'science', label: 'Dyslipidemia' },
+  { type: 'link', to: '/screening', icon: 'clinical_notes', label: 'Screening' },
   {
     type: 'group',
     key: 'calculators',

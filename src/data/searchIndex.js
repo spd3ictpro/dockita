@@ -22,6 +22,8 @@ export const searchIndex = [
   { path: '/calculators', label: 'Age Calculator', keywords: 'age calculator year birth', id: 'age' },
   { path: '/calculators', label: 'EDD Calculator', keywords: 'edd expected delivery date naegele pregnancy calculator', id: 'edd' },
   { path: '/calculators', label: 'Basic Calculator', keywords: 'basic calculator arithmetic add subtract multiply divide', id: 'basic' },
+  { path: '/calculators', label: 'Mentzer Index', keywords: 'mentzer index anaemia anemia thalassaemia thalassemia iron deficiency mcv rbc haematology hematology', id: 'mentzer' },
+  { path: '/calculators', label: 'Post-ACEi Creatinine Review', keywords: 'acei ace inhibitor creatinine renal function post acei monitoring nephropathy arb kidney', id: 'postAcei' },
 
   ...allScoreData.map(s => ({ path: '/scores', label: s.title, keywords: s.keywords, id: s.id })),
 

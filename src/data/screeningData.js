@@ -72,6 +72,102 @@ export const screeningCategories = [
     source: 'Malaysia CPG: Management of Hepatitis B 2021',
     keywords: 'hepatitis b hbsag liver screening',
   },
+  {
+    id: 'diabetes-mellitus',
+    title: 'Type 2 Diabetes Screening',
+    condition: 'Diabetes mellitus',
+    sections: [
+      {
+        type: 'symptomatic',
+        title: 'Symptomatic Individuals',
+        rows: [
+          {
+            population: 'Symptomatic individuals',
+            symptoms: [
+              'Fatigue or lethargy',
+              'Polyuria (frequent urination)',
+              'Nocturia (waking at night to urinate)',
+              'Polydipsia (excessive thirst)',
+              'Polyphagia (increased appetite)',
+              'Unexplained weight loss',
+              'Pruritus vulvae (vulval itching)',
+              'Balanitis (recurrent penile infection)',
+            ],
+          },
+        ],
+      },
+      {
+        type: 'asymptomatic',
+        title: 'Asymptomatic Individuals',
+        rows: [
+          {
+            population: 'Women with history of GDM',
+            notes: '',
+          },
+          {
+            population: 'All individuals with prediabetes (HbA1c ≥5.7%–6.2% [39 mmol/mol–44 mmol/mol], IGT, or IFG)',
+            notes: 'Should be tested yearly',
+          },
+          {
+            population: 'Adults who are overweight or obese (BMI ≥23 kg/m² or waist circumference ≥80 cm for women and ≥90 cm for men) with ANY of the risk factors listed below',
+            notes: '',
+          },
+          {
+            population: 'In those without the above risk factors, testing should begin at the age of 30 years',
+            notes: '',
+          },
+        ],
+        footnote: 'If tests are normal, screening should be performed annually.',
+      },
+      {
+        type: 'risk-factors',
+        title: 'Risk Factors for Asymptomatic Adults',
+        items: [
+          'History of CVD',
+          '1° relatives with T2DM',
+          'Hypertension (BP ≥140/90 mmHg or on therapy for hypertension)',
+          'HDL-C <0.9 mmol/L or TG >2.8 mmol/L',
+          'Women who have delivered a baby weighing ≥4 kg',
+          'Those who were born from mothers with GDM',
+          'Other endocrine conditions associated with insulin resistance:\n    • PCOS\n    • Cushing\'s syndrome\n    • Acromegaly\n    • Phaeochromocytoma\n    • Presence of acanthosis nigricans',
+          'Physical inactivity and sedentary lifestyle',
+          'Those receiving long-term treatment with:\n    • corticosteroids\n    • anti-retroviral therapy\n    • atypical anti-psychotic drugs\n    • thiazide diuretics\n    • β-adrenergic blockers\n    • 3-Hydroxy-3-methyl-glutaryl-CoA (HMG-CoA) reductase inhibitors [statins]',
+        ],
+      },
+      {
+        type: 'adolescents',
+        title: 'Adolescents',
+        items: [
+          'Adolescents* who are overweight (85th percentile) or obese (95th percentile), and who have one or more additional risk factors:',
+          '    • maternal history of diabetes or GDM during the child\'s gestation',
+          '    • family history of T2DM in a 1° relative',
+          '    • recurrent abscess and/or pruritus genitalia',
+          '    • signs of insulin resistance or conditions associated with insulin resistance:',
+          '        – dyslipidaemia',
+          '        – hypertension',
+          '        – polycystic ovary syndrome',
+          '        – acanthosis nigricans',
+          '        – small for gestational age birth weight',
+        ],
+        footnote: '*After the onset of puberty or after 10 years of age, whichever occurs earlier.\n\nIf tests are normal, repeat screening at a minimum of 3-year intervals, or more frequently if BMI is increasing.',
+      },
+      {
+        type: 'screening-test',
+        title: 'Screening Test',
+        rows: [
+          { test: 'Random capillary plasma glucose ≥7.8 mmol/L', interpretation: '→ confirmatory test required' },
+          { test: 'Fasting capillary plasma glucose ≥5.6 mmol/L', interpretation: '→ confirmatory test required' },
+        ],
+        confirmatory: [
+          'fasting plasma glucose (FPG)',
+          'oral glucose tolerance test (OGTT)',
+          'HbA1c',
+        ],
+      },
+    ],
+    source: 'Malaysia CPG: Management of T2DM 2021 — adapted from ADA Standards of Care in Diabetes 2020',
+    keywords: 'diabetes diabetic dm sugar hba1c glucose screening prediabetes ifg ogtt risk factors gdm pcos acanthosis nigricans adolescent overweight obese symptomatic asymptomatic capillary',
+  },
 ]
 
 

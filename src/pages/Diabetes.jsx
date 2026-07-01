@@ -1,12 +1,4 @@
-const diabetesScreening = {
-  title: 'Type 2 Diabetes Screening',
-  condition: 'Diabetes mellitus',
-  guidelines: [
-    { age: '≥18', test: 'Fasting glucose or HbA1c every 3 years', note: 'Start earlier if BMI ≥23 + ≥1 risk factor' },
-    { age: 'High risk', test: 'Annual screening', note: 'Risk factors: FH, overweight, HTN, PCOS, prior GDM, prediabetes' },
-  ],
-  source: 'Malaysia CPG: Management of T2DM 2021',
-}
+import { useNavigate } from 'react-router-dom'
 
 const venousPlasmaGlucose = [
   { type: 'Fasting', value: '≥7.0 mmol/L' },
@@ -40,6 +32,7 @@ const monitoringSteps = [
 ]
 
 export default function Diabetes() {
+  const navigate = useNavigate()
   return (
     <div className="page diabetes-page">
       <div className="dyslipid-header">
@@ -53,30 +46,16 @@ export default function Diabetes() {
       </div>
 
       <div className="diabetes-body">
-        <div className="ref-card">
+        <div className="ref-card" style={{ cursor: 'pointer' }} onClick={() => navigate('/screening?focus=diabetes-mellitus')}>
           <div className="ref-card-header">
             <span className="material-symbols-outlined">search</span>
-            <h2>{diabetesScreening.title}</h2>
+            <h2>Type 2 Diabetes Screening</h2>
+            <span className="material-symbols-outlined" style={{ marginLeft: 'auto', fontSize: '1.1rem', color: 'var(--primary)' }}>open_in_new</span>
           </div>
-          <div className="ref-card-body">
-            <table className="dyslipid-table">
-              <thead>
-                <tr>
-                  <th>Population</th>
-                  <th>Recommendation</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                {diabetesScreening.guidelines.map((g, i) => (
-                  <tr key={i}>
-                    <td className="cell-population">{g.age}</td>
-                    <td>{g.test}</td>
-                    <td style={{ fontSize: '0.82rem', color: 'var(--on-surface-variant)' }}>{g.note}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="ref-card-body" style={{ paddingBlock: '1.5rem' }}>
+            <p style={{ color: 'var(--on-surface-variant)', margin: 0, fontSize: '0.9rem' }}>
+              View the full CPG-based screening recommendations for Type 2 Diabetes Mellitus.
+            </p>
           </div>
         </div>
 

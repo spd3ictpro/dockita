@@ -1155,6 +1155,10 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   }
 }
 
+.psych-inputs {
+  min-height: 420px;
+}
+
 .psych-card {
   background: var(--surface-container-lowest);
   border: 1px solid var(--outline-variant);
@@ -1297,6 +1301,7 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 .psych-result-card {
   text-align: center;
   padding: 24px 20px;
+  transition: background-color 0.25s ease;
 }
 
 .psych-result-card-minimal           { background: color-mix(in srgb, var(--risk-low)  30%, var(--surface-container-lowest)); }
@@ -1304,6 +1309,11 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 .psych-result-card-moderate           { background: color-mix(in srgb, var(--risk-mod) 30%, var(--surface-container-lowest)); }
 .psych-result-card-moderately-severe  { background: color-mix(in srgb, var(--risk-high-mid) 30%, var(--surface-container-lowest)); }
 .psych-result-card-severe             { background: color-mix(in srgb, var(--risk-high)  30%, var(--surface-container-lowest)); }
+
+.psych-result-fading {
+  opacity: 0.5;
+  transition: opacity 0.25s ease;
+}
 
 .psych-result-label {
   font-size: 0.68rem;
@@ -1344,6 +1354,7 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-top: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .psych-chip-empty {
@@ -1816,6 +1827,15 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
+.calc-inputs input.input-error {
+  border-color: var(--error);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--error) 20%, transparent);
+}
+.calc-inputs input.input-error:focus {
+  border-color: var(--error);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--error) 25%, transparent);
+}
+
 .calc-actions {
   display: flex;
   gap: 8px;
@@ -1849,6 +1869,11 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 
 .btn-secondary:hover {
   background: var(--surface-container-highest);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 .calc-result {
@@ -1901,6 +1926,11 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
 .calc-btn.clear:hover { background: var(--error); color: var(--on-error); }
 .calc-btn.eq { background: var(--primary); color: var(--on-primary); }
 .calc-btn.zero { grid-column: span 2; }
+
+.calc-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
 
 /* ===== Scores Page (Bento-Expand) ===== */
 .scores-bento {
@@ -1990,7 +2020,6 @@ input, select, button, textarea { font-family: inherit; font-size: inherit; }
   background: var(--outline-variant);
   margin: 12px 0;
 }
-
 .score-form-question {
   padding: 10px 12px;
   background: var(--surface-container);

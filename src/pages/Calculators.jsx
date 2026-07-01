@@ -1,15 +1,20 @@
 import { useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import { ScaleIcon, KidneyIcon, LiverIcon, CalendarIcon, CalendarDaysIcon, CalculatorIcon } from '../components/icons'
+import { ScaleIcon, KidneyIcon, LiverIcon, CalendarIcon, CalendarDaysIcon, CalculatorIcon, BeakerIcon } from '../components/icons'
 
 function BMICalculator() {
   const [weight, setWeight] = useState('')
   const [height, setHeight] = useState('')
+  const [errors, setErrors] = useState(null)
   const [result, setResult] = useState(null)
 
   const calc = () => {
-    const w = parseFloat(weight), h = parseFloat(height)
-    if (!w || !h || h > 2.5) { setResult(null); return }
+    setErrors(null)
+    const w = Number(weight), h = Number(height)
+    const errs = {}
+    if (!w || w <= 0) errs.weight = true
+    if (!h || h <= 0 || h > 2.5) errs.height = true
+    if (Object.keys(errs).length) { setErrors(errs); return }
     const bmi = (w / (h * h))
     let cls, color, risk
     if (bmi < 18.5) { cls = 'Underweight'; color = 'var(--bmi-under)'; risk = 'Low, but with increased risk of other clinical problems' }
@@ -21,20 +26,22 @@ function BMICalculator() {
     setResult({ bmi: bmi.toFixed(1), cls, color, risk })
   }
 
-  const clear = () => { setWeight(''); setHeight(''); setResult(null) }
+  const clear = () => { setWeight(''); setHeight(''); setResult(null); setErrors(null) }
 
   return (
     <div className="calc-card">
       <div className="calc-heading"><ScaleIcon size={20} className="calc-heading-icon" /><h3>BMI Calculator</h3></div>
       <p className="calc-desc">Adapted from CPG Management of Obesity 2nd Edition 2023</p>
-      <div className="calc-inputs">
-        <input type="number" step="0.1" placeholder="Weight (kg)" value={weight} onChange={e => setWeight(e.target.value)} />
-        <input type="number" step="0.01" placeholder="Height (m)" value={height} onChange={e => setHeight(e.target.value)} />
-      </div>
-      <div className="calc-actions">
-        <button className="btn btn-primary" onClick={calc}>Calculate</button>
-        <button className="btn btn-secondary" onClick={clear}>Clear</button>
-      </div>
+      <form onSubmit={e => { e.preventDefault(); calc() }}>
+        <div className="calc-inputs">
+          <input type="number" step="0.1" placeholder="Weight (kg)" value={weight} onChange={e => setWeight(e.target.value)} className={errors?.weight ? 'input-error' : ''} />
+          <input type="number" step="0.01" placeholder="Height (m)" value={height} onChange={e => setHeight(e.target.value)} className={errors?.height ? 'input-error' : ''} />
+        </div>
+        <div className="calc-actions">
+          <button type="submit" className="btn btn-primary">Calculate</button>
+          <button type="button" className="btn btn-secondary" onClick={clear}>Clear</button>
+        </div>
+      </form>
       {result && (
         <div className="calc-result" style={{ '--result-color': result.color }}>
           BMI: {result.bmi} — <strong>{result.cls}</strong>
@@ -49,11 +56,16 @@ function EGFRCalculator() {
   const [creatinine, setCreatinine] = useState('')
   const [age, setAge] = useState('')
   const [sex, setSex] = useState('male')
+  const [errors, setErrors] = useState(null)
   const [result, setResult] = useState(null)
 
   const calc = () => {
-    const cr = parseFloat(creatinine), a = parseInt(age)
-    if (!cr || !a) { setResult(null); return }
+    setErrors(null)
+    const cr = Number(creatinine), a = Number(age)
+    const errs = {}
+    if (!cr || cr <= 0) errs.creatinine = true
+    if (!a || a < 1 || a > 120) errs.age = true
+    if (Object.keys(errs).length) { setErrors(errs); return }
     const crMgDl = cr / 88.4
     const kappa = sex === 'male' ? 0.9 : 0.7
     const alpha = sex === 'male' ? -0.411 : -0.329
@@ -73,24 +85,26 @@ function EGFRCalculator() {
     setResult({ egfr: val, stage, color, textColor: val < 30 ? '#fff' : undefined })
   }
 
-  const clear = () => { setCreatinine(''); setAge(''); setSex('male'); setResult(null) }
+  const clear = () => { setCreatinine(''); setAge(''); setSex('male'); setResult(null); setErrors(null) }
 
   return (
     <div className="calc-card">
       <div className="calc-heading"><KidneyIcon size={20} className="calc-heading-icon" /><h3>eGFR Calculator</h3></div>
       <p className="calc-desc">CKD-EPI (non-black) — µmol/L</p>
-      <div className="calc-inputs">
-        <input type="number" step="0.1" placeholder="Creatinine (µmol/L)" value={creatinine} onChange={e => setCreatinine(e.target.value)} />
-        <input type="number" placeholder="Age (years)" value={age} onChange={e => setAge(e.target.value)} />
-        <select value={sex} onChange={e => setSex(e.target.value)}>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </div>
-      <div className="calc-actions">
-        <button className="btn btn-primary" onClick={calc}>Calculate eGFR</button>
-        <button className="btn btn-secondary" onClick={clear}>Clear</button>
-      </div>
+      <form onSubmit={e => { e.preventDefault(); calc() }}>
+        <div className="calc-inputs">
+          <input type="number" step="0.1" placeholder="Creatinine (µmol/L)" value={creatinine} onChange={e => setCreatinine(e.target.value)} className={errors?.creatinine ? 'input-error' : ''} />
+          <input type="number" placeholder="Age (years)" value={age} onChange={e => setAge(e.target.value)} className={errors?.age ? 'input-error' : ''} />
+          <select value={sex} onChange={e => setSex(e.target.value)}>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+        <div className="calc-actions">
+          <button type="submit" className="btn btn-primary">Calculate eGFR</button>
+          <button type="button" className="btn btn-secondary" onClick={clear}>Clear</button>
+        </div>
+      </form>
       {result && (
         <div className="calc-result" style={{ '--result-color': result.color, color: result.textColor }}>
           eGFR: {result.egfr} mL/min/1.73m² — <strong>{result.stage}</strong>
@@ -105,11 +119,18 @@ function Fib4Calculator() {
   const [ast, setAst] = useState('')
   const [alt, setAlt] = useState('')
   const [platelets, setPlatelets] = useState('')
+  const [errors, setErrors] = useState(null)
   const [result, setResult] = useState(null)
 
   const calc = () => {
-    const a = parseInt(age), astVal = parseFloat(ast), altVal = parseFloat(alt), plt = parseFloat(platelets)
-    if (!a || !astVal || !altVal || !plt || altVal <= 0 || plt <= 0) { setResult(null); return }
+    setErrors(null)
+    const a = Number(age), astVal = Number(ast), altVal = Number(alt), plt = Number(platelets)
+    const errs = {}
+    if (!a || a < 1) errs.age = true
+    if (!astVal || astVal <= 0) errs.ast = true
+    if (!altVal || altVal <= 0) errs.alt = true
+    if (!plt || plt <= 0) errs.platelets = true
+    if (Object.keys(errs).length) { setErrors(errs); return }
     const score = (a * astVal) / (plt * Math.sqrt(altVal))
     const rounded = score.toFixed(2)
     let label, color, action
@@ -125,22 +146,24 @@ function Fib4Calculator() {
     setResult({ score: rounded, label, color, action })
   }
 
-  const clear = () => { setAge(''); setAst(''); setAlt(''); setPlatelets(''); setResult(null) }
+  const clear = () => { setAge(''); setAst(''); setAlt(''); setPlatelets(''); setResult(null); setErrors(null) }
 
   return (
     <div className="calc-card">
       <div className="calc-heading"><LiverIcon size={20} className="calc-heading-icon" /><h3>FIB-4 Index</h3></div>
       <p className="calc-desc">Fibrosis-4 score for liver fibrosis</p>
-      <div className="calc-inputs">
-        <input type="number" placeholder="Age (years)" value={age} onChange={e => setAge(e.target.value)} />
-        <input type="number" step="0.1" placeholder="AST (U/L)" value={ast} onChange={e => setAst(e.target.value)} />
-        <input type="number" step="0.1" placeholder="ALT (U/L)" value={alt} onChange={e => setAlt(e.target.value)} />
-        <input type="number" step="1" placeholder="Platelet count (×10⁹/L)" value={platelets} onChange={e => setPlatelets(e.target.value)} />
-      </div>
-      <div className="calc-actions">
-        <button className="btn btn-primary" onClick={calc}>Calculate FIB-4</button>
-        <button className="btn btn-secondary" onClick={clear}>Clear</button>
-      </div>
+      <form onSubmit={e => { e.preventDefault(); calc() }}>
+        <div className="calc-inputs">
+          <input type="number" placeholder="Age (years)" value={age} onChange={e => setAge(e.target.value)} className={errors?.age ? 'input-error' : ''} />
+          <input type="number" step="0.1" placeholder="AST (U/L)" value={ast} onChange={e => setAst(e.target.value)} className={errors?.ast ? 'input-error' : ''} />
+          <input type="number" step="0.1" placeholder="ALT (U/L)" value={alt} onChange={e => setAlt(e.target.value)} className={errors?.alt ? 'input-error' : ''} />
+          <input type="number" step="1" placeholder="Platelet count (×10⁹/L)" value={platelets} onChange={e => setPlatelets(e.target.value)} className={errors?.platelets ? 'input-error' : ''} />
+        </div>
+        <div className="calc-actions">
+          <button type="submit" className="btn btn-primary">Calculate FIB-4</button>
+          <button type="button" className="btn btn-secondary" onClick={clear}>Clear</button>
+        </div>
+      </form>
       {result && (
         <div className="calc-result" style={{ '--result-color': result.color }}>
           FIB-4: <strong>{result.score}</strong> — {result.label}
@@ -154,24 +177,32 @@ function Fib4Calculator() {
 
 function AgeCalculator() {
   const [year, setYear] = useState('')
+  const [errors, setErrors] = useState(null)
   const [result, setResult] = useState(null)
 
   const calc = () => {
-    const y = parseInt(year)
-    if (!y || y < 1900 || y > new Date().getFullYear()) { setResult(null); return }
+    setErrors(null)
+    const y = Number(year)
+    const errs = {}
+    if (!y || y < 1900 || y > new Date().getFullYear()) errs.year = true
+    if (Object.keys(errs).length) { setErrors(errs); return }
     setResult({ age: new Date().getFullYear() - y })
   }
+
+  const clear = () => { setYear(''); setResult(null); setErrors(null) }
 
   return (
     <div className="calc-card">
       <div className="calc-heading"><CalendarIcon size={20} className="calc-heading-icon" /><h3>Age Calculator</h3></div>
-      <div className="calc-inputs">
-        <input type="number" placeholder="Year of Birth" value={year} onChange={e => setYear(e.target.value)} />
-      </div>
-      <div className="calc-actions">
-        <button className="btn btn-primary" onClick={calc}>Calculate</button>
-        <button className="btn btn-secondary" onClick={() => { setYear(''); setResult(null) }}>Clear</button>
-      </div>
+      <form onSubmit={e => { e.preventDefault(); calc() }}>
+        <div className="calc-inputs">
+          <input type="number" placeholder="Year of Birth" value={year} onChange={e => setYear(e.target.value)} className={errors?.year ? 'input-error' : ''} />
+        </div>
+        <div className="calc-actions">
+          <button type="submit" className="btn btn-primary">Calculate</button>
+          <button type="button" className="btn btn-secondary" onClick={clear}>Clear</button>
+        </div>
+      </form>
       {result && <div className="calc-result">Age: <strong>{result.age} years</strong></div>}
     </div>
   )
@@ -179,10 +210,12 @@ function AgeCalculator() {
 
 function EDDCalculator() {
   const [lmp, setLmp] = useState('')
+  const [errors, setErrors] = useState(null)
   const [result, setResult] = useState(null)
 
   const calc = () => {
-    if (!lmp) { setResult(null); return }
+    setErrors(null)
+    if (!lmp) { setErrors({ lmp: true }); return }
     const lmpDate = new Date(lmp + 'T00:00:00')
     const today = new Date()
     today.setHours(0, 0, 0, 0)
@@ -201,17 +234,21 @@ function EDDCalculator() {
     })
   }
 
+  const clear = () => { setLmp(''); setResult(null); setErrors(null) }
+
   return (
     <div className="calc-card">
       <div className="calc-heading"><CalendarDaysIcon size={20} className="calc-heading-icon" /><h3>EDD Calculator</h3></div>
       <p className="calc-desc">Naegele's Rule — from LMP</p>
-      <div className="calc-inputs">
-        <input type="date" value={lmp} onChange={e => setLmp(e.target.value)} />
-      </div>
-      <div className="calc-actions">
-        <button className="btn btn-primary" onClick={calc}>Calculate</button>
-        <button className="btn btn-secondary" onClick={() => { setLmp(''); setResult(null) }}>Clear</button>
-      </div>
+      <form onSubmit={e => { e.preventDefault(); calc() }}>
+        <div className="calc-inputs">
+          <input type="date" value={lmp} onChange={e => setLmp(e.target.value)} className={errors?.lmp ? 'input-error' : ''} />
+        </div>
+        <div className="calc-actions">
+          <button type="submit" className="btn btn-primary">Calculate</button>
+          <button type="button" className="btn btn-secondary" onClick={clear}>Clear</button>
+        </div>
+      </form>
       {result && (
         <div className="calc-result">
           {result.error ? (
@@ -248,7 +285,7 @@ function BasicCalc() {
 
   const calculate = () => {
     if (!op) return
-    const a = parseFloat(prev), b = parseFloat(display)
+    const a = Number(prev), b = Number(display)
     if (isNaN(a) || isNaN(b)) return
     let result
     switch (op) {
@@ -276,8 +313,8 @@ function BasicCalc() {
   const handleAction = (action) => {
     switch (action) {
       case 'C': setDisplay('0'); setPrev(''); setOp(null); break
-      case '±': setDisplay(d => String(-parseFloat(d))); break
-      case '%': setDisplay(d => String(parseFloat(d) / 100)); break
+      case '±': setDisplay(d => String(-Number(d))); break
+      case '%': setDisplay(d => String(Number(d) / 100)); break
       case '.': setDisplay(d => d.includes('.') ? d : d + '.'); break
       case '=': calculate(); break
     }
@@ -316,6 +353,110 @@ function BasicCalc() {
   )
 }
 
+function MentzerCalculator() {
+  const [mcv, setMcv] = useState('')
+  const [rbc, setRbc] = useState('')
+  const [errors, setErrors] = useState(null)
+  const [result, setResult] = useState(null)
+
+  const calc = () => {
+    setErrors(null)
+    const m = Number(mcv), r = Number(rbc)
+    const errs = {}
+    if (!m || m <= 0) errs.mcv = true
+    if (!r || r <= 0) errs.rbc = true
+    if (Object.keys(errs).length) { setErrors(errs); return }
+    const index = m / r
+    const rounded = Math.round(index * 100) / 100
+    let label, color
+    if (rounded < 13) {
+      label = 'Thalassaemia trait likely'
+      color = 'var(--risk-low)'
+    } else {
+      label = 'Iron deficiency anaemia likely'
+      color = 'var(--risk-mod)'
+    }
+    setResult({ index: rounded, label, color })
+  }
+
+  const clear = () => { setMcv(''); setRbc(''); setResult(null); setErrors(null) }
+
+  return (
+    <div className="calc-card">
+      <div className="calc-heading"><BeakerIcon size={20} className="calc-heading-icon" /><h3>Mentzer Index</h3></div>
+      <p className="calc-desc">Differentiate iron deficiency anaemia from thalassaemia trait (MCV ÷ RBC)</p>
+      <form onSubmit={e => { e.preventDefault(); calc() }}>
+        <div className="calc-inputs">
+          <input type="number" step="0.1" placeholder="MCV (fL)" value={mcv} onChange={e => setMcv(e.target.value)} className={errors?.mcv ? 'input-error' : ''} />
+          <input type="number" step="0.01" placeholder="RBC Count (×10¹²/L)" value={rbc} onChange={e => setRbc(e.target.value)} className={errors?.rbc ? 'input-error' : ''} />
+        </div>
+        <div className="calc-actions">
+          <button type="submit" className="btn btn-primary">Calculate</button>
+          <button type="button" className="btn btn-secondary" onClick={clear}>Clear</button>
+        </div>
+      </form>
+      {result && (
+        <div className="calc-result" style={{ '--result-color': result.color }}>
+          Mentzer Index: <strong>{result.index}</strong> — {result.label}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function PostAceiCalculator() {
+  const [baseline, setBaseline] = useState('')
+  const [post, setPost] = useState('')
+  const [errors, setErrors] = useState(null)
+  const [result, setResult] = useState(null)
+
+  const calc = () => {
+    setErrors(null)
+    const b = Number(baseline), p = Number(post)
+    const errs = {}
+    if (!b || b <= 0) errs.baseline = true
+    if (!p) errs.post = true
+    if (Object.keys(errs).length) { setErrors(errs); return }
+    const pctChange = ((p - b) / b) * 100
+    const absChange = p - b
+    const rounded = Math.round(pctChange * 10) / 10
+    let label, color
+    if (pctChange <= 30) {
+      label = 'Acceptable rise — continue monitoring'
+      color = 'var(--risk-low)'
+    } else {
+      label = 'Significant rise — consider holding ACEi, investigate cause'
+      color = 'var(--risk-high)'
+    }
+    setResult({ pct: rounded, abs: Math.round(absChange * 10) / 10, label, color })
+  }
+
+  const clear = () => { setBaseline(''); setPost(''); setResult(null); setErrors(null) }
+
+  return (
+    <div className="calc-card">
+      <div className="calc-heading"><KidneyIcon size={20} className="calc-heading-icon" /><h3>Post-ACEi Creatinine Review</h3></div>
+      <p className="calc-desc">ACEi/ARB may raise creatinine ≤30% — acceptable haemodynamic effect. &gt;30% rise warrants investigation.</p>
+      <form onSubmit={e => { e.preventDefault(); calc() }}>
+        <div className="calc-inputs">
+          <input type="number" step="0.1" placeholder="Baseline creatinine (µmol/L)" value={baseline} onChange={e => setBaseline(e.target.value)} className={errors?.baseline ? 'input-error' : ''} />
+          <input type="number" step="0.1" placeholder="Post-ACEi creatinine (µmol/L)" value={post} onChange={e => setPost(e.target.value)} className={errors?.post ? 'input-error' : ''} />
+        </div>
+        <div className="calc-actions">
+          <button type="submit" className="btn btn-primary">Calculate</button>
+          <button type="button" className="btn btn-secondary" onClick={clear}>Clear</button>
+        </div>
+      </form>
+      {result && (
+        <div className="calc-result" style={{ '--result-color': result.color }}>
+          Change: <strong>{result.pct}%</strong> ({result.abs > 0 ? '+' : ''}{result.abs} µmol/L)<br />
+          {result.label}
+        </div>
+      )}
+    </div>
+  )
+}
+
 const calcFocusMap = {
   bmi: () => <BMICalculator />,
   egfr: () => <EGFRCalculator />,
@@ -323,6 +464,8 @@ const calcFocusMap = {
   age: () => <AgeCalculator />,
   edd: () => <EDDCalculator />,
   basic: () => <BasicCalc />,
+  mentzer: () => <MentzerCalculator />,
+  postAcei: () => <PostAceiCalculator />,
 }
 
 const calcFocusTitle = {
@@ -332,6 +475,8 @@ const calcFocusTitle = {
   age: 'Age Calculator',
   edd: 'EDD Calculator',
   basic: 'Basic Calculator',
+  mentzer: 'Mentzer Index',
+  postAcei: 'Post-ACEi Creatinine Review',
 }
 
 export default function Calculators() {
@@ -364,7 +509,17 @@ export default function Calculators() {
         <AgeCalculator />
         <EDDCalculator />
         <BasicCalc />
-        <div className="calc-card" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 8, minHeight: 120 }} onClick={() => navigate('/neobili')}>
+        <MentzerCalculator />
+        <PostAceiCalculator />
+        <div
+          className="calc-card"
+          style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 8, minHeight: 120 }}
+          onClick={() => navigate('/neobili')}
+          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/neobili') } }}
+          tabIndex={0}
+          role="button"
+          aria-label="Open NeoBili neonatal bilirubin calculator"
+        >
           <span className="material-symbols-outlined" style={{ fontSize: 36, color: '#f59f00' }}>healing</span>
           <h3>NeoBili — Neonatal Bilirubin</h3>
           <p className="calc-desc">AAP 2022 TSB thresholds for phototherapy & exchange transfusion</p>

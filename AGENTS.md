@@ -29,7 +29,7 @@ Vite config sets `base: '/dockita/'` for gh-pages. The favicon link in `index.ht
 ## Known issues (things agents commonly miss)
 - **Scores.jsx:149** calls components as `t.component()` instead of JSX `<t.component />` — works but non-standard.
 - **SearchBar.jsx** search logic duplicated between `useEffect` and `onFocus` handler. `listRef` assigned but never read.
-- **EDD Calculator** future LMP dates give negative gestational age.
+- **EDD Calculator** future LMP dates show error message (fixed — previously gave negative GA).
 - **`public/icons.svg`** orphaned (not referenced anywhere).
 
 ## Style conventions
